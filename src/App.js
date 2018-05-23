@@ -22,7 +22,7 @@ import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = theme => ({
 	root: {
@@ -104,7 +104,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		const params = qs.parse(window.location.search);
+		const params = qs.parse(window.location.search.slice(1));
 
 		if (params.token && !this.state.displayName) {
 			axios.get(`https://scrbblauthenticator.herokuapp.com/users/session/${params.token}`)
@@ -127,14 +127,13 @@ class App extends Component {
 
 	/* eslint-disable */
 	login() {
-		const callbackUrl = window.location.href.split('?')[0] + 'callback';
+		const callbackUrl = window.location.href.split('?')[0];
 		const requestUrl = 'http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=' + callbackUrl;
 		return window.location.href = requestUrl;
 	}
 	/* eslint-enable */
 
 	render() {
-		const { displayName } = this.state;
 		const { classes } = this.props;
 		return (
 			<div className={classes.root}>
@@ -178,7 +177,7 @@ class App extends Component {
 				{/* App body */}
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{displayName ?
+					{localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
 						<BrowserRouter>
 							<Grid container spacing={24}>
 								<Route exact path="/" component={Home} />
