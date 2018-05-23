@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import queryString from 'query-string';
+import qs from 'qs';
 import axios from 'axios';
 import { BrowserRouter, Route } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ const styles = theme => ({
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
 		}),
-		backgroundColor: '#395C6B',
+		backgroundColor: '#c3000d',
 	},
 	appBarShift: {
 		marginLeft: drawerWidth,
@@ -104,7 +104,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		const params = queryString.parse(window.location.search);
+		const params = qs.parse(window.location.search);
 
 		if (params.token && !this.state.displayName) {
 			axios.get(`https://scrbblauthenticator.herokuapp.com/users/session/${params.token}`)
