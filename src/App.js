@@ -135,6 +135,7 @@ class App extends Component {
 
 	render() {
 		const { classes } = this.props;
+		console.log(process.env);
 		return (
 			<div className={classes.root}>
 				<AppBar
@@ -155,6 +156,7 @@ class App extends Component {
 								Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
 							</Typography>
 						</div>
+						{this.state.displayName}
 					</Toolbar>
 				</AppBar>
 				<Drawer
