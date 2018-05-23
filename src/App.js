@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -18,6 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
+import UserNav from './components/UserNav';
 import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
@@ -97,6 +98,7 @@ class App extends Component {
 		this.state = {
 			displayName: localStorage.getItem('ScrbblUser'),
 			open: false,
+			redirect: false,
 		};
 
 		this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -110,8 +112,9 @@ class App extends Component {
 			axios.get(`https://scrbblauthenticator.herokuapp.com/users/session/${params.token}`)
 				.then((response) => {
 					localStorage.setItem('ScrbblUser', response.data.username);
-					this.setState({ displayName: response.data.displayname });
 					localStorage.setItem('ScrbblKey', response.data.key);
+					this.setState({ displayName: response.data.displayname });
+					return <Redirect to="/" />;
 				})
 				.catch((error) => { throw new Error(error); });
 		}
@@ -127,7 +130,7 @@ class App extends Component {
 
 	/* eslint-disable */
 	login() {
-		const callbackUrl = window.location.href.split('?')[0];
+		const callbackUrl = window.location.href.split('?')[0] + 'callback';
 		const requestUrl = 'http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=' + callbackUrl;
 		return window.location.href = requestUrl;
 	}
@@ -135,7 +138,6 @@ class App extends Component {
 
 	render() {
 		const { classes } = this.props;
-		console.log(process.env);
 		return (
 			<div className={classes.root}>
 				<AppBar
@@ -156,7 +158,7 @@ class App extends Component {
 								Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
 							</Typography>
 						</div>
-						{this.state.displayName}
+						<UserNav name={this.state.displayName} />
 					</Toolbar>
 				</AppBar>
 				<Drawer
@@ -183,6 +185,10 @@ class App extends Component {
 						<BrowserRouter>
 							<Grid container spacing={24}>
 								<Route exact path="/" component={Home} />
+								<Route
+									path="/callback"
+									render={() => <Redirect to={{ pathname: '/' }} />}
+								/>
 							</Grid>
 						</BrowserRouter>
 						:
