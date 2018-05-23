@@ -14,6 +14,10 @@ const styles = theme => ({
 	},
 	button: {
 		margin: theme.spacing.unit,
+		backgroundColor: '#c3000d',
+		color: 'white',
+		marginTop: '16px',
+		justifySelf: 'flex-end',
 	},
 	card: {
 		display: 'flex',
@@ -30,8 +34,8 @@ const Login = (props) => {
 
 	return (
 		<div className={classes.root}>
-			<Grid item xs={3} />
-			<Grid item xs={6}>
+			<Grid item xs={0} sm={1} md={3} />
+			<Grid item xs={12} sm={10} md={6} >
 				<Card
 					shadowLevel={5}
 					className={classes.card}
@@ -42,14 +46,13 @@ const Login = (props) => {
 					<Button
 						variant="raised"
 						onClick={authenticate}
-						color="secondary"
 						className={classes.button}
 					>
-						Login to Last.FM
+						Login
 					</Button>
 				</Card>
 			</Grid>
-			<Grid item xs={3} />
+			<Grid item xs={0} sm={1} md={3} />
 		</div>
 	);
 };
