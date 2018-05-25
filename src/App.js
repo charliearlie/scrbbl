@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
