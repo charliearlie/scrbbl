@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,14 +14,14 @@ const styles = theme => ({
 	},
 });
 
-const SideDrawerList = (props) => {
+const SideDrawerList = withRouter((props) => {
 	const { items, classes } = props;
 
 	return (
 		<div className={classes.root}>
 			<List component="nav">
 				{items.map(item => (
-					<ListItem button key={item.text}>
+					<ListItem button key={item.text} onClick={() => props.history.push(item.route)}>
 						<ListItemIcon>
 							{item.icon}
 						</ListItemIcon>
@@ -32,6 +33,6 @@ const SideDrawerList = (props) => {
 			</List>
 		</div>
 	);
-};
+});
 
 export default withStyles(styles, { withTheme: true })(SideDrawerList);
