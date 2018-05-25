@@ -129,7 +129,7 @@ class App extends Component {
 
 	/* eslint-disable */
 	login() {
-		const callbackUrl = window.location.href.split('?')[0] + 'callback';
+		const callbackUrl = window.location.href.split('?')[0];
 		const requestUrl = 'http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=' + callbackUrl;
 		return window.location.href = requestUrl;
 	}
