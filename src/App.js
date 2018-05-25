@@ -110,8 +110,8 @@ class App extends Component {
 		if (params.token && !this.state.displayName) {
 			axios.get(`https://scrbblauthenticator.herokuapp.com/users/session/${params.token}`)
 				.then((response) => {
-					localStorage.setItem('ScrbblUser', response.data.username);
-					localStorage.setItem('ScrbblKey', response.data.key);
+					window.localStorage.setItem('ScrbblUser', response.data.username);
+					window.localStorage.setItem('ScrbblKey', response.data.key);
 					window.location.reload();
 				})
 				.catch((error) => { throw new Error(error); });

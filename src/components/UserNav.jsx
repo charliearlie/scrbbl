@@ -28,8 +28,8 @@ class UserNav extends Component {
 
 	/* eslint-disable */
 	logOut() {
-		localStorage.removeItem('ScrbblUser');
-		localStorage.removeItem('ScrbblKey');
+		window.localStorage.removeItem('ScrbblUser');
+		window.localStorage.removeItem('ScrbblKey');
 		window.location.reload();
 	}
 	/* eslint-enable */
