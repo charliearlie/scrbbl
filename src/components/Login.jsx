@@ -2,10 +2,10 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Card from './reusable/Card';
+import ScrbblButton from './reusable/ScrbblButton';
 
 const styles = theme => ({
 	root: {
@@ -26,6 +26,7 @@ const styles = theme => ({
 		height: '300px',
 		alignItems: 'center',
 		padding: '0 64px',
+		backgroundColor: '#fff',
 	},
 });
 
@@ -43,13 +44,13 @@ const Login = (props) => {
 					<Typography variant="body1" gutterBottom>
 						To access this application, you need to sign in to your Last.FM account
 					</Typography>
-					<Button
+					<ScrbblButton
 						variant="raised"
 						onClick={authenticate}
 						className={classes.button}
 					>
 						Login
-					</Button>
+					</ScrbblButton>
 				</Card>
 			</Grid>
 			<Grid item xs={false} sm={1} md={3} />

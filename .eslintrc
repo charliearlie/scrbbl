@@ -11,7 +11,8 @@
       "jsx-a11y/click-events-have-key-events": 0,
       "jsx-a11y/interactive-supports-focus": 0,
       "react/prop-types": "warn",
-      "function-paren-newline": "warn"
+      "function-paren-newline": "warn",
+      "react/prefer-stateless-function": "warn"
     },
     "globals": {
       "window": true,

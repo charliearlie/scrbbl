@@ -10,6 +10,7 @@ const styles = () => ({
 		height: '300px',
 		alignItems: 'center',
 		padding: '0',
+		backgroundColor: '#fff',
 	},
 	cardHeader: {
 		width: '100%',
