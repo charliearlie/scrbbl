@@ -9,7 +9,7 @@ const drawerItems = [
 		text: 'Home',
 	},
 	{
-		icon: <i className="fab fa-lastfm" />,
+		icon: <i className="fab fa-lastfm" style={{ fontSize: '25px' }} />,
 		text: 'Scrobble manually',
 	},
 	{
