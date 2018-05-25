@@ -18,6 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
+import ManualScrobble from './components/ManualScrobble';
 import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
@@ -112,7 +113,6 @@ class App extends Component {
 				.then((response) => {
 					window.localStorage.setItem('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
-					console.log('response', response.data);
 					this.setState({ displayName: response.data.username });
 				})
 				.catch((error) => { throw new Error(error); });
@@ -181,15 +181,14 @@ class App extends Component {
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
 					{window.localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
-						<BrowserRouter>
-							<Grid container spacing={24}>
-								<Route exact path="/" component={Home} />
-								<Route
-									path="/callback"
-									render={() => <Redirect to={{ pathname: '/' }} />}
-								/>
-							</Grid>
-						</BrowserRouter>
+						<Grid container spacing={24}>
+							<Route exact path="/" component={Home} />
+							<Route path="/manual" component={ManualScrobble} />
+							<Route
+								path="/callback"
+								render={() => <Redirect to={{ pathname: '/' }} />}
+							/>
+						</Grid>
 						:
 						<Login authenticate={this.login} />
 					}
