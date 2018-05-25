@@ -112,7 +112,7 @@ class App extends Component {
 				.then((response) => {
 					localStorage.setItem('ScrbblUser', response.data.username);
 					localStorage.setItem('ScrbblKey', response.data.key);
-					this.setState({ displayName: response.data.displayname });
+					window.location.reload();
 				})
 				.catch((error) => { throw new Error(error); });
 		}

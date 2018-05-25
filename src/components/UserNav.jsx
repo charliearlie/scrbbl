@@ -15,6 +15,7 @@ class UserNav extends Component {
 
 		this.handleProfileMenu = this.handleProfileMenu.bind(this);
 		this.handleProfileMenuClose = this.handleProfileMenuClose.bind(this);
+		this.logOut = this.logOut.bind(this);
 	}
 
 	handleProfileMenu(event) {
@@ -24,6 +25,14 @@ class UserNav extends Component {
 	handleProfileMenuClose() {
 		this.setState({ anchorEl: null });
 	}
+
+	/* eslint-disable */
+	logOut() {
+		localStorage.removeItem('ScrbblUser');
+		localStorage.removeItem('ScrbblKey');
+		window.location.reload();
+	}
+	/* eslint-enable */
 
 	render() {
 		const open = Boolean(this.state.anchorEl);

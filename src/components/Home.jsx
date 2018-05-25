@@ -29,6 +29,12 @@ const styles = theme => ({
 		color: 'rgba(0, 0, 0, 0.54)',
 		margin: '8px',
 	},
+	construction: {
+		fontSize: '1.1rem',
+		fontFamily: '"Work Sans"',
+		color: 'rgba(0, 0, 0, 0.54)',
+		margin: '8px',
+	},
 	button: {
 		margin: theme.spacing.unit,
 		backgroundColor: '#c3000d',
@@ -58,6 +64,7 @@ const Home = (props) => {
 				</Typography>
 				<br />
 				<h3 className={classes.subheader}>The manual Last.FM scrobbler</h3>
+				<h5 className={classes.construction}>Currently under construction</h5>
 			</div>
 			{homeContentCardData.map(data => (
 				<Grid item xs={12} md={4}>
