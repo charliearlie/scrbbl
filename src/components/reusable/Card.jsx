@@ -10,16 +10,11 @@ const Card = (props) => {
 		5: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
 	};
 
-	const defaultStyles = {
-		margin: '16px',
-		padding: '16px',
-	};
-
 	const { styles, className, shadowLevel } = props;
 	return (
 		<div
 			className={className}
-			style={{ ...defaultStyles, ...styles, boxShadow: cardShadowLevels[shadowLevel] }}
+			style={{ ...styles, boxShadow: cardShadowLevels[shadowLevel] }}
 		>
 			{props.children}
 		</div>
