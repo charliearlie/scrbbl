@@ -34,7 +34,7 @@ const Login = (props) => {
 
 	return (
 		<div className={classes.root}>
-			<Grid item xs={0} sm={1} md={3} />
+			<Grid item xs={false} sm={1} md={3} />
 			<Grid item xs={12} sm={10} md={6} >
 				<Card
 					shadowLevel={5}
@@ -52,7 +52,7 @@ const Login = (props) => {
 					</Button>
 				</Card>
 			</Grid>
-			<Grid item xs={0} sm={1} md={3} />
+			<Grid item xs={false} sm={1} md={3} />
 		</div>
 	);
 };

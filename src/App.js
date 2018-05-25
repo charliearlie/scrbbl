@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -21,6 +21,7 @@ import Login from './components/Login';
 import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
+import UserNav from './components/UserNav';
 
 const drawerWidth = 280;
 
@@ -31,7 +32,7 @@ const styles = theme => ({
 		overflow: 'hidden',
 		position: 'relative',
 		display: 'flex',
-		height: '100vh',
+		minHeight: '100vh',
 	},
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1,
@@ -95,7 +96,7 @@ class App extends Component {
 		super(props);
 
 		this.state = {
-			displayName: localStorage.getItem('ScrbblUser'),
+			displayName: window.localStorage.getItem('ScrbblUser'),
 			open: false,
 		};
 
@@ -109,9 +110,10 @@ class App extends Component {
 		if (params.token && !this.state.displayName) {
 			axios.get(`https://scrbblauthenticator.herokuapp.com/users/session/${params.token}`)
 				.then((response) => {
-					localStorage.setItem('ScrbblUser', response.data.username);
-					this.setState({ displayName: response.data.displayname });
-					localStorage.setItem('ScrbblKey', response.data.key);
+					window.localStorage.setItem('ScrbblUser', response.data.username);
+					window.localStorage.setItem('ScrbblKey', response.data.key);
+					console.log('response', response.data);
+					this.setState({ displayName: response.data.username });
 				})
 				.catch((error) => { throw new Error(error); });
 		}
@@ -155,6 +157,7 @@ class App extends Component {
 								Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
 							</Typography>
 						</div>
+						<UserNav displayName={this.state.displayName} />
 					</Toolbar>
 				</AppBar>
 				<Drawer
@@ -177,10 +180,14 @@ class App extends Component {
 				{/* App body */}
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
+					{window.localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
 						<BrowserRouter>
 							<Grid container spacing={24}>
 								<Route exact path="/" component={Home} />
+								<Route
+									path="/callback"
+									render={() => <Redirect to={{ pathname: '/' }} />}
+								/>
 							</Grid>
 						</BrowserRouter>
 						:
