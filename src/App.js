@@ -18,10 +18,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
-import UserNav from './components/UserNav';
 import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
+import UserNav from './components/UserNav';
 
 const drawerWidth = 280;
 
@@ -32,7 +32,7 @@ const styles = theme => ({
 		overflow: 'hidden',
 		position: 'relative',
 		display: 'flex',
-		height: '100vh',
+		minHeight: '100vh',
 	},
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1,
@@ -98,7 +98,6 @@ class App extends Component {
 		this.state = {
 			displayName: localStorage.getItem('ScrbblUser'),
 			open: false,
-			redirect: false,
 		};
 
 		this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -114,7 +113,6 @@ class App extends Component {
 					localStorage.setItem('ScrbblUser', response.data.username);
 					localStorage.setItem('ScrbblKey', response.data.key);
 					this.setState({ displayName: response.data.displayname });
-					return <Redirect to="/" />;
 				})
 				.catch((error) => { throw new Error(error); });
 		}
@@ -158,7 +156,7 @@ class App extends Component {
 								Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
 							</Typography>
 						</div>
-						<UserNav name={this.state.displayName} />
+						<UserNav displayName={this.state.displayName} />
 					</Toolbar>
 				</AppBar>
 				<Drawer
