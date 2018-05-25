@@ -96,7 +96,7 @@ class App extends Component {
 		super(props);
 
 		this.state = {
-			displayName: localStorage.getItem('ScrbblUser'),
+			displayName: window.localStorage.getItem('ScrbblUser'),
 			open: false,
 		};
 
@@ -179,7 +179,7 @@ class App extends Component {
 				{/* App body */}
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
+					{window.localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
 						<BrowserRouter>
 							<Grid container spacing={24}>
 								<Route exact path="/" component={Home} />
