@@ -19,7 +19,7 @@ const styles = () => ({
 		justifyContent: 'center',
 		height: '300px',
 		alignItems: 'center',
-		padding: '0 64px',
+		padding: '14px 40px',
 		backgroundColor: '#fff',
 	},
 	input: {
@@ -29,6 +29,13 @@ const styles = () => ({
 		'&:after': {
 			borderBottomColor: '#c3000d',
 		},
+	},
+	appleMusicButton: {
+		backgroundColor: '#f2f2f2',
+		color: '#000',
+	},
+	textInput: {
+		width: '80%',
 	},
 });
 
@@ -41,10 +48,20 @@ class ManualScrobble extends Component {
 		};
 
 		this.scrobble = this.scrobble.bind(this);
+		this.getAppleMusicTags = this.getAppleMusicTags.bind(this);
 	}
-	handleChange(e) {
-		const { name, value } = e.target;
-		this.setState({ [name]: value });
+
+	getAppleMusicTags() {
+		axios.get(`https://itunes.apple.com/search?term=${this.state.artist.replace(' ', '+')}+${this.state.songTitle.replace(' ', '+')}&media=music&entity=musicTrack`)
+			.then((response) => {
+				const firstChoice = response.data.results[0];
+				this.setState({
+					artist: firstChoice.artistName,
+					songTitle: firstChoice.trackName,
+					albumTitle: firstChoice.collectionName,
+					albumArtist: firstChoice.artistName,
+				});
+			});
 	}
 
 	scrobble() {
@@ -54,12 +71,16 @@ class ManualScrobble extends Component {
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/scrobble/manual',
+			url: '/scrobble/manual',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 			data: qs.stringify({ ...requestBody }),
 		}).then(this.setState({ scrobbled: true }));
+	}
+
+	handleChange(value, name) {
+		this.setState({ [name]: value });
 	}
 
 	render() {
@@ -76,45 +97,52 @@ class ManualScrobble extends Component {
 						<TextInput
 							placeholder="Artist"
 							name="artist"
-							inputProps={{
-								'aria-label': 'Artist',
-							}}
-							onChange={e => this.handleChange(e)}
+							value={this.state.artist}
+							onChange={e => this.handleChange(e.target.value, e.target.name)}
+							autoFocus
+							required
 						/>
 						<TextInput
 							placeholder="Song title"
 							name="songTitle"
-							inputProps={{
-								'aria-label': 'Song title',
-							}}
-							onChange={e => this.handleChange(e)}
+							value={this.state.songTitle}
+							onChange={e => this.handleChange(e.target.value, e.target.name)}
+							required
+							multiline
 						/>
 						<TextInput
 							placeholder="Album title"
 							name="albumTitle"
-							inputProps={{
-								'aria-label': 'Album title',
-							}}
-							onChange={e => this.handleChange(e)}
+							value={this.state.albumTitle}
+							onChange={e => this.handleChange(e.target.value, e.target.name)}
+							multiline
 						/>
 						<TextInput
 							placeholder="Album artist"
 							name="albumArtist"
-							inputProps={{
-								'aria-label': 'Album artist',
-							}}
-							onChange={e => this.handleChange(e)}
+							value={this.state.albumArtist}
+							onChange={e => this.handleChange(e.target.value, e.target.name)}
 						/>
-						<ScrbblButton
-							variant="raised"
-							onClick={this.scrobble}
-						>
-							Scrobble
-						</ScrbblButton>
+						<div style={{ display: 'flex' }}>
+							<ScrbblButton
+								variant="raised"
+								onClick={this.scrobble}
+							>
+								Scrobble
+							</ScrbblButton>
+							<ScrbblButton
+								variant="raised"
+								onClick={this.getAppleMusicTags}
+								className={classes.appleMusicButton}
+							>
+								<i className="fab fa-apple" /> &nbsp;music tags*
+							</ScrbblButton>
+						</div>
 						{this.state.scrobbled &&
 							<div>Your song scrobbled</div>
 						}
 					</Card>
+					*Apple Music tagging is an experimental feature
 				</Grid>
 				<Grid item xs={false} md={2} />
 			</Fragment>

@@ -18,8 +18,8 @@ const ScrbblButton = (props) => {
 		<Button
 			variant="raised"
 			onClick={props.onClick}
-			className={classes.button}
-			{...style}
+			className={`${classes.button} ${props.className}`}
+			style={{ ...style }}
 		>
 			{props.children}
 		</Button>
