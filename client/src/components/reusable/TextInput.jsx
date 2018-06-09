@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
-	input: {
+	textInput: {
 		fontSize: '16px',
 		'&:after': {
 			borderBottomColor: '#c3000d',
@@ -31,7 +31,7 @@ const TextInput = (props) => {
 				{...props}
 				className={classes.textField}
 				InputProps={{
-					className: classes.input,
+					className: classes.textInput,
 				}}
 				InputLabelProps={{
 					className: classes.label,

@@ -7,6 +7,7 @@ import qs from 'qs';
 import Card from './reusable/Card';
 import TextInput from './reusable/TextInput';
 import ScrbblButton from './reusable/ScrbblButton';
+import AppleMusicButton from './AppleMusicButton';
 
 const styles = () => ({
 	container: {
@@ -48,20 +49,16 @@ class ManualScrobble extends Component {
 		};
 
 		this.scrobble = this.scrobble.bind(this);
-		this.getAppleMusicTags = this.getAppleMusicTags.bind(this);
+		this.fillForm = this.fillForm.bind(this);
 	}
 
-	getAppleMusicTags() {
-		axios.get(`https://itunes.apple.com/search?term=${this.state.artist.replace(' ', '+')}+${this.state.songTitle.replace(' ', '+')}&media=music&entity=musicTrack`)
-			.then((response) => {
-				const firstChoice = response.data.results[0];
-				this.setState({
-					artist: firstChoice.artistName,
-					songTitle: firstChoice.trackName,
-					albumTitle: firstChoice.collectionName,
-					albumArtist: firstChoice.artistName,
-				});
-			});
+	fillForm(songDetails) {
+		this.setState({
+			artist: songDetails.artistName,
+			songTitle: songDetails.trackName,
+			albumTitle: songDetails.collectionName,
+			albumArtist: songDetails.artistName,
+		});
 	}
 
 	scrobble() {
@@ -71,7 +68,7 @@ class ManualScrobble extends Component {
 
 		axios({
 			method: 'post',
-			url: '/scrobble/manual',
+			url: 'http://localhost:8081/scrobble/manual', // need to fix the API proxy
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
@@ -85,7 +82,6 @@ class ManualScrobble extends Component {
 
 	render() {
 		const { classes } = this.props;
-		console.log(this.state);
 		return (
 			<Fragment>
 				<Grid item xs={false} md={2} />
@@ -130,13 +126,11 @@ class ManualScrobble extends Component {
 							>
 								Scrobble
 							</ScrbblButton>
-							<ScrbblButton
-								variant="raised"
-								onClick={this.getAppleMusicTags}
-								className={classes.appleMusicButton}
-							>
-								<i className="fab fa-apple" /> &nbsp;music tags*
-							</ScrbblButton>
+							<AppleMusicButton
+								song={this.state}
+								fillForm={this.fillForm}
+								type="musicTrack"
+							/>
 						</div>
 						{this.state.scrobbled &&
 							<div>Your song scrobbled</div>
