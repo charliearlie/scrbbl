@@ -109,7 +109,7 @@ class App extends Component {
 		const params = qs.parse(window.location.search.slice(1));
 
 		if (params.token && !this.state.displayName) {
-			axios.get(`/users/session/${params.token}`)
+			axios.get(`http://localhost:8081/users/session/${params.token}`) // TODO: Fix API proxy
 				.then((response) => {
 					window.localStorage.setItem('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
