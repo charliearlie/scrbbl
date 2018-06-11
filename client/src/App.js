@@ -23,6 +23,7 @@ import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
 import UserNav from './components/UserNav';
+import AlbumScrobble from './components/AlbumScrobble'
 
 const drawerWidth = 280;
 
@@ -184,6 +185,7 @@ class App extends Component {
 						<Grid container spacing={24}>
 							<Route exact path="/" component={Home} />
 							<Route path="/manual" component={ManualScrobble} />
+							<Route path="/album" component={AlbumScrobble} />
 							<Route
 								path="/callback"
 								render={() => <Redirect to={{ pathname: '/' }} />}
