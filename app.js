@@ -27,6 +27,10 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+app.listen(process.env.PORT || 8080, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/scrbbl.html'));
 });
