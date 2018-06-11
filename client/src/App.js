@@ -23,6 +23,7 @@ import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
 import UserNav from './components/UserNav';
+import AlbumScrobble from './components/AlbumScrobble'
 
 const drawerWidth = 280;
 
@@ -109,7 +110,7 @@ class App extends Component {
 		const params = qs.parse(window.location.search.slice(1));
 
 		if (params.token && !this.state.displayName) {
-			axios.get(`http://localhost:8081/users/session/${params.token}`) // TODO: Fix API proxy
+			axios.get(`/users/session/${params.token}`) // TODO: Fix API proxy
 				.then((response) => {
 					window.localStorage.setItem('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
@@ -184,6 +185,7 @@ class App extends Component {
 						<Grid container spacing={24}>
 							<Route exact path="/" component={Home} />
 							<Route path="/manual" component={ManualScrobble} />
+							<Route path="/album" component={AlbumScrobble} />
 							<Route
 								path="/callback"
 								render={() => <Redirect to={{ pathname: '/' }} />}
