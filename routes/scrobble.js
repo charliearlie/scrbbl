@@ -5,15 +5,14 @@ const cors = require('cors');
 
 /* GET users listing. */
 router.post('/manual', cors(), function (req, res, next) {
-    var track = req.body;
+    const track = req.body;
     console.log(track);
-	var status = { "success": false };
-	var date = Math.floor((new Date()).getTime() / 1000) - 300;
-	if (track.datePlayed) {
-		var douche = track.datePlayed.slice(0, 10) + track.timePlayed.slice(10)
-		date = Number(moment(douche).format('X'));
-	}
-	console.log(date);
+	const status = { "success": false };
+	let date = Math.floor((new Date()).getTime() / 1000) - 300;
+	// if (track.datePlayed) {
+	// 	var douche = track.datePlayed.slice(0, 10) + track.timePlayed.slice(10)
+	// 	date = Number(moment(douche).format('X'));
+	// }
 	lastfm.setSessionCredentials(track.userName, track.key); //Horrible hack until I sort sessions with this api
 	lastfm.track.scrobble({
 		'artist': track.artist,

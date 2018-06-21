@@ -18,7 +18,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/api/users', users);
+app.use('/api', users);
 app.use('/api/scrobble', scrobble);
 
 
@@ -27,8 +27,12 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+app.get('/api', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/scrbbl.html'));
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
 // catch 404 and forward to error handler

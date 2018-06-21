@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "client": "npm start --prefix client",
-    "clientbuild": "npm build --prefix client",
     "server": "node ./bin/www",
-    "start": "node ./bin/www",
-    "build": "concurrently \"npm run server\" \"npm run clientbuild\"",
+    "start": "npm run build",
+    "prebuild": "cd client && npm run build",
+    "build": "node ./bin/www",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
