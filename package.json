@@ -6,7 +6,7 @@
     "client": "npm start --prefix client",
     "server": "node ./bin/www",
     "start": "npm run build",
-    "prebuild": "cd client && npm run build",
+    "prebuild": "cd client && npm i && npm run build",
     "build": "node ./bin/www",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
