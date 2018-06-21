@@ -6,7 +6,7 @@
     "client": "npm start --prefix client",
     "clientbuild": "npm build --prefix client",
     "server": "node ./bin/www",
-    "start": "node ./bin/www",
+    "start": "PORT=8081 node ./bin/www",
     "build": "concurrently \"npm run server\" \"npm run clientbuild\"",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
