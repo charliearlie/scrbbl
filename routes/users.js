@@ -14,4 +14,8 @@ router.get('/session/:token', cors(), function(req, res, next) {
 	}
 });
 
+router.get('/test', cors(), function(req, res, next) {
+	res.json({ message: "You can see the message! "});
+  });
+
 module.exports = router;

@@ -68,7 +68,7 @@ class ManualScrobble extends Component {
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:8081/scrobble/manual', // need to fix the API proxy
+			url: '/api/scrobble/manual', // need to fix the API proxy
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},

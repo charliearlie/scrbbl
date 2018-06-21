@@ -18,8 +18,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/users', users);
-app.use('/scrobble', scrobble);
+app.use('/api/users', users);
+app.use('/api/scrobble', scrobble);
 
 
 // view engine setup
