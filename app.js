@@ -25,10 +25,10 @@ app.use('/scrobble', scrobble);
 // view engine setup
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/public/scrbbl.html'));
+  res.sendFile(path.join(__dirname+'/client/build/scrbbl.html'));
 });
 
 // catch 404 and forward to error handler
