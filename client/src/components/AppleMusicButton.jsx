@@ -18,13 +18,12 @@ class AppleMusicButton extends Component {
 		this.search = this.search.bind(this);
 	}
 	search() {
-		const { artist, songTitle } = this.props.song;
-		const { type } = this.props;
-		axios.get(`https://itunes.apple.com/search?term=${artist.replace(' ', '+')}+${songTitle.replace(' ', '+')}&media=music&entity=${type}`)
+		const { query, type } = this.props;
+		axios.get(`https://itunes.apple.com/search?term=${query.replace(' ', '+')}}&media=music&entity=${type}`)
 			.then((response) => {
-				const firstChoice = response.data.results[0];
-				if (firstChoice) {
-					this.props.fillForm(firstChoice);
+				const result = type === 'album' ? response.data.results : response.data.results[0];
+				if (result) {
+					this.props.fillForm(result);
 				}
 			});
 	}
@@ -37,7 +36,7 @@ class AppleMusicButton extends Component {
 				onClick={this.search}
 				className={classes.appleMusicButton}
 			>
-				<i className="fab fa-apple" /> &nbsp;music tags*
+				{this.props.children}
 			</ScrbblButton>
 		);
 	}

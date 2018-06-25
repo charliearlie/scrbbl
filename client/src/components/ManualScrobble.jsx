@@ -127,10 +127,12 @@ class ManualScrobble extends Component {
 								Scrobble
 							</ScrbblButton>
 							<AppleMusicButton
-								song={this.state}
+								query={`${this.state.artist} ${this.state.songTitle}`}
 								fillForm={this.fillForm}
 								type="musicTrack"
-							/>
+							>
+								<i className="fab fa-apple" /> &nbsp;music tags*
+							</AppleMusicButton>
 						</div>
 						{this.state.scrobbled &&
 							<div>Your song scrobbled</div>
