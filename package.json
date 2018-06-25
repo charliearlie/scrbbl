@@ -1,13 +1,13 @@
 {
-  "name": "myapp",
+  "name": "Scrbbl",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "client": "npm start --prefix client",
-    "clientbuild": "npm build --prefix client",
-    "server": "PORT=8081 node ./bin/www",
-    "start": "node ./bin/www",
-    "build": "concurrently \"npm run server\" \"npm run clientbuild\"",
+    "server": "node ./bin/www",
+    "start": "npm run build",
+    "prebuild": "cd client && npm i && npm run build",
+    "build": "node ./bin/www",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
