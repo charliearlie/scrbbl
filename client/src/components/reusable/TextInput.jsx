@@ -12,13 +12,18 @@ const styles = theme => ({
 	textField: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
-		width: 300,
+		width: 270,
 	},
 	textFieldContainer: {
 		padding: '4px',
 	},
 	label: {
-		fontSize: '18px',
+		fontSize: '160px',
+	},
+	'@media (max-width: 420px)': {
+		textField: {
+			width: '180px',
+		},
 	},
 });
 
