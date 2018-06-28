@@ -38,15 +38,29 @@ const styles = () => ({
 	textInput: {
 		width: '80%',
 	},
+	buttonSection: {
+		display: 'flex',
+	},
+	'@media (max-width: 420px)': {
+		buttonSection: {
+			flexDirection: 'column',
+		},
+	}
 });
+
+const initialState = {
+	artist: '',
+	songTitle: '',
+	albumTitle: '',
+	albumArtist: '',
+	scrobbled: false,
+};
 
 class ManualScrobble extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			scrobbled: false,
-		};
+		this.state = initialState;
 
 		this.scrobble = this.scrobble.bind(this);
 		this.fillForm = this.fillForm.bind(this);
@@ -90,52 +104,67 @@ class ManualScrobble extends Component {
 						className={classes.card}
 						shadowLevel={1}
 					>
-						<TextInput
-							placeholder="Artist"
-							name="artist"
-							value={this.state.artist}
-							onChange={e => this.handleChange(e.target.value, e.target.name)}
-							autoFocus
-							required
-						/>
-						<TextInput
-							placeholder="Song title"
-							name="songTitle"
-							value={this.state.songTitle}
-							onChange={e => this.handleChange(e.target.value, e.target.name)}
-							required
-							multiline
-						/>
-						<TextInput
-							placeholder="Album title"
-							name="albumTitle"
-							value={this.state.albumTitle}
-							onChange={e => this.handleChange(e.target.value, e.target.name)}
-							multiline
-						/>
-						<TextInput
-							placeholder="Album artist"
-							name="albumArtist"
-							value={this.state.albumArtist}
-							onChange={e => this.handleChange(e.target.value, e.target.name)}
-						/>
-						<div style={{ display: 'flex' }}>
-							<ScrbblButton
-								variant="raised"
-								onClick={this.scrobble}
-							>
-								Scrobble
-							</ScrbblButton>
-							<AppleMusicButton
-								query={`${this.state.artist} ${this.state.songTitle}`}
-								fillForm={this.fillForm}
-								type="musicTrack"
-							>
-								<i className="fab fa-apple" /> &nbsp;music tags*
-							</AppleMusicButton>
-						</div>
-						{this.state.scrobbled &&
-							<div>Your song scrobbled</div>
+						{this.state.scrobbled ?
+							<Fragment>
+								<div>
+									Track scrobbled successfully
+								</div>
+								<div>
+									<ScrbblButton
+										variant="raised"
+										onClick={() => this.setState(initialState)}
+									>
+										Scrobble another
+									</ScrbblButton>
+								</div>
+							</Fragment>
+							:
+							<Fragment>
+								<TextInput
+									placeholder="Artist"
+									name="artist"
+									value={this.state.artist}
+									onChange={e => this.handleChange(e.target.value, e.target.name)}
+									autoFocus
+									required
+								/>
+								<TextInput
+									placeholder="Song title"
+									name="songTitle"
+									value={this.state.songTitle}
+									onChange={e => this.handleChange(e.target.value, e.target.name)}
+									required
+									multiline
+								/>
+								<TextInput
+									placeholder="Album title"
+									name="albumTitle"
+									value={this.state.albumTitle}
+									onChange={e => this.handleChange(e.target.value, e.target.name)}
+									multiline
+								/>
+								<TextInput
+									placeholder="Album artist"
+									name="albumArtist"
+									value={this.state.albumArtist}
+									onChange={e => this.handleChange(e.target.value, e.target.name)}
+								/>
+								<div className={classes.buttonSection}>
+									<ScrbblButton
+										variant="raised"
+										onClick={this.scrobble}
+									>
+										Scrobble
+									</ScrbblButton>
+									<AppleMusicButton
+										query={`${this.state.artist} ${this.state.songTitle}`}
+										fillForm={this.fillForm}
+										type="musicTrack"
+									>
+										<i className="fab fa-apple" /> &nbsp;music tags*
+									</AppleMusicButton>
+								</div>
+							</Fragment>
 						}
 					</Card>
 					*Apple Music tagging is an experimental feature
