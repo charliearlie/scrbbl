@@ -1,12 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import qs from 'qs';
 
 import Card from './reusable/Card';
 import TextInput from './reusable/TextInput';
-import ScrbblButton from './reusable/ScrbblButton';
 import AppleMusicButton from './AppleMusicButton';
 import AlbumSearchResults from './AlbumSearchResults';
 
@@ -67,6 +64,8 @@ class AlbumScrobble extends Component {
 			artist: album.artistName,
 			albumTitle: album.collectionName,
 			albumArtist: album.artistName,
+			albumArtwork: album.artworkUrl100,
+			releaseYear: album.releaseDate.slice(0, 4) || '',
 		}));
 
 		this.setState({ searchResults: albumList });
@@ -103,14 +102,14 @@ class AlbumScrobble extends Component {
 								Search
 							</AppleMusicButton>
 						</div>
-						{this.state.scrobbled &&
-							<div>Your song scrobbled</div>
-						}
 					</Card>
 				</Grid>
 				<Grid item xs={false} md={2} />
 				{this.state.searchResults &&
-					<AlbumSearchResults results={this.state.searchResults} />
+					<Fragment>
+						Search Results
+						<AlbumSearchResults results={this.state.searchResults} />
+					</Fragment>
 				}
 			</Fragment>
 		);
