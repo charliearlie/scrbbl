@@ -1,38 +1,19 @@
 import React, { Fragment } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Card from './reusable/Card';
+import AlbumSearchResult from './AlbumSearchResult';
 
-const styles = () => ({
-	resultCard: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		height: '80px',
-		margin: '8px',
-		alignItems: 'center',
-		padding: '14px 40px',
-		backgroundColor: '#fff',
-	},
-});
-
-const AlbumSearchResults = ({ results, classes }) => (
+const AlbumSearchResults = ({ results }) => (
 	<Grid container spacing={24}>
 		{results.map(result => (
 			<Fragment>
-				<Grid item xs={false} md={2} />
-				<Grid item xs={12} md={8}>
-					<Card
-						className={classes.resultCard}
-						shadowLevel={1}
-					>
-						{result.albumTitle}
-					</Card>
+				<Grid item xs={false} sm={2} lg={3} />
+				<Grid item xs={12} sm={8} lg={6}>
+					<AlbumSearchResult result={result} />
 				</Grid>
-				<Grid item xs={false} md={2} />
+				<Grid item xs={false} sm={2} lg={3} />
 			</Fragment>
 		))}
 	</Grid>
 );
 
-export default withStyles(styles, { withTheme: true })(AlbumSearchResults);
+export default AlbumSearchResults;

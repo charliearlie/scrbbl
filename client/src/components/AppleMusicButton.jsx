@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -19,7 +20,7 @@ class AppleMusicButton extends Component {
 	}
 	search() {
 		const { query, type } = this.props;
-		axios.get(`https://itunes.apple.com/search?term=${query.replace(' ', '+')}}&media=music&entity=${type}`)
+		axios.get(`https://itunes.apple.com/search?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
 			.then((response) => {
 				const result = type === 'album' ? response.data.results : response.data.results[0];
 				if (result) {
@@ -41,5 +42,9 @@ class AppleMusicButton extends Component {
 		);
 	}
 }
+
+AppleMusicButton.propTypes = {
+	fillForm: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles, { withTheme: true })(AppleMusicButton);
