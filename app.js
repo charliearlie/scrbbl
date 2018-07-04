@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var api = require('./routes/api');
 var scrobble = require('./routes/scrobble');
 
 var app = express();
@@ -18,8 +18,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/api', users);
-app.use('/api/scrobble', scrobble);
+app.use('/api', api);
+// app.use('/api/scrobble', scrobble);
 
 
 // view engine setup
