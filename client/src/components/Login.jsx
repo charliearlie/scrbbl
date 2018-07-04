@@ -30,32 +30,28 @@ const styles = theme => ({
 	},
 });
 
-const Login = (props) => {
-	const { classes, authenticate } = props;
-
-	return (
-		<div className={classes.root}>
-			<Grid item xs={false} sm={1} md={3} />
-			<Grid item xs={12} sm={10} md={6} >
-				<Card
-					shadowLevel={5}
-					className={classes.card}
+const Login = ({ classes, authenticate }) => (
+	<div className={classes.root}>
+		<Grid item xs={false} sm={1} md={3} />
+		<Grid item xs={12} sm={10} md={6} >
+			<Card
+				shadowLevel={5}
+				className={classes.card}
+			>
+				<Typography variant="body1" gutterBottom>
+					To access this application, you need to sign in to your Last.FM account
+				</Typography>
+				<ScrbblButton
+					variant="raised"
+					onClick={authenticate}
+					className={classes.button}
 				>
-					<Typography variant="body1" gutterBottom>
-						To access this application, you need to sign in to your Last.FM account
-					</Typography>
-					<ScrbblButton
-						variant="raised"
-						onClick={authenticate}
-						className={classes.button}
-					>
-						Login
-					</ScrbblButton>
-				</Card>
-			</Grid>
-			<Grid item xs={false} sm={1} md={3} />
-		</div>
-	);
-};
+					Login
+				</ScrbblButton>
+			</Card>
+		</Grid>
+		<Grid item xs={false} sm={1} md={3} />
+	</div>
+);
 
 export default withStyles(styles, { withTheme: true })(Login);

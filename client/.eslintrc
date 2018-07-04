@@ -17,7 +17,8 @@
     "globals": {
       "window": true,
       "fetch": true,
-      "env": true
+      "env": true,
+      "expect": true
     },
     "env": {
       "browser": true
