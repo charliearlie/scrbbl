@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import qs from 'qs';
 
 import Card from './reusable/Card';
@@ -9,7 +10,7 @@ import TextInput from './reusable/TextInput';
 import ScrbblButton from './reusable/ScrbblButton';
 import AppleMusicButton from './AppleMusicButton';
 
-const styles = () => ({
+const styles = theme => ({
 	container: {
 		display: 'flex',
 		height: '100vh',
@@ -45,7 +46,12 @@ const styles = () => ({
 		buttonSection: {
 			flexDirection: 'column',
 		},
-	}
+	},
+	textField: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+		width: 270,
+	},
 });
 
 const initialState = {
@@ -53,6 +59,8 @@ const initialState = {
 	songTitle: '',
 	albumTitle: '',
 	albumArtist: '',
+	date: '',
+	time: '',
 	scrobbled: false,
 };
 
@@ -147,6 +155,26 @@ class ManualScrobble extends Component {
 									placeholder="Album artist"
 									name="albumArtist"
 									value={this.state.albumArtist}
+									onChange={e => this.handleChange(e.target.value, e.target.name)}
+								/>
+								<TextField
+									name="date"
+									label="Date scrobbled"
+									type="date"
+									className={classes.textField}
+									InputLabelProps={{
+										shrink: true,
+									}}
+									onChange={e => this.handleChange(e.target.value.toString(), e.target.name)}
+								/>
+								<TextField
+									name="time"
+									label="Time scrobbled"
+									type="time"
+									className={classes.textField}
+									InputLabelProps={{
+										shrink: true,
+									}}
 									onChange={e => this.handleChange(e.target.value, e.target.name)}
 								/>
 								<div className={classes.buttonSection}>
