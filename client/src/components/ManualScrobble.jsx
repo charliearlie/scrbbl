@@ -19,7 +19,6 @@ const styles = theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
-		height: '300px',
 		alignItems: 'center',
 		padding: '14px 40px',
 		backgroundColor: '#fff',
@@ -46,6 +45,11 @@ const styles = theme => ({
 		buttonSection: {
 			flexDirection: 'column',
 		},
+	},
+	dateContainer: {
+		marginTop: '12px',
+		display: 'flex',
+		flexDirection: 'column',
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
@@ -157,26 +161,28 @@ class ManualScrobble extends Component {
 									value={this.state.albumArtist}
 									onChange={e => this.handleChange(e.target.value, e.target.name)}
 								/>
-								<TextField
-									name="date"
-									label="Date scrobbled"
-									type="date"
-									className={classes.textField}
-									InputLabelProps={{
-										shrink: true,
-									}}
-									onChange={e => this.handleChange(e.target.value.toString(), e.target.name)}
-								/>
-								<TextField
-									name="time"
-									label="Time scrobbled"
-									type="time"
-									className={classes.textField}
-									InputLabelProps={{
-										shrink: true,
-									}}
-									onChange={e => this.handleChange(e.target.value, e.target.name)}
-								/>
+								<div className={classes.dateContainer}>
+									<TextField
+										name="date"
+										label="Date scrobbled"
+										type="date"
+										className={classes.textField}
+										InputLabelProps={{
+											shrink: true,
+										}}
+										onChange={e => this.handleChange(e.target.value.toString(), e.target.name)}
+									/>
+									<TextField
+										name="time"
+										label="Time scrobbled"
+										type="time"
+										className={classes.textField}
+										InputLabelProps={{
+											shrink: true,
+										}}
+										onChange={e => this.handleChange(e.target.value, e.target.name)}
+									/>
+								</div>
 								<div className={classes.buttonSection}>
 									<ScrbblButton
 										variant="raised"
