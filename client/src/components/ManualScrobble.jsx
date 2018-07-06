@@ -108,6 +108,8 @@ class ManualScrobble extends Component {
 
 	render() {
 		const { classes } = this.props;
+		const { albumArtist, songTitle } = this.state;
+		const isDisabled = !albumArtist && !songTitle;
 		return (
 			<Fragment>
 				<Grid item xs={false} md={2} />
@@ -187,6 +189,7 @@ class ManualScrobble extends Component {
 									<ScrbblButton
 										variant="raised"
 										onClick={this.scrobble}
+										disabled={isDisabled}
 									>
 										Scrobble
 									</ScrbblButton>

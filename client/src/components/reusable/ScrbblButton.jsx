@@ -12,18 +12,23 @@ const styles = theme => ({
 	},
 });
 
-const ScrbblButton = (props) => {
-	const { classes, style } = props;
-	return (
-		<Button
-			variant="raised"
-			onClick={props.onClick}
-			className={`${classes.button} ${props.className}`}
-			style={{ ...style }}
-		>
-			{props.children}
-		</Button>
-	);
-};
+const ScrbblButton = ({
+	classes,
+	style,
+	disabled,
+	children,
+	onClick,
+	className,
+}) => (
+	<Button
+		variant="raised"
+		onClick={onClick}
+		className={`${classes.button} ${className}`}
+		style={{ ...style }}
+		disabled={disabled}
+	>
+		{children}
+	</Button>
+);
 
 export default withStyles(styles, { withTheme: true })(ScrbblButton);
