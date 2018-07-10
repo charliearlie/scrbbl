@@ -54,6 +54,10 @@ class AlbumScrobble extends Component {
 		super(props);
 
 		this.fillForm = this.fillForm.bind(this);
+
+		this.state = {
+			searchQuery: '',
+		};
 	}
 
 	fillForm(albums) {
