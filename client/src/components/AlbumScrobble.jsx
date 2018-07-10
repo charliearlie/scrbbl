@@ -6,6 +6,7 @@ import Card from './reusable/Card';
 import TextInput from './reusable/TextInput';
 import AppleMusicButton from './AppleMusicButton';
 import AlbumSearchResults from './AlbumSearchResults';
+import Fade from './reusable/Fade';
 
 const styles = () => ({
 	container: {
@@ -52,15 +53,12 @@ class AlbumScrobble extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			scrobbled: false,
-		};
-
 		this.fillForm = this.fillForm.bind(this);
 	}
 
 	fillForm(albums) {
 		const albumList = albums.map(album => ({
+			albumId: album.collectionId,
 			artist: album.artistName,
 			albumTitle: album.collectionName,
 			albumArtist: album.artistName,
@@ -108,7 +106,9 @@ class AlbumScrobble extends Component {
 				{this.state.searchResults &&
 					<Fragment>
 						Search Results
-						<AlbumSearchResults results={this.state.searchResults} />
+						<Fade in={this.state.searchResults}>
+							<AlbumSearchResults results={this.state.searchResults} callback={this.scrobble} />
+						</Fade>
 					</Fragment>
 				}
 			</Fragment>
