@@ -25,22 +25,19 @@ const styles = () => ({
 	},
 });
 
-const HomeContentCard = (props) => {
-	const { classes } = props;
-	return (
-		<Card
-			shadowLevel={1}
-			className={classes.card}
-		>
-			<div className={classes.cardHeader}>
-				{props.icon}
-			</div>
+const HomeContentCard = ({ classes, icon, content }) => (
+	<Card
+		shadowLevel={1}
+		className={classes.card}
+	>
+		<div className={classes.cardHeader}>
+			{icon}
+		</div>
 
-			<Typography variant="body1" className={classes.content} gutterBottom>
-				{props.content}
-			</Typography>
-		</Card>
-	);
-};
+		<Typography variant="body1" className={classes.content} gutterBottom>
+			{content}
+		</Typography>
+	</Card>
+);
 
 export default withStyles(styles, { withTheme: true })(HomeContentCard);

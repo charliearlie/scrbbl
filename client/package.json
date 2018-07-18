@@ -6,7 +6,7 @@
     "@material-ui/core": "^1.0.0",
     "@material-ui/icons": "^1.0.0",
     "axios": "^0.18.0",
-    "classnames": "^2.2.5",
+    "classnames": "^2.2.6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
@@ -33,5 +33,8 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint \"src/**/*.js\""
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3000",
+  "devDependencies": {
+    "sinon": "^6.1.3"
+  }
 }
