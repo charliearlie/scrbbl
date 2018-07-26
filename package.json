@@ -11,6 +11,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "~1.18.2",
     "concurrently": "^3.5.1",
     "cookie-parser": "~1.4.3",
@@ -24,5 +25,8 @@
     "prop-types": "^15.6.1",
     "pug": "2.0.0-beta11",
     "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "prettier": "1.13.7"
   }
 }
