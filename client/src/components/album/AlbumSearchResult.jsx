@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
-import { Grid } from '@material-ui/core';
+import { Grid, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import endpoints from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
 
@@ -53,17 +54,20 @@ const styles = () => ({
 class AlbumSearchResult extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { showTracks: false, resultTracks: null };
+		this.state = { showTracks: false, resultTracks: null, initialTracks: null };
 
 		this.handleClick = this.handleClick.bind(this);
 		this.handleTrackChange = this.handleTrackChange.bind(this);
 	}
 
 	handleClick() {
-		if (!this.state.resultTracks) {
-			axios.get(`http://itunes.apple.com/lookup?id=${this.props.result.albumId}&entity=song`)
+		const { albumId } = this.props.result;
+
+		if (!this.state.initialTracks) {
+			axios.get(`${endpoints.albumDetails}${albumId}`)
 				.then(response => this.setState({
-					resultTracks: response.data.results.slice(1),
+					resultTracks: response.data,
+					initialTracks: response.data,
 				}));
 		}
 		this.setState(({ showTracks }) => ({ showTracks: !showTracks }));
@@ -73,13 +77,12 @@ class AlbumSearchResult extends Component {
 		const tracks = [...this.state.resultTracks];
 		tracks[index].trackName = trackName;
 
-		console.log(tracks);
 		this.setState({ resultTracks: tracks });
 	}
 
 	render() {
 		const { result, classes } = this.props;
-		const { showTracks, resultTracks } = this.state;
+		const { showTracks, initialTracks } = this.state;
 		const trackClasses = classnames(
 			classes.showTracks,
 			`${showTracks ? classes.showTracksShow : classes.showTracksHide}`,
@@ -107,18 +110,26 @@ class AlbumSearchResult extends Component {
 						</div>
 					</div>
 					<div className={trackClasses}>
-						{resultTracks && resultTracks.map((track, index) => (
+						{initialTracks && initialTracks.map((track, index) => (
 							<div className={classes.resultTrack}>
-								<Grid container spacing={12}>
+								<Grid key={track.songTitle} container spacing={12}>
 									<Grid item xs={1} />
 									<Grid item xs={10}>
 										<AlbumSearchResultInput
 											handleTrackChange={this.handleTrackChange}
-											trackName={track.trackName}
+											trackName={track.songTitle}
 											trackNumber={index}
 										/>
 									</Grid>
-									<Grid item xs={1} />
+									<Grid item xs={1}>
+										<Checkbox
+											checked
+											value={index}
+											classes={{
+												marginLeft: '16px',
+											}}
+										/>
+									</Grid>
 								</Grid>
 							</div>
 						))}

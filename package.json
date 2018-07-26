@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "client": "npm start --prefix client",
-    "server": "node ./bin/www",
+    "server": "nodemon ./bin/www",
     "start": "npm run build",
     "prebuild": "cd client && npm i && npm run build",
     "build": "node ./bin/www",

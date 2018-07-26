@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const scrobbleController = require('../controllers/scrobbleController');
+const appleMusicController = require('../controllers/appleMusicController');
 const lastfm = require('./lastfm');
 const cors = require('cors');
 
@@ -15,6 +16,14 @@ router.get('/users/session/:token', cors(), function(req, res, next) {
 	}
 });
 
+/**
+ * Apple Music endpoints
+ */
+router.get('/appleMusic/album/details/:albumId', appleMusicController.getAlbumDetails);
+
+/** 
+ * Scrobble endpoints
+ */
 router.post('/scrobble/manual', scrobbleController.manualScrobble);
 
 module.exports = router;

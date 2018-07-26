@@ -5,7 +5,9 @@ exports.manualScrobble = (req, res) => {
     const track = req.body;
 	const status = { "success": false };
     let date = Math.floor((new Date()).getTime() / 1000) - 300;
-    
+	
+	// I wrote this on a previous scrobbler when I first started programming. 
+	// Honestly don't even know what's happening
 	if (track.date) {
 		const dateSplit = track.date.split('-');
 		let formattedDate;
@@ -27,8 +29,6 @@ exports.manualScrobble = (req, res) => {
 		}
 		date = formattedDate;
 	}
-	
-	console.log('DATE', date);
     
 	lastfm.setSessionCredentials(track.userName, track.key); //Horrible hack until I sort sessions with this api
 	lastfm.track.scrobble({
@@ -43,14 +43,8 @@ exports.manualScrobble = (req, res) => {
 			lastfm.setSessionCredentials(null, null);
 			return res.json(status.success);
 		}
-
-		console.log('We have just scrobbled:', scrobbles);
 		status.success = true;
 		lastfm.setSessionCredentials(null, null);
 		return res.json(status.success);
 	});
-}
-
-exports.get = (req, res) => {
-    res.json({ name: 'Facking egg'});
 }
