@@ -2,11 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-import Card from './reusable/Card';
-import TextInput from './reusable/TextInput';
-import AppleMusicButton from './AppleMusicButton';
-import AlbumSearchResults from './AlbumSearchResults';
-import Fade from './reusable/Fade';
+import Card from '../components/reusable/Card';
+import TextInput from '../components/reusable/TextInput';
+import AppleMusicButton from '../components/AppleMusicButton';
+import AlbumSearchResults from '../components/album/AlbumSearchResults';
+import Fade from '../components/reusable/Fade';
 
 const styles = () => ({
 	container: {

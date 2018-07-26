@@ -27,6 +27,11 @@ const styles = theme => ({
 	input: {
 		margin: '36px',
 	},
+	header: {
+		textAlign: 'center',
+		fontSize: '2.2rem',
+		color: '#777',
+	},
 	cssUnderline: {
 		'&:after': {
 			borderBottomColor: '#c3000d',
@@ -115,6 +120,7 @@ class ManualScrobble extends Component {
 			<Fragment>
 				<Grid item xs={false} md={2} />
 				<Grid item xs={12} md={8}>
+					<h2 className={classes.header}>Manual Scrobble</h2>
 					<Card
 						className={classes.card}
 						shadowLevel={1}

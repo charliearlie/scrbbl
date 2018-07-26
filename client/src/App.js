@@ -23,7 +23,7 @@ import SideDrawerList from './components/SideDrawerList';
 
 import DrawerItems from './assets/DrawerItems';
 import UserNav from './components/UserNav';
-import AlbumScrobble from './components/AlbumScrobble';
+import AlbumScrobble from './pages/AlbumScrobble';
 
 const drawerWidth = 280;
 
