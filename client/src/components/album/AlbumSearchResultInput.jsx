@@ -24,7 +24,7 @@ class AlbumSearchResultInput extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			trackName: props.trackName,
+			songTitle: props.songTitle,
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.onBlur = this.onBlur.bind(this);
@@ -32,12 +32,12 @@ class AlbumSearchResultInput extends Component {
 
 	onBlur() {
 		const { trackNumber } = this.props;
-		this.props.handleTrackChange(this.state.trackName, trackNumber);
+		this.props.handleTrackChange(this.state.songTitle, trackNumber);
 	}
 
 	handleChange(event) {
 		const { value } = event.target;
-		this.setState({ trackName: value });
+		this.setState({ songTitle: value });
 	}
 
 	render() {
@@ -48,7 +48,7 @@ class AlbumSearchResultInput extends Component {
 				className={classes.trackInput}
 				onBlur={this.onBlur}
 				onChange={this.handleChange}
-				value={this.state.trackName}
+				value={this.state.songTitle}
 				{...this.props}
 			/>
 		);
