@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import endpoints from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
+import ScrbblButton from '../reusable/ScrbblButton';
 
 const styles = () => ({
 	resultCard: {
@@ -31,6 +32,10 @@ const styles = () => ({
 		fontSize: '1.1rem',
 		width: '100%',
 	},
+	resultFields: {
+		display: 'inline',
+		width: '80%',
+	},
 	resultArtist: {
 		color: '#666',
 	},
@@ -54,39 +59,72 @@ const styles = () => ({
 class AlbumSearchResult extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { showTracks: false, resultTracks: null, initialTracks: null };
+		this.state = { showTracks: false, resultTracks: null, initialTracks: null, scrobbled: false };
 
 		this.handleClick = this.handleClick.bind(this);
 		this.handleTrackChange = this.handleTrackChange.bind(this);
+		this.scrobble = this.scrobble.bind(this);
 	}
 
-	handleClick() {
+	async scrobble() {
+		if (!this.state.initialTracks) {
+			await this.loadTracks();
+		}
+
+		const requestBody = this.state.resultTracks;
+
+		axios({
+			method: 'post',
+			url: endpoints.albumScrobble,
+			headers: {
+				username: window.localStorage.getItem('ScrbblUser'),
+				key: window.localStorage.getItem('ScrbblKey'),
+
+			},
+			data: requestBody,
+		}).then(this.setState({ scrobbled: true }));
+	}
+
+	requestTracks() {
 		const { albumId } = this.props.result;
 
 		if (!this.state.initialTracks) {
-			axios.get(`${endpoints.albumDetails}${albumId}`)
-				.then(response => this.setState({
-					resultTracks: response.data,
-					initialTracks: response.data,
-				}));
+			return axios.get(`${endpoints.albumDetails}${albumId}`);
+		}
+
+		return false;
+	}
+
+	async loadTracks() {
+		const response = await this.requestTracks();
+		const tracks = response.data;
+
+		this.setState({ initialTracks: tracks, resultTracks: tracks });
+	}
+
+	handleClick() {
+		if (!this.state.initialTracks) {
+			this.loadTracks();
 		}
 		this.setState(({ showTracks }) => ({ showTracks: !showTracks }));
 	}
 
-	handleTrackChange(trackName, index) {
+	handleTrackChange(songTitle, index) {
 		const tracks = [...this.state.resultTracks];
-		tracks[index].trackName = trackName;
+		tracks[index].songTitle = songTitle;
 
+		console.log(tracks);
 		this.setState({ resultTracks: tracks });
 	}
 
 	render() {
 		const { result, classes } = this.props;
-		const { showTracks, initialTracks } = this.state;
+		const { showTracks, resultTracks } = this.state;
 		const trackClasses = classnames(
 			classes.showTracks,
 			`${showTracks ? classes.showTracksShow : classes.showTracksHide}`,
 		);
+
 		return (
 			<Card
 				className={classes.resultCard}
@@ -96,9 +134,21 @@ class AlbumSearchResult extends Component {
 					<div className={classes.result}>
 						<img src={result.albumArtwork} alt={result.albumTitle} />
 						<div className={classes.resultInfo}>
-							<div>{result.albumTitle}</div>
-							<div className={classes.resultArtist}>{result.albumArtist}</div>
-							<div className={classes.resultYear}>{result.releaseYear}</div>
+							<Grid container spacing={12}>
+								<Grid item xs={9}>
+									<div>{result.albumTitle}</div>
+									<div className={classes.resultArtist}>{result.albumArtist}</div>
+									<div className={classes.resultYear}>{result.releaseYear}</div>
+								</Grid>
+								<Grid item xs={3}>
+									<ScrbblButton
+										variant="raised"
+										onClick={this.scrobble}
+									>
+										Scrobble
+									</ScrbblButton>
+								</Grid>
+							</Grid>
 							<div className={classes.showTracks}>
 								<Button
 									onClick={this.handleClick}
@@ -110,14 +160,14 @@ class AlbumSearchResult extends Component {
 						</div>
 					</div>
 					<div className={trackClasses}>
-						{initialTracks && initialTracks.map((track, index) => (
+						{showTracks && resultTracks && resultTracks.map((track, index) => (
 							<div className={classes.resultTrack}>
 								<Grid key={track.songTitle} container spacing={12}>
 									<Grid item xs={1} />
 									<Grid item xs={10}>
 										<AlbumSearchResultInput
 											handleTrackChange={this.handleTrackChange}
-											trackName={track.songTitle}
+											songTitle={track.songTitle}
 											trackNumber={index}
 										/>
 									</Grid>
