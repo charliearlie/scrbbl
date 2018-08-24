@@ -13,6 +13,7 @@ exports.getAlbumDetails = (req, res) => {
                     albumTitle: result.collectionName,
                     songTitle: result.trackName,
                     trackNumber: result.trackNumber,
+                    trackTime: result.trackTimeMillis,
                 }));
             res.send(results);
         })
