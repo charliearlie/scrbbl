@@ -25,5 +25,6 @@ router.get('/appleMusic/album/details/:albumId', appleMusicController.getAlbumDe
  * Scrobble endpoints
  */
 router.post('/scrobble/manual', scrobbleController.manualScrobble);
+router.post('/scrobble/album', scrobbleController.albumScrobble);
 
 module.exports = router;

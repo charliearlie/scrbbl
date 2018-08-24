@@ -1,4 +1,5 @@
 const lastfm = require('../routes/lastfm');
+const _ = require('lodash');
 const moment = require('moment');
 
 exports.manualScrobble = (req, res) => {
@@ -31,6 +32,7 @@ exports.manualScrobble = (req, res) => {
 	}
     
 	lastfm.setSessionCredentials(track.userName, track.key); //Horrible hack until I sort sessions with this api
+	console.log(lastfm);
 	lastfm.track.scrobble({
 		'artist': track.artist,
 		'track': track.songTitle,
@@ -47,4 +49,43 @@ exports.manualScrobble = (req, res) => {
 		lastfm.setSessionCredentials(null, null);
 		return res.json(status.success);
 	});
+};
+
+exports.albumScrobble = (req, res) => {
+	const user = {
+		username: req.headers.username,
+		key: req.headers.key
+	};
+	let time = Math.floor((new Date()).getTime() / 1000) - 300;
+	const album = req.body;
+
+
+	lastfm.setSessionCredentials(user.username, user.key); //Horrible hack again
+
+	_.forEachRight(album, (track) => {
+		time = time -= Number(track.trackTime / 1000);
+
+		lastfm.track.scrobble({
+			'artist': track.artist,
+			'track': track.songTitle,
+			'timestamp': time,
+			'album': track.albumTitle
+
+		}, function (err, scrobbles) {
+			if (err) {
+				return console.log('We\'re in trouble', err);
+				lastfm.setSessionCredentials(null, null);
+				return res.json(status.success);
+			}
+			console.log('we did it');
+			return res.json(status.success);
+		});
+	});
+	lastfm.setSessionCredentials(null, null);
+}
+
+function scrobbleAlbum(tracks) {
+	var success = false;
+	
+	
 }
