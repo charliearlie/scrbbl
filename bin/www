@@ -1,5 +1,14 @@
 #!/usr/bin/env node
+const mongoose = require('mongoose');
 
+require('dotenv').config({ path: 'variables.env' });
+mongoose.connect(process.env.DATABASE);
+mongoose.promise = global.Promise;
+mongoose.connection.on('error', (err) => {
+  console.error('🚒 🚒 🚒 🚒 - Here comes the error brigade');
+});
+
+require('../models/Scrobble');
 /**
  * Module dependencies.
  */
