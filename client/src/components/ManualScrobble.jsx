@@ -66,8 +66,8 @@ const styles = theme => ({
 
 const initialState = {
 	artist: '',
-	songTitle: '',
-	albumTitle: '',
+	track: '',
+	album: '',
 	albumArtist: '',
 	date: '',
 	time: '',
@@ -87,15 +87,15 @@ class ManualScrobble extends Component {
 	fillForm(songDetails) {
 		this.setState({
 			artist: songDetails.artistName,
-			songTitle: songDetails.trackName,
-			albumTitle: songDetails.collectionName,
+			track: songDetails.trackName,
+			album: songDetails.collectionName,
 			albumArtist: songDetails.artistName,
 		});
 	}
 
 	scrobble() {
 		const requestBody = this.state;
-		requestBody.userName = window.localStorage.getItem('ScrbblUser');
+		requestBody.user = window.localStorage.getItem('ScrbblUser');
 		requestBody.key = window.localStorage.getItem('ScrbblKey');
 
 		axios({
@@ -152,7 +152,7 @@ class ManualScrobble extends Component {
 								<TextInput
 									placeholder="Song title"
 									name="songTitle"
-									value={this.state.songTitle}
+									value={this.state.track}
 									onChange={e => this.handleChange(e.target.value, e.target.name)}
 									required
 									multiline
@@ -160,7 +160,7 @@ class ManualScrobble extends Component {
 								<TextInput
 									placeholder="Album title"
 									name="albumTitle"
-									value={this.state.albumTitle}
+									value={this.state.album}
 									onChange={e => this.handleChange(e.target.value, e.target.name)}
 									multiline
 								/>
@@ -201,7 +201,7 @@ class ManualScrobble extends Component {
 										Scrobble
 									</ScrbblButton>
 									<AppleMusicButton
-										query={`${this.state.artist} ${this.state.songTitle}`}
+										query={`${this.state.artist} ${this.state.track}`}
 										fillForm={this.fillForm}
 										type="musicTrack"
 									>
