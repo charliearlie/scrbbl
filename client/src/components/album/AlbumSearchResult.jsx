@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Grid, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import endpoints from '../../config/endpoints';
+import { serverEndpoints } from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
 import ScrbblButton from '../reusable/ScrbblButton';
@@ -75,7 +75,7 @@ class AlbumSearchResult extends Component {
 
 		axios({
 			method: 'post',
-			url: endpoints.albumScrobble,
+			url: serverEndpoints.albumScrobble,
 			headers: {
 				username: window.localStorage.getItem('ScrbblUser'),
 				key: window.localStorage.getItem('ScrbblKey'),
@@ -89,7 +89,7 @@ class AlbumSearchResult extends Component {
 		const { albumId } = this.props.result;
 
 		if (!this.state.initialTracks) {
-			return axios.get(`${endpoints.albumDetails}${albumId}`);
+			return axios.get(`${serverEndpoints.albumDetails}${albumId}`);
 		}
 
 		return false;
