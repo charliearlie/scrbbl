@@ -1,7 +1,9 @@
-const endpoints = {
+export const serverEndpoints = {
 	manualScrobble: '/api/scrobble/manual',
 	albumScrobble: '/api/scrobble/album',
 	albumDetails: '/api/appleMusic/album/details/',
 };
 
-export default endpoints;
+export const mockEndpoints = {
+	albumDetails: '../assets/mockApi/albumDetails.json',
+};
