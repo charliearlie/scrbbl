@@ -5,6 +5,6 @@ cache:
   directories:
   - node_modules
 script:
-  - npm test
-  - npm run lint
-  - npm run build
+  - npm test-client
+  - npm run lint-client
+  - npm run build-client
