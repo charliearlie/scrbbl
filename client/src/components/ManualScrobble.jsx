@@ -151,7 +151,7 @@ class ManualScrobble extends Component {
 								/>
 								<TextInput
 									placeholder="Song title"
-									name="songTitle"
+									name="track"
 									value={this.state.track}
 									onChange={e => this.handleChange(e.target.value, e.target.name)}
 									required
@@ -159,7 +159,7 @@ class ManualScrobble extends Component {
 								/>
 								<TextInput
 									placeholder="Album title"
-									name="albumTitle"
+									name="album"
 									value={this.state.album}
 									onChange={e => this.handleChange(e.target.value, e.target.name)}
 									multiline
