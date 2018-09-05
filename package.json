@@ -2,38 +2,28 @@
   "name": "Scrbbl",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "9.0.0"
+  },
   "scripts": {
     "client": "npm start --prefix client",
     "server": "nodemon ./bin/www",
-    "start": "npm run build",
-    "prebuild": "cd client && npm i && npm run build",
+    "start": "node ./bin/www",
     "build": "node ./bin/www",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "body-parser": "~1.18.2",
     "concurrently": "^3.5.1",
-    "connect-mongo": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
-    "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "express": "~4.15.5",
-    "express-session": "^1.15.6",
-    "express-validator": "^5.3.0",
     "lastfmapi": "^0.1.1",
-    "lodash": "^4.17.10",
-    "moment": "^2.22.2",
-    "mongoose": "^5.2.12",
     "morgan": "~1.9.0",
-    "prop-types": "^15.6.1",
     "pug": "2.0.0-beta11",
-    "serve-favicon": "~2.4.5",
-    "slugs": "^0.1.3"
-  },
-  "devDependencies": {
-    "prettier": "1.13.7"
+    "serve-favicon": "~2.4.5"
   }
 }

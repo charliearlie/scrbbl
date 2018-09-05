@@ -30,7 +30,7 @@ app.use('/api', api);
 // view engine setup
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static('client/build'));
 
 app.use(session({
   secret: process.env.SECRET,
@@ -45,7 +45,7 @@ app.get('/api', function(req, res, next) {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
 // catch 404 and forward to error handler
