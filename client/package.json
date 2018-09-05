@@ -33,7 +33,7 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint \"src/**/*.js\""
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "https://scrbbl.herokuapp.com",
   "devDependencies": {
     "sinon": "^6.1.3"
   }
