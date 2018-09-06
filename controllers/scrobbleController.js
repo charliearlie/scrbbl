@@ -11,12 +11,18 @@ exports.manualScrobble = (req, res) => {
 	track.timestamp = date;
     
 	lastfm.setSessionCredentials(track.user, track.key); //Horrible hack until I sort sessions with this api
-	lastfm.track.scrobble(track, function (err, scrobbles) {
+	lastfm.track.scrobble({
+		'artist': track.artist,
+		'album': track.album,
+		'albumArtist': track.albumArtist,
+		'timestamp': track.timestamp,
+		'track': track.track,
+	}, function (err, scrobbles) {
 		if (err) {
 			lastfm.setSessionCredentials(null, null);
 			return res.json(false);
 		}
-		
+
 		const scrobble = new Scrobble(track);
 		scrobble
 			.save()
