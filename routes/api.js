@@ -20,6 +20,7 @@ router.get('/users/session/:token', cors(), function(req, res, next) {
  * Apple Music endpoints
  */
 router.get('/appleMusic/album/details/:albumId', appleMusicController.getAlbumDetails);
+router.get('/appleMusic/search', appleMusicController.search);
 
 /** 
  * Scrobble endpoints

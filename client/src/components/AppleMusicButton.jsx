@@ -20,8 +20,9 @@ class AppleMusicButton extends Component {
 	}
 	search() {
 		const { query, type } = this.props;
-		axios.get(`https://itunes.apple.com/search?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
+		axios.get(`/api/appleMusic/search?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
 			.then((response) => {
+				console.log(response);
 				const result = type === 'album' ? response.data.results : response.data.results[0];
 				if (result) {
 					this.props.fillForm(result);

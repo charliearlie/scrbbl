@@ -18,4 +18,13 @@ exports.getAlbumDetails = (req, res) => {
             res.send(results);
         })
         .catch(error => res.json(error));
-}
+};
+
+exports.search = async (req, res) => {
+    const query = req.query.term;
+    const entity = req.query.entity;
+
+    const response = await axios.get(`https://itunes.apple.com/search?term=${query.replace(' ', '+')}&media=music&entity=${entity}`);
+
+    res.json(response.data);
+};
