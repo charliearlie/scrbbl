@@ -16,11 +16,11 @@ exports.manualScrobble = (req, res) => {
 			lastfm.setSessionCredentials(null, null);
 			return res.json(false);
 		}
-
+		
 		const scrobble = new Scrobble(track);
 		scrobble
 			.save()
-			.then(() => res.json(true)) // This will return the number of times the user has scrobbled the track
+			.then(() => res.json(scrobbles)) // This will return the number of times the user has scrobbled the track
 			.catch(err => { throw Error(err) });
 	});
 };
