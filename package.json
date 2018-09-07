@@ -25,6 +25,7 @@
     "ejs": "^2.6.1",
     "express": "~4.15.5",
     "express-session": "^1.15.6",
+    "express-sslify": "^1.2.0",
     "express-validator": "^5.3.0",
     "lastfmapi": "^0.1.1",
     "moment": "^2.22.2",
