@@ -8,15 +8,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var enforce = require('express-sslify');
+const sslRedirect = require('heroku-ssl-redirect');
 
 var index = require('./routes/index');
 var api = require('./routes/api');
 var scrobble = require('./routes/scrobble');
 
 var app = express();
-app.use(enforce.HTTPS());
-app.use(enforce.HTTPS({ trustProtoHeader: true })); 
+app.use(sslRedirect());
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
