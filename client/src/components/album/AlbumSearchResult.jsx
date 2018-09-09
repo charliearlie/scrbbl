@@ -42,17 +42,38 @@ const styles = () => ({
 	resultYear: {
 		fontSize: '.8rem',
 	},
-	showTracks: {
-		marginBottom: '0',
-		transition: 'height 2.5s linear',
-		overflow: 'hidden',
-		width: '100%',
-	},
 	showTracksHide: {
 		height: '0',
 	},
 	showTracksShow: {
 		height: 'auto',
+	},
+	buttonContainer: {
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+
+	},
+	button: {
+		maxWidth: '100%',
+		marginTop: '16px',
+		justifySelf: 'flex-end',
+		display: 'block',
+		boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+		padding: '4px 8px',
+		border: 0,
+		cursor: 'pointer',
+	},
+	buttonNotScrobbled: {
+		backgroundColor: '#c3000d',
+		color: 'white',
+	},
+	buttonScrobbled: {
+		backgroundColor: '#f2f2f2',
+		cursor: 'not-allowed',
+	},
+	showTracksChevron: {
+		marginLeft: '7px',
 	},
 });
 
@@ -82,7 +103,10 @@ class AlbumSearchResult extends Component {
 
 			},
 			data: requestBody,
-		}).then(this.setState({ scrobbled: true }));
+		}).then((response) => {
+			const { scrobbled } = response.data;
+			this.setState({ scrobbled });
+		});
 	}
 
 	requestTracks() {
@@ -119,11 +143,18 @@ class AlbumSearchResult extends Component {
 
 	render() {
 		const { result, classes } = this.props;
-		const { showTracks, resultTracks } = this.state;
+		const { showTracks, resultTracks, scrobbled } = this.state;
+		const scrobbleButtonClasses = classnames(
+			classes.button,
+			`${scrobbled ? classes.buttonScrobbled : classes.buttonNotScrobbled}`,
+		);
 		const trackClasses = classnames(
 			classes.showTracks,
 			`${showTracks ? classes.showTracksShow : classes.showTracksHide}`,
 		);
+
+		console.log(scrobbled);
+
 
 		return (
 			<Card
@@ -135,28 +166,44 @@ class AlbumSearchResult extends Component {
 						<img src={result.albumArtwork} alt={result.albumTitle} />
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
-								<Grid item xs={9}>
+								<Grid item xs={10} md={11}>
 									<div>{result.albumTitle}</div>
 									<div className={classes.resultArtist}>{result.albumArtist}</div>
 									<div className={classes.resultYear}>{result.releaseYear}</div>
 								</Grid>
-								<Grid item xs={3}>
-									<ScrbblButton
+								<Grid item xs={2} md={1}>
+									<a
+										role="button"
+										onClick={this.handleClick}
+										className={classes.showTracksChevron}
+									>
+										{showTracks ? <i className="fas fa-chevron-up" /> : <i className="fas fa-chevron-down" />}
+									</a>
+									<button
 										variant="raised"
 										onClick={this.scrobble}
+										className={scrobbleButtonClasses}
+										disabled={scrobbled}
 									>
-										Scrobble
-									</ScrbblButton>
+										{!scrobbled ?
+											<i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
+											:
+											<i style={{ marginTop: '4px' }} className="fas fa-check" />
+										}
+									</button>
 								</Grid>
 							</Grid>
-							<div className={classes.showTracks}>
-								<Button
-									onClick={this.handleClick}
-									className={classes.showTracks}
+							{/* <div className={classes.buttonContainer}>
+								<ScrbblButton
+									variant="raised"
+									onClick={this.scrobble}
+									className={classes.button}
+									style={{ maxWidth: '100%' }}
 								>
-									{`${showTracks ? 'Hide' : 'Show'} tracks`}
-								</Button>
-							</div>
+									Scrobble
+									<i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
+								</ScrbblButton>
+							</div> */}
 						</div>
 					</div>
 					<div className={trackClasses}>

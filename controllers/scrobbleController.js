@@ -2,6 +2,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const mongoose = require('mongoose');
 const Scrobble = mongoose.model('Scrobble');
+const AlbumScrobble = mongoose.model('AlbumScrobble');
 const lastfm = require('../routes/lastfm');
 
 exports.manualScrobble = (req, res) => {
@@ -53,19 +54,14 @@ exports.albumScrobble = (req, res) => {
 
 		}, function (err, scrobbles) {
 			if (err) {
-				return console.log('We\'re in trouble', err);
-				lastfm.setSessionCredentials(null, null);
-				return res.json(status.success);
+				return res.json(err);
 			}
 			console.log('we did it');
-			return res.json(status.success);
 		});
 	});
-	lastfm.setSessionCredentials(null, null);
-}
+	const albumScrobble = new AlbumScrobble(album);
+	albumScrobble.save();
+	res.json({ scrobbled: true });
 
-function scrobbleAlbum(tracks) {
-	var success = false;
-	
-	
+	lastfm.setSessionCredentials(null, null);
 }

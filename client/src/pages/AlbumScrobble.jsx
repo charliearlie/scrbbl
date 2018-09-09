@@ -81,8 +81,8 @@ class AlbumScrobble extends Component {
 		const { classes } = this.props;
 		return (
 			<Fragment>
-				<Grid item xs={false} md={2} />
-				<Grid item xs={12} md={8}>
+				<Grid item xs={false} lg={2} />
+				<Grid item xs={12} lg={8}>
 					<Card
 						className={classes.card}
 						shadowLevel={1}
@@ -106,7 +106,7 @@ class AlbumScrobble extends Component {
 						</div>
 					</Card>
 				</Grid>
-				<Grid item xs={false} md={2} />
+				<Grid item xs={false} lg={2} />
 				{this.state.searchResults &&
 					<Fragment>
 						Search Results
