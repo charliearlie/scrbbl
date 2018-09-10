@@ -60,7 +60,11 @@ exports.albumScrobble = (req, res) => {
 		});
 	});
 	const albumScrobble = new AlbumScrobble(album);
-	albumScrobble.save();
+
+	albumScrobble
+		.save()
+		.then(() => console.log('then'))
+		.catch(err => console.log(err))
 	res.json({ scrobbled: true });
 
 	lastfm.setSessionCredentials(null, null);

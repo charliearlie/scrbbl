@@ -42,6 +42,10 @@ const styles = () => ({
 	resultYear: {
 		fontSize: '.8rem',
 	},
+	showTracks: {
+		display: 'flex',
+		justifyContent: 'center',
+	},
 	showTracksHide: {
 		height: '0',
 	},
@@ -57,23 +61,23 @@ const styles = () => ({
 	button: {
 		maxWidth: '100%',
 		marginTop: '16px',
+		marginLeft: 'auto',
 		justifySelf: 'flex-end',
 		display: 'block',
 		boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
 		padding: '4px 8px',
 		border: 0,
 		cursor: 'pointer',
+		font: '400 11px system-ui',
+		textTransform: 'uppercase',
+		color: 'white',
 	},
 	buttonNotScrobbled: {
 		backgroundColor: '#c3000d',
-		color: 'white',
 	},
 	buttonScrobbled: {
-		backgroundColor: '#f2f2f2',
+		backgroundColor: '#4CAF50',
 		cursor: 'not-allowed',
-	},
-	showTracksChevron: {
-		marginLeft: '7px',
 	},
 });
 
@@ -166,6 +170,40 @@ class AlbumSearchResult extends Component {
 						<img src={result.albumArtwork} alt={result.albumTitle} />
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
+								<Grid item xs={9}>
+									<div>{result.albumTitle}</div>
+									<div className={classes.resultArtist}>{result.albumArtist}</div>
+									<div className={classes.resultYear}>{result.releaseYear}</div>
+								</Grid>
+								<Grid item xs={3}>
+									<button
+										variant="raised"
+										onClick={this.scrobble}
+										className={scrobbleButtonClasses}
+										disabled={scrobbled}
+									>
+										{!scrobbled ?
+											<i style={{ marginTop: '4px' }} className="fab fa-lastfm fa-2x" />
+											:
+											<i style={{ marginTop: '4px' }} className="fas fa-check fa-2x" />
+										}
+									</button>
+								</Grid>
+							</Grid>
+							<div className={classes.showTracks}>
+								<Button
+									onClick={this.handleClick}
+									className={classes.showTracksButton}
+								>
+									{`${showTracks ? 'Hide' : 'Show'} tracks`}
+								</Button>
+							</div>
+						</div>
+					</div>
+					{/* <div className={classes.result}>
+						<img src={result.albumArtwork} alt={result.albumTitle} />
+						<div className={classes.resultInfo}>
+							<Grid container spacing={12}>
 								<Grid item xs={10} md={11}>
 									<div>{result.albumTitle}</div>
 									<div className={classes.resultArtist}>{result.albumArtist}</div>
@@ -193,19 +231,8 @@ class AlbumSearchResult extends Component {
 									</button>
 								</Grid>
 							</Grid>
-							{/* <div className={classes.buttonContainer}>
-								<ScrbblButton
-									variant="raised"
-									onClick={this.scrobble}
-									className={classes.button}
-									style={{ maxWidth: '100%' }}
-								>
-									Scrobble
-									<i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
-								</ScrbblButton>
-							</div> */}
 						</div>
-					</div>
+					</div> */}
 					<div className={trackClasses}>
 						{showTracks && resultTracks && resultTracks.map((track, index) => (
 							<div className={classes.resultTrack}>
