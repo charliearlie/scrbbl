@@ -43,10 +43,8 @@ const styles = () => ({
 		fontSize: '.8rem',
 	},
 	showTracks: {
-		marginBottom: '0',
-		transition: 'height 2.5s linear',
-		overflow: 'hidden',
-		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
 	},
 	showTracksHide: {
 		height: '0',
@@ -54,14 +52,46 @@ const styles = () => ({
 	showTracksShow: {
 		height: 'auto',
 	},
+	buttonContainer: {
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+
+	},
+	button: {
+		maxWidth: '100%',
+		marginTop: '16px',
+		marginLeft: 'auto',
+		justifySelf: 'flex-end',
+		display: 'block',
+		boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+		padding: '4px 8px',
+		border: 0,
+		cursor: 'pointer',
+		font: '400 11px system-ui',
+		textTransform: 'uppercase',
+		color: 'white',
+	},
+	buttonNotScrobbled: {
+		backgroundColor: '#c3000d',
+	},
+	buttonScrobbled: {
+		backgroundColor: '#4CAF50',
+		cursor: 'not-allowed',
+	},
 });
 
 class AlbumSearchResult extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { showTracks: false, resultTracks: null, initialTracks: null, scrobbled: false };
+		this.state = {
+			showTracks: false,
+			resultTracks: null,
+			initialTracks: null,
+			scrobbled: false,
+		};
 
-		this.handleClick = this.handleClick.bind(this);
+		this.handleClick = this.handleClick.bind(this  );
 		this.handleTrackChange = this.handleTrackChange.bind(this);
 		this.scrobble = this.scrobble.bind(this);
 	}
@@ -71,8 +101,11 @@ class AlbumSearchResult extends Component {
 			await this.loadTracks();
 		}
 
-		const requestBody = this.state.resultTracks;
-
+		const requestBody = {
+			tracks: this.state.resultTracks,
+			albumInfo: this.props.result,
+		};
+  
 		axios({
 			method: 'post',
 			url: serverEndpoints.albumScrobble,
@@ -82,7 +115,10 @@ class AlbumSearchResult extends Component {
 
 			},
 			data: requestBody,
-		}).then(this.setState({ scrobbled: true }));
+		}).then((response) => {
+			const { scrobbled } = response.data;
+			this.setState({ scrobbled });
+		});
 	}
 
 	requestTracks() {
@@ -119,9 +155,13 @@ class AlbumSearchResult extends Component {
 
 	render() {
 		const { result, classes } = this.props;
-		const { showTracks, resultTracks } = this.state;
+		const { showTracks, resultTracks, scrobbled } = this.state;
+		const scrobbleButtonClasses = classnames(
+			classes.button,
+			`${scrobbled ? classes.buttonScrobbled : classes.buttonNotScrobbled}`,
+		);
 		const trackClasses = classnames(
-			classes.showTracks,
+			classes.trackList,
 			`${showTracks ? classes.showTracksShow : classes.showTracksHide}`,
 		);
 
@@ -132,27 +172,33 @@ class AlbumSearchResult extends Component {
 			>
 				<Fragment>
 					<div className={classes.result}>
-						<img src={result.albumArtwork} alt={result.albumTitle} />
+						<img src={result.albumArtwork} alt={result.album} />
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
 								<Grid item xs={9}>
-									<div>{result.albumTitle}</div>
-									<div className={classes.resultArtist}>{result.albumArtist}</div>
+									<div>{result.album}</div>
+									<div className={classes.resultArtist}>{result.artist}</div>
 									<div className={classes.resultYear}>{result.releaseYear}</div>
 								</Grid>
 								<Grid item xs={3}>
-									<ScrbblButton
+									<button
 										variant="raised"
 										onClick={this.scrobble}
+										className={scrobbleButtonClasses}
+										disabled={scrobbled}
 									>
-										Scrobble
-									</ScrbblButton>
+										{!scrobbled ?
+											<i style={{ marginTop: '4px' }} className="fab fa-lastfm fa-2x" />
+											:
+											<i style={{ marginTop: '4px' }} className="fas fa-check fa-2x" />
+										}
+									</button>
 								</Grid>
 							</Grid>
 							<div className={classes.showTracks}>
 								<Button
 									onClick={this.handleClick}
-									className={classes.showTracks}
+									className={classes.showTracksButton}
 								>
 									{`${showTracks ? 'Hide' : 'Show'} tracks`}
 								</Button>

@@ -9,6 +9,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 require('../models/Scrobble');
+require('../models/AlbumScrobble');
 /**
  * Module dependencies.
  */

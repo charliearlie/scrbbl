@@ -2,6 +2,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const mongoose = require('mongoose');
 const Scrobble = mongoose.model('Scrobble');
+const AlbumScrobble = mongoose.model('AlbumScrobble');
 const lastfm = require('../routes/lastfm');
 
 exports.manualScrobble = (req, res) => {
@@ -37,12 +38,13 @@ exports.albumScrobble = (req, res) => {
 		key: req.headers.key
 	};
 	let time = Math.floor((new Date()).getTime() / 1000) - 300;
-	const album = req.body;
-
+	const tracks = req.body.tracks;
+	const album = req.body.albumInfo;
+	album.timestamp = time;
 
 	lastfm.setSessionCredentials(user.username, user.key); //Horrible hack again
 
-	_.forEachRight(album, (track) => {
+	_.forEachRight(tracks, (track) => {
 		time = time -= Number(track.trackTime / 1000);
 
 		lastfm.track.scrobble({
@@ -53,19 +55,18 @@ exports.albumScrobble = (req, res) => {
 
 		}, function (err, scrobbles) {
 			if (err) {
-				return console.log('We\'re in trouble', err);
-				lastfm.setSessionCredentials(null, null);
-				return res.json(status.success);
+				return res.json(err);
 			}
 			console.log('we did it');
-			return res.json(status.success);
 		});
 	});
-	lastfm.setSessionCredentials(null, null);
-}
+	const albumScrobble = new AlbumScrobble({...album, user: user.username});
 
-function scrobbleAlbum(tracks) {
-	var success = false;
-	
-	
+	albumScrobble
+		.save()
+		.then(() => console.log('then'))
+		.catch(err => console.log(err))
+	res.json({ scrobbled: true });
+
+	lastfm.setSessionCredentials(null, null);
 }
