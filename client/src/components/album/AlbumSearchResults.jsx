@@ -8,7 +8,7 @@ const AlbumSearchResults = ({ results }) => (
 			<Fragment>
 				<Grid item xs={false} sm={2} lg={3} />
 				<Grid item xs={12} sm={8} lg={6}>
-					<AlbumSearchResult key={`${result.albumTitle}_${result.albumId}`} result={result} />
+					<AlbumSearchResult key={`${result.album}_${result.albumId}`} result={result} />
 				</Grid>
 				<Grid item xs={false} sm={2} lg={3} />
 			</Fragment>

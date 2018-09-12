@@ -38,12 +38,13 @@ exports.albumScrobble = (req, res) => {
 		key: req.headers.key
 	};
 	let time = Math.floor((new Date()).getTime() / 1000) - 300;
-	const album = req.body;
-
+	const tracks = req.body.tracks;
+	const album = req.body.albumInfo;
+	album.timestamp = time;
 
 	lastfm.setSessionCredentials(user.username, user.key); //Horrible hack again
 
-	_.forEachRight(album, (track) => {
+	_.forEachRight(tracks, (track) => {
 		time = time -= Number(track.trackTime / 1000);
 
 		lastfm.track.scrobble({
@@ -59,7 +60,7 @@ exports.albumScrobble = (req, res) => {
 			console.log('we did it');
 		});
 	});
-	const albumScrobble = new AlbumScrobble(album);
+	const albumScrobble = new AlbumScrobble({...album, user: user.username});
 
 	albumScrobble
 		.save()

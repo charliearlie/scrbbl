@@ -64,8 +64,7 @@ class AlbumScrobble extends Component {
 		const albumList = albums.map(album => ({
 			albumId: album.collectionId,
 			artist: album.artistName,
-			albumTitle: album.collectionName,
-			albumArtist: album.artistName,
+			album: album.collectionName,
 			albumArtwork: album.artworkUrl100,
 			releaseYear: album.releaseDate.slice(0, 4) || '',
 		}));

@@ -84,9 +84,14 @@ const styles = () => ({
 class AlbumSearchResult extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { showTracks: false, resultTracks: null, initialTracks: null, scrobbled: false };
+		this.state = {
+			showTracks: false,
+			resultTracks: null,
+			initialTracks: null,
+			scrobbled: false,
+		};
 
-		this.handleClick = this.handleClick.bind(this);
+		this.handleClick = this.handleClick.bind(this  );
 		this.handleTrackChange = this.handleTrackChange.bind(this);
 		this.scrobble = this.scrobble.bind(this);
 	}
@@ -96,8 +101,11 @@ class AlbumSearchResult extends Component {
 			await this.loadTracks();
 		}
 
-		const requestBody = this.state.resultTracks;
-
+		const requestBody = {
+			tracks: this.state.resultTracks,
+			albumInfo: this.props.result,
+		};
+  
 		axios({
 			method: 'post',
 			url: serverEndpoints.albumScrobble,
@@ -153,12 +161,9 @@ class AlbumSearchResult extends Component {
 			`${scrobbled ? classes.buttonScrobbled : classes.buttonNotScrobbled}`,
 		);
 		const trackClasses = classnames(
-			classes.showTracks,
+			classes.trackList,
 			`${showTracks ? classes.showTracksShow : classes.showTracksHide}`,
 		);
-
-		console.log(scrobbled);
-
 
 		return (
 			<Card
@@ -167,12 +172,12 @@ class AlbumSearchResult extends Component {
 			>
 				<Fragment>
 					<div className={classes.result}>
-						<img src={result.albumArtwork} alt={result.albumTitle} />
+						<img src={result.albumArtwork} alt={result.album} />
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
 								<Grid item xs={9}>
-									<div>{result.albumTitle}</div>
-									<div className={classes.resultArtist}>{result.albumArtist}</div>
+									<div>{result.album}</div>
+									<div className={classes.resultArtist}>{result.artist}</div>
 									<div className={classes.resultYear}>{result.releaseYear}</div>
 								</Grid>
 								<Grid item xs={3}>
@@ -200,39 +205,6 @@ class AlbumSearchResult extends Component {
 							</div>
 						</div>
 					</div>
-					{/* <div className={classes.result}>
-						<img src={result.albumArtwork} alt={result.albumTitle} />
-						<div className={classes.resultInfo}>
-							<Grid container spacing={12}>
-								<Grid item xs={10} md={11}>
-									<div>{result.albumTitle}</div>
-									<div className={classes.resultArtist}>{result.albumArtist}</div>
-									<div className={classes.resultYear}>{result.releaseYear}</div>
-								</Grid>
-								<Grid item xs={2} md={1}>
-									<a
-										role="button"
-										onClick={this.handleClick}
-										className={classes.showTracksChevron}
-									>
-										{showTracks ? <i className="fas fa-chevron-up" /> : <i className="fas fa-chevron-down" />}
-									</a>
-									<button
-										variant="raised"
-										onClick={this.scrobble}
-										className={scrobbleButtonClasses}
-										disabled={scrobbled}
-									>
-										{!scrobbled ?
-											<i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
-											:
-											<i style={{ marginTop: '4px' }} className="fas fa-check" />
-										}
-									</button>
-								</Grid>
-							</Grid>
-						</div>
-					</div> */}
 					<div className={trackClasses}>
 						{showTracks && resultTracks && resultTracks.map((track, index) => (
 							<div className={classes.resultTrack}>
