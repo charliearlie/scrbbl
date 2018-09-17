@@ -7,7 +7,8 @@ import Button from '@material-ui/core/Button';
 import { serverEndpoints } from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
-import ScrbblButton from '../reusable/ScrbblButton';
+import IconButton from '../reusable/IconButton';
+import TextInput from '../reusable/TextInput';
 
 const styles = () => ({
 	resultCard: {
@@ -89,9 +90,10 @@ class AlbumSearchResult extends Component {
 			resultTracks: null,
 			initialTracks: null,
 			scrobbled: false,
+			albumTitle: this.props.result.album || '',
 		};
 
-		this.handleClick = this.handleClick.bind(this  );
+		this.handleClick = this.handleClick.bind(this);
 		this.handleTrackChange = this.handleTrackChange.bind(this);
 		this.scrobble = this.scrobble.bind(this);
 	}
@@ -103,9 +105,9 @@ class AlbumSearchResult extends Component {
 
 		const requestBody = {
 			tracks: this.state.resultTracks,
-			albumInfo: this.props.result,
+			albumInfo: { ...this.props.result, album: this.state.albumTitle },
 		};
-  
+
 		axios({
 			method: 'post',
 			url: serverEndpoints.albumScrobble,
@@ -149,7 +151,6 @@ class AlbumSearchResult extends Component {
 		const tracks = [...this.state.resultTracks];
 		tracks[index].songTitle = songTitle;
 
-		console.log(tracks);
 		this.setState({ resultTracks: tracks });
 	}
 
@@ -165,6 +166,20 @@ class AlbumSearchResult extends Component {
 			`${showTracks ? classes.showTracksShow : classes.showTracksHide}`,
 		);
 
+		const renderAlbumTitle = () => {
+			if (this.state.editAlbumTitle) {
+				return (
+					<TextInput
+						placeholder="Search..."
+						name="albumTitle"
+						value={this.state.albumTitle}
+						onChange={event => this.setState({ albumTitle: event.target.value })}
+					/>
+				);
+			}
+			return this.state.albumTitle;
+		};
+
 		return (
 			<Card
 				className={classes.resultCard}
@@ -176,7 +191,15 @@ class AlbumSearchResult extends Component {
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
 								<Grid item xs={9}>
-									<div>{result.album}</div>
+									<div>
+										{renderAlbumTitle()}
+										<IconButton
+											icon="far fa-edit"
+											onClick={() => this.setState(prevState =>
+												({ editAlbumTitle: !prevState.editAlbumTitle }))
+											}
+										/>
+									</div>
 									<div className={classes.resultArtist}>{result.artist}</div>
 									<div className={classes.resultYear}>{result.releaseYear}</div>
 								</Grid>

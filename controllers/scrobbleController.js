@@ -51,7 +51,7 @@ exports.albumScrobble = (req, res) => {
 			'artist': track.artist,
 			'track': track.songTitle,
 			'timestamp': time,
-			'album': track.albumTitle
+			'album': album.album
 
 		}, function (err, scrobbles) {
 			if (err) {
@@ -64,9 +64,8 @@ exports.albumScrobble = (req, res) => {
 
 	albumScrobble
 		.save()
-		.then(() => console.log('then'))
-		.catch(err => console.log(err))
-	res.json({ scrobbled: true });
+		.then(res.json({ scrobbled: true }))
+		.catch(err => console.log(err));
 
 	lastfm.setSessionCredentials(null, null);
 }
