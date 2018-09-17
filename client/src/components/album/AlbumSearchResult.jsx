@@ -105,7 +105,7 @@ class AlbumSearchResult extends Component {
 
 		const requestBody = {
 			tracks: this.state.resultTracks,
-			albumInfo: this.props.result,
+			albumInfo: { ...this.props.result, album: this.state.albumTitle },
 		};
 
 		axios({
@@ -195,7 +195,9 @@ class AlbumSearchResult extends Component {
 										{renderAlbumTitle()}
 										<IconButton
 											icon="far fa-edit"
-											onClick={() => this.setState(prevState => ({ editAlbumTitle: !prevState.editAlbumTitle }))}
+											onClick={() => this.setState(prevState =>
+												({ editAlbumTitle: !prevState.editAlbumTitle }))
+											}
 										/>
 									</div>
 									<div className={classes.resultArtist}>{result.artist}</div>

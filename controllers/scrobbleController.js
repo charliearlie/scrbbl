@@ -64,11 +64,8 @@ exports.albumScrobble = (req, res) => {
 
 	albumScrobble
 		.save()
-		.then(albumScrobble.query({ artist: album.artist })
-			.then(result => console.log(result))
-		)
-		.catch(err => console.log(err))
-	res.json({ scrobbled: true });
+		.then(res.json({ scrobbled: true }))
+		.catch(err => console.log(err));
 
 	lastfm.setSessionCredentials(null, null);
 }
