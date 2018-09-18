@@ -118,8 +118,10 @@ class AlbumSearchResult extends Component {
 			},
 			data: requestBody,
 		}).then((response) => {
-			const { scrobbled } = response.data;
-			this.setState({ scrobbled });
+			const { albumScrobbles } = response.data;
+			const message = `Success! You have scrobbled ${this.state.albumTitle} ${albumScrobbles} times on Scrbbl`;
+			this.props.handleScrobbleSuccess(message);
+			this.setState({ scrobbled: !!albumScrobbles });
 		});
 	}
 

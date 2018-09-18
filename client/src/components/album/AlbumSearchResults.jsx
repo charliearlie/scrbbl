@@ -2,13 +2,17 @@ import React, { Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import AlbumSearchResult from './AlbumSearchResult';
 
-const AlbumSearchResults = ({ results }) => (
+const AlbumSearchResults = ({ results, handleScrobbleSuccess }) => (
 	<Grid container spacing={24}>
 		{results.map(result => (
 			<Fragment>
 				<Grid item xs={false} sm={2} lg={3} />
 				<Grid item xs={12} sm={8} lg={6}>
-					<AlbumSearchResult key={`${result.album}_${result.albumId}`} result={result} />
+					<AlbumSearchResult
+						key={`${result.album}_${result.albumId}`}
+						result={result}
+						handleScrobbleSuccess={handleScrobbleSuccess}
+					/>
 				</Grid>
 				<Grid item xs={false} sm={2} lg={3} />
 			</Fragment>

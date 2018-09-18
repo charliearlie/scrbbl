@@ -37,6 +37,7 @@ exports.albumScrobble = (req, res) => {
 		username: req.headers.username,
 		key: req.headers.key
 	};
+
 	let time = Math.floor((new Date()).getTime() / 1000) - 300;
 	const tracks = req.body.tracks;
 	const album = req.body.albumInfo;
@@ -60,11 +61,21 @@ exports.albumScrobble = (req, res) => {
 			console.log('we did it');
 		});
 	});
-	const albumScrobble = new AlbumScrobble({...album, user: user.username});
 
+	const ret = {
+		albumScrobbles: 0,
+		artistScrobbles: 0,
+	};
+
+	const albumScrobble = new AlbumScrobble({...album, user: user.username});
 	albumScrobble
 		.save()
-		.then(res.json({ scrobbled: true }))
+		.then(async () => {
+			ret.albumScrobbles = await AlbumScrobble.count({ album: album.album, user: user.username}) || 0;
+			ret.artistScrobbles = await AlbumScrobble.count({ artist: album.artist }) || 0;
+
+			res.json(ret);
+		})
 		.catch(err => console.log(err));
 
 	lastfm.setSessionCredentials(null, null);
