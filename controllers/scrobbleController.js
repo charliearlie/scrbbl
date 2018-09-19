@@ -27,7 +27,15 @@ exports.manualScrobble = (req, res) => {
 		const scrobble = new Scrobble(track);
 		scrobble
 			.save()
-			.then(() => res.json(scrobbles)) // This will return the number of times the user has scrobbled the track
+			.then(() => {
+				lastfm.library.getArtists({
+					user: track.user,
+					limit: 250,
+				}, (err, response) => {
+					const artist = response.artist.find(artist => artist.name === track.artist);
+					res.json(artist);
+				});
+			})
 			.catch(err => { throw Error(err) });
 	});
 };

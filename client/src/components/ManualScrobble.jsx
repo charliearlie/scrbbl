@@ -72,6 +72,7 @@ const initialState = {
 	date: '',
 	time: '',
 	scrobbled: false,
+	artistScrobbled: '',
 };
 
 class ManualScrobble extends Component {
@@ -105,7 +106,7 @@ class ManualScrobble extends Component {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 			data: qs.stringify({ ...requestBody }),
-		}).then(this.setState({ scrobbled: true }));
+		}).then(artist => this.setState({ scrobbled: true, artistScrobbled: artist.data }));
 	}
 
 	handleChange(value, name) {
@@ -114,7 +115,8 @@ class ManualScrobble extends Component {
 
 	render() {
 		const { classes } = this.props;
-		const { albumArtist, songTitle } = this.state;
+		const { albumArtist, songTitle, artistScrobbled } = this.state;
+		console.log(this.state);
 		const isDisabled = !albumArtist && !songTitle;
 		return (
 			<Fragment>
@@ -129,6 +131,7 @@ class ManualScrobble extends Component {
 							<Fragment>
 								<div>
 									Track scrobbled successfully
+									You have scrobbled {artistScrobbled.name} {artistScrobbled.playcount} times
 								</div>
 								<div>
 									<ScrbblButton

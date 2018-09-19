@@ -8,7 +8,7 @@ import TextInput from '../components/reusable/TextInput';
 import AppleMusicButton from '../components/AppleMusicButton';
 import AlbumSearchResults from '../components/album/AlbumSearchResults';
 import Fade from '../components/reusable/Fade';
-import ScrbblSnackbar from '../components/reusable/Snackbar';
+import SnackbarContent from '../components/reusable/Snackbar';
 
 const styles = () => ({
 	container: {
@@ -56,7 +56,7 @@ class AlbumScrobble extends Component {
 		super(props);
 
 		this.fillForm = this.fillForm.bind(this);
-		this.handleClose = this.handleClose.bind(this);
+		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
 
 		this.state = {
@@ -81,7 +81,7 @@ class AlbumScrobble extends Component {
 		this.setState({ [name]: value });
 	}
 
-	handleClose() {
+	handleSnackbarClose() {
 		this.setState({ showSnackbar: false });
 	}
 
@@ -136,11 +136,11 @@ class AlbumScrobble extends Component {
 						horizontal: 'left',
 					}}
 					open={this.state.showSnackbar}
-					autoHideDuration={6000}
-					onClose={this.handleClose}
+					autoHideDuration={10000}
+					onClose={this.handleSnackbarClose}
 				>
-					<ScrbblSnackbar
-						onClose={this.handleClose}
+					<SnackbarContent
+						onClose={this.handleSnackbarClose}
 						variant="success"
 						message={this.state.snackbarMessage}
 					/>
