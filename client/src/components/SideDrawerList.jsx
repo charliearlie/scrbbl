@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -14,25 +14,42 @@ const styles = theme => ({
 	},
 });
 
-const SideDrawerList = withRouter((props) => {
-	const { items, classes } = props;
+const hiddenDrawerWidth = 600;
 
-	return (
-		<div className={classes.root}>
-			<List component="nav">
-				{items.map(item => (
-					<ListItem button key={item.text} onClick={() => props.history.push(item.route)}>
-						<ListItemIcon>
-							{item.icon}
-						</ListItemIcon>
-						<ListItemText>
-							{item.text}
-						</ListItemText>
-					</ListItem>
-				))}
-			</List>
-		</div>
-	);
-});
+class SideDrawerList extends Component {
+	constructor(props) {
+		super(props);
 
-export default withStyles(styles, { withTheme: true })(SideDrawerList);
+		this.goTo = this.goTo.bind(this);
+	}
+
+	goTo(route) {
+		if (window.innerWidth < hiddenDrawerWidth) {
+			this.props.closeDrawer();
+		}
+		this.props.history.push(route);
+	}
+
+	render() {
+		const { items, classes } = this.props;
+
+		return (
+			<div className={classes.root}>
+				<List component="nav">
+					{items.map(item => (
+						<ListItem button key={item.text} onClick={() => this.goTo(item.route)}>
+							<ListItemIcon>
+								{item.icon}
+							</ListItemIcon>
+							<ListItemText>
+								{item.text}
+							</ListItemText>
+						</ListItem>
+					))}
+				</List>
+			</div>
+		);
+	}
+}
+
+export default withRouter(withStyles(styles, { withTheme: true })(SideDrawerList));

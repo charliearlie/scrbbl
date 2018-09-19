@@ -174,7 +174,7 @@ class App extends Component {
 						</IconButton>
 					</div>
 					<Divider />
-					<SideDrawerList items={DrawerItems} />
+					<SideDrawerList closeDrawer={() => this.setState({ open: false })} items={DrawerItems} />
 					<Divider />
 				</Drawer>
 
