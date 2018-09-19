@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { Snackbar } from '@material-ui/core';
 
 import Card from '../components/reusable/Card';
 import TextInput from '../components/reusable/TextInput';
 import AppleMusicButton from '../components/AppleMusicButton';
 import AlbumSearchResults from '../components/album/AlbumSearchResults';
 import Fade from '../components/reusable/Fade';
+import SnackbarContent from '../components/reusable/Snackbar';
 
 const styles = () => ({
 	container: {
@@ -54,9 +56,12 @@ class AlbumScrobble extends Component {
 		super(props);
 
 		this.fillForm = this.fillForm.bind(this);
+		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
+		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
 
 		this.state = {
 			searchQuery: '',
+			showSnackbar: false,
 		};
 	}
 
@@ -74,6 +79,14 @@ class AlbumScrobble extends Component {
 
 	handleChange(value, name) {
 		this.setState({ [name]: value });
+	}
+
+	handleSnackbarClose() {
+		this.setState({ showSnackbar: false });
+	}
+
+	handleScrobbleSuccess(snackbarMessage) {
+		this.setState({ snackbarMessage, showSnackbar: true });
 	}
 
 	render() {
@@ -110,10 +123,28 @@ class AlbumScrobble extends Component {
 					<Fragment>
 						Search Results
 						<Fade in={this.state.searchResults}>
-							<AlbumSearchResults results={this.state.searchResults} callback={this.scrobble} />
+							<AlbumSearchResults
+								results={this.state.searchResults}
+								handleScrobbleSuccess={this.handleScrobbleSuccess}
+							/>
 						</Fade>
 					</Fragment>
 				}
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left',
+					}}
+					open={this.state.showSnackbar}
+					autoHideDuration={10000}
+					onClose={this.handleSnackbarClose}
+				>
+					<SnackbarContent
+						onClose={this.handleSnackbarClose}
+						variant="success"
+						message={this.state.snackbarMessage}
+					/>
+				</Snackbar>
 			</Fragment>
 		);
 	}
