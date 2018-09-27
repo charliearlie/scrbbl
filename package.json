@@ -7,10 +7,12 @@
   },
   "scripts": {
     "client": "npm start --prefix client",
+    "client-local": "npm local --prefix client",
     "server": "nodemon ./bin/www",
     "start": "node ./bin/www",
     "build": "node ./bin/www",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev-local": "concurrently \"npm run server\" \"npm run client-local\"",
     "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {

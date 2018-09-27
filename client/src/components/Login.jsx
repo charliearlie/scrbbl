@@ -36,7 +36,7 @@ const Login = ({ classes, authenticate }) => (
 		<Grid item xs={12} sm={10} md={6} >
 			<Card
 				shadowLevel={5}
-				className={classes.card}
+				className={`${classes.card} Login__prompt`}
 			>
 				<Typography variant="body1" gutterBottom>
 					To access this application, you need to sign in to your Last.FM account

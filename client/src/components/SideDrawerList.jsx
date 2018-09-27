@@ -14,7 +14,7 @@ const styles = theme => ({
 	},
 });
 
-const hiddenDrawerWidth = 600;
+const hiddenDrawerWidth = 700;
 
 class SideDrawerList extends Component {
 	constructor(props) {

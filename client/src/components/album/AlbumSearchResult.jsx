@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Grid, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { serverEndpoints } from '../../config/endpoints';
+import Config from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
 import IconButton from '../reusable/IconButton';
@@ -27,6 +27,7 @@ const styles = () => ({
 	},
 	resultTrack: {
 		padding: '16px',
+		display: 'flex',
 	},
 	resultInfo: {
 		padding: '8px 8px 0 8px',
@@ -52,6 +53,7 @@ const styles = () => ({
 	},
 	showTracksShow: {
 		height: 'auto',
+		width: '90%',
 	},
 	buttonContainer: {
 		width: '100%',
@@ -104,13 +106,13 @@ class AlbumSearchResult extends Component {
 		}
 
 		const requestBody = {
-			tracks: this.state.resultTracks,
+			tracks: this.state.resultTracks.filter(track => track.checked === true),
 			albumInfo: { ...this.props.result, album: this.state.albumTitle },
 		};
 
 		axios({
 			method: 'post',
-			url: serverEndpoints.albumScrobble,
+			url: Config.endpoints.albumScrobble,
 			headers: {
 				username: window.localStorage.getItem('ScrbblUser'),
 				key: window.localStorage.getItem('ScrbblKey'),
@@ -129,7 +131,7 @@ class AlbumSearchResult extends Component {
 		const { albumId } = this.props.result;
 
 		if (!this.state.initialTracks) {
-			return axios.get(`${serverEndpoints.albumDetails}${albumId}`);
+			return axios.get(`${Config.endpoints.albumDetails}${albumId}`);
 		}
 
 		return false;
@@ -139,7 +141,13 @@ class AlbumSearchResult extends Component {
 		const response = await this.requestTracks();
 		const tracks = response.data;
 
-		this.setState({ initialTracks: tracks, resultTracks: tracks });
+		this.setState({
+			initialTracks: tracks,
+			resultTracks: tracks.map(track => ({
+				checked: true,
+				...track,
+			})),
+		});
 	}
 
 	handleClick() {
@@ -233,25 +241,23 @@ class AlbumSearchResult extends Component {
 					<div className={trackClasses}>
 						{showTracks && resultTracks && resultTracks.map((track, index) => (
 							<div className={classes.resultTrack}>
-								<Grid key={track.songTitle} container spacing={12}>
-									<Grid item xs={1} />
-									<Grid item xs={10}>
-										<AlbumSearchResultInput
-											handleTrackChange={this.handleTrackChange}
-											songTitle={track.songTitle}
-											trackNumber={index}
-										/>
-									</Grid>
-									<Grid item xs={1}>
-										<Checkbox
-											checked
-											value={index}
-											classes={{
-												marginLeft: '16px',
-											}}
-										/>
-									</Grid>
-								</Grid>
+								<AlbumSearchResultInput
+									handleTrackChange={this.handleTrackChange}
+									songTitle={track.songTitle}
+									trackNumber={index}
+								/>
+								<Checkbox
+									checked={resultTracks[index]}
+									value={index}
+									classes={{
+										marginLeft: '16px',
+									}}
+									onChange={(e) => {
+										const tracks = this.state.resultTracks;
+										tracks[index] = e.target.checked;
+										this.setState({ resultTracks: tracks });
+									}}
+								/>
 							</div>
 						))}
 					</div>

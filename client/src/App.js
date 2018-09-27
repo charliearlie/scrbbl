@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { Snackbar } from '@material-ui/core';
 
 import './App.css';
 import Home from './components/Home';
@@ -24,6 +25,7 @@ import SideDrawerList from './components/SideDrawerList';
 import DrawerItems from './assets/DrawerItems';
 import UserNav from './components/UserNav';
 import AlbumScrobble from './pages/AlbumScrobble';
+import SnackbarContent from './components/reusable/Snackbar';
 
 const drawerWidth = 280;
 
@@ -100,21 +102,23 @@ class App extends Component {
 		this.state = {
 			displayName: window.localStorage.getItem('ScrbblUser'),
 			open: false,
+			showSnackbar: false,
 		};
 
 		this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
 		this.handleDrawerClose = this.handleDrawerClose.bind(this);
+		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 	}
 
 	componentDidMount() {
 		const params = qs.parse(window.location.search.slice(1));
 
 		if (params.token && !this.state.displayName) {
-			axios.get(`/api/users/session/${params.token}`) // TODO: Fix API proxy
+			axios.get(`/api/users/session/${params.token}`)
 				.then((response) => {
 					window.localStorage.setItem('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
-					this.setState({ displayName: response.data.username });
+					this.setState({ displayName: response.data.username, showSnackbar: true });
 				})
 				.catch((error) => { throw new Error(error); });
 		}
@@ -126,6 +130,10 @@ class App extends Component {
 
 	handleDrawerClose() {
 		this.setState({ open: false });
+	}
+
+	handleSnackbarClose() {
+		this.setState({ showSnackbar: false });
 	}
 
 	/* eslint-disable */
@@ -195,6 +203,21 @@ class App extends Component {
 						<Login authenticate={this.login} />
 					}
 				</main>
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left',
+					}}
+					open={this.state.showSnackbar}
+					autoHideDuration={5000}
+					onClose={this.handleSnackbarClose}
+				>
+					<SnackbarContent
+						onClose={this.handleSnackbarClose}
+						variant="success"
+						message="Logged in successfully"
+					/>
+				</Snackbar>
 			</div>
 		);
 	}
