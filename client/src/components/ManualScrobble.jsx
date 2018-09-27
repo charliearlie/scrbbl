@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import qs from 'qs';
 
-import { serverEndpoints } from '../config/endpoints';
+import Config from '../config/endpoints';
 import Card from './reusable/Card';
 import TextInput from './reusable/TextInput';
 import ScrbblButton from './reusable/ScrbblButton';
@@ -101,7 +101,7 @@ class ManualScrobble extends Component {
 
 		axios({
 			method: 'post',
-			url: serverEndpoints.manualScrobble,
+			url: Config.endpoints.manualScrobble,
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},

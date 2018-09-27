@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
-
+import Config from '../config/endpoints';
 import ScrbblButton from './reusable/ScrbblButton';
 
 const styles = () => ({
@@ -20,7 +20,7 @@ class AppleMusicButton extends Component {
 	}
 	search() {
 		const { query, type } = this.props;
-		axios.get(`/api/appleMusic/search?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
+		axios.get(`${Config.endpoints.albumSearch}?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
 			.then((response) => {
 				console.log(response);
 				const result = type === 'album' ? response.data.results : response.data.results[0];
