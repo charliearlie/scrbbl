@@ -27,12 +27,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "local": "REACT_APP_USE_MOCKS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint \"src/**/*.js\""
   },
-  "proxy": "https://scrbbl.herokuapp.com",
+  "proxy": "http://localhost:7777",
   "devDependencies": {
     "sinon": "^6.1.3"
   }
