@@ -247,14 +247,11 @@ class AlbumSearchResult extends Component {
 									trackNumber={index}
 								/>
 								<Checkbox
-									checked={resultTracks[index]}
+									checked={resultTracks[index].checked}
 									value={index}
-									classes={{
-										marginLeft: '16px',
-									}}
-									onChange={(e) => {
+									onChange={() => {
 										const tracks = this.state.resultTracks;
-										tracks[index] = e.target.checked;
+										tracks[index].checked = !tracks[index].checked;
 										this.setState({ resultTracks: tracks });
 									}}
 								/>
