@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Grid, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Config from '../../config/endpoints';
+import Config from '../../appconfig/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
 import IconButton from '../reusable/IconButton';
