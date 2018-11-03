@@ -14,6 +14,7 @@
       "function-paren-newline": "warn",
       "react/prefer-stateless-function": "warn"
     },
+    "parser": "babel-eslint",
     "globals": {
       "window": true,
       "fetch": true,
