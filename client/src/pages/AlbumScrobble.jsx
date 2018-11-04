@@ -63,7 +63,7 @@ class AlbumScrobble extends Component {
 		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
 	}
 
-	fillForm = (albums) => {
+	fillForm(albums) {
 		const albumList = albums.map(album => ({
 			albumId: album.collectionId,
 			artist: album.artistName,
