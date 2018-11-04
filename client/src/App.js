@@ -122,15 +122,15 @@ class App extends Component {
 		}
 	}
 
-	handleDrawerOpen = () => {
+	handleDrawerOpen() {
 		this.setState({ open: true });
 	}
 
-	handleDrawerClose = () => {
+	handleDrawerClose() {
 		this.setState({ open: false });
 	}
 
-	handleSnackbarClose = () => {
+	handleSnackbarClose() {
 		this.setState({ showSnackbar: false });
 	}
 

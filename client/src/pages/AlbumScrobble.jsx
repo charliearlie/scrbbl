@@ -59,6 +59,8 @@ class AlbumScrobble extends Component {
 			searchQuery: '',
 			showSnackbar: false,
 		};
+		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
+		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
 	}
 
 	fillForm = (albums) => {
@@ -77,11 +79,11 @@ class AlbumScrobble extends Component {
 		this.setState({ [name]: value });
 	}
 
-	handleSnackbarClose = () => {
+	handleSnackbarClose() {
 		this.setState({ showSnackbar: false });
 	}
 
-	handleScrobbleSuccess = (snackbarMessage) => {
+	handleScrobbleSuccess(snackbarMessage) {
 		this.setState({ snackbarMessage, showSnackbar: true });
 	}
 
