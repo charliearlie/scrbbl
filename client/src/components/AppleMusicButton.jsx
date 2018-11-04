@@ -18,11 +18,11 @@ class AppleMusicButton extends Component {
 
 		this.search = this.search.bind(this);
 	}
+
 	search() {
 		const { query, type } = this.props;
 		axios.get(`${Config.endpoints.albumSearch}?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
 			.then((response) => {
-				console.log(response);
 				const result = type === 'album' ? response.data.results : response.data.results[0];
 				if (result) {
 					this.props.fillForm(result);
