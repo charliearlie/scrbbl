@@ -59,6 +59,7 @@ class AlbumScrobble extends Component {
 			searchQuery: '',
 			showSnackbar: false,
 		};
+		this.fillForm = this.fillForm.bind(this);
 		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
 	}
