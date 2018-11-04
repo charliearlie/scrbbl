@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Grid, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Config from '../../appconfig/endpoints';
+import Config from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
 import IconButton from '../reusable/IconButton';
@@ -106,7 +106,7 @@ class AlbumSearchResult extends Component {
 		}
 
 		const requestBody = {
-			tracks: this.state.resultTracks.filter(track => track.checked === true),
+			tracks: this.state.resultTracks.filter(track => track.checked),
 			albumInfo: { ...this.props.result, album: this.state.albumTitle },
 		};
 
@@ -122,6 +122,7 @@ class AlbumSearchResult extends Component {
 		}).then((response) => {
 			const { albumScrobbles } = response.data;
 			const message = `Success! You have scrobbled ${this.state.albumTitle} ${albumScrobbles} times on Scrbbl`;
+
 			this.props.handleScrobbleSuccess(message);
 			this.setState({ scrobbled: !!albumScrobbles });
 		});
