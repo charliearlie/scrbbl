@@ -8,7 +8,7 @@ import TextInput from '../components/reusable/TextInput';
 import AppleMusicButton from '../components/AppleMusicButton';
 import AlbumSearchResults from '../components/album/AlbumSearchResults';
 import Fade from '../components/reusable/Fade';
-import SnackbarContent from '../components/reusable/Snackbar';
+import SnackbarContent from '../components/reusable/Snackbar/SnackbarContent';
 
 const styles = () => ({
 	container: {
@@ -55,17 +55,13 @@ class AlbumScrobble extends Component {
 	constructor(props) {
 		super(props);
 
-		this.fillForm = this.fillForm.bind(this);
-		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
-		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
-
 		this.state = {
 			searchQuery: '',
 			showSnackbar: false,
 		};
 	}
 
-	fillForm(albums) {
+	fillForm = (albums) => {
 		const albumList = albums.map(album => ({
 			albumId: album.collectionId,
 			artist: album.artistName,
@@ -81,11 +77,11 @@ class AlbumScrobble extends Component {
 		this.setState({ [name]: value });
 	}
 
-	handleSnackbarClose() {
+	handleSnackbarClose = () => {
 		this.setState({ showSnackbar: false });
 	}
 
-	handleScrobbleSuccess(snackbarMessage) {
+	handleScrobbleSuccess = (snackbarMessage) => {
 		this.setState({ snackbarMessage, showSnackbar: true });
 	}
 

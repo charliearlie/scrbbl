@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
 import { Route, Redirect } from 'react-router-dom';
-
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,83 +15,16 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { Snackbar } from '@material-ui/core';
 
 import './App.css';
+import styles from './AppStyles';
 import Home from './components/Home';
 import Login from './components/Login';
-import ManualScrobble from './components/ManualScrobble';
-import SideDrawerList from './components/SideDrawerList';
-
 import DrawerItems from './assets/DrawerItems';
 import UserNav from './components/UserNav';
-import AlbumScrobble from './pages/AlbumScrobble';
-import SnackbarContent from './components/reusable/Snackbar';
+import SnackbarContent from './components/reusable/Snackbar/SnackbarContent';
+import SideDrawerList from './components/SideDrawerList';
 
-const drawerWidth = 280;
-
-const styles = theme => ({
-	root: {
-		flexGrow: 1,
-		zIndex: 1,
-		overflow: 'hidden',
-		position: 'relative',
-		display: 'flex',
-		minHeight: '100vh',
-	},
-	appBar: {
-		zIndex: theme.zIndex.drawer + 1,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		backgroundColor: '#c3000d',
-	},
-	appBarShift: {
-		marginLeft: drawerWidth,
-		width: `calc(100% - ${drawerWidth}px)`,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	menuButton: {
-		marginLeft: 12,
-		marginRight: 36,
-	},
-	hide: {
-		display: 'none',
-	},
-	drawerPaper: {
-		position: 'relative',
-		whiteSpace: 'nowrap',
-		width: drawerWidth,
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	drawerPaperClose: {
-		overflowX: 'hidden',
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		width: 0,
-		[theme.breakpoints.up('sm')]: {
-			width: theme.spacing.unit * 9,
-		},
-	},
-	toolbar: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		padding: '0 8px',
-		...theme.mixins.toolbar,
-	},
-	content: {
-		flexGrow: 1,
-		backgroundColor: theme.palette.background.default,
-		padding: theme.spacing.unit * 3,
-	},
-});
+const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
+const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
 
 class App extends Component {
 	constructor(props) {
@@ -104,10 +35,6 @@ class App extends Component {
 			open: false,
 			showSnackbar: false,
 		};
-
-		this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
-		this.handleDrawerClose = this.handleDrawerClose.bind(this);
-		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 	}
 
 	componentDidMount() {
@@ -124,15 +51,15 @@ class App extends Component {
 		}
 	}
 
-	handleDrawerOpen() {
+	handleDrawerOpen = () => {
 		this.setState({ open: true });
 	}
 
-	handleDrawerClose() {
+	handleDrawerClose = () => {
 		this.setState({ open: false });
 	}
 
-	handleSnackbarClose() {
+	handleSnackbarClose = () => {
 		this.setState({ showSnackbar: false });
 	}
 
@@ -189,15 +116,14 @@ class App extends Component {
 				{/* App body */}
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{window.localStorage.getItem('ScrbblUser') ? // Well this needs to be done more elegantly
+					{window.localStorage.getItem('ScrbblUser') ?
 						<Grid container spacing={24}>
-							<Route exact path="/" component={Home} />
-							<Route path="/manual" component={ManualScrobble} />
-							<Route path="/album" component={AlbumScrobble} />
-							<Route
-								path="/callback"
-								render={() => <Redirect to={{ pathname: '/' }} />}
-							/>
+							<Suspense fallback={<div>Loading...</div>}>
+								<Route exact path="/" component={Home} />
+								<Route path="/manual" component={ManualScrobble} />
+								<Route path="/album" component={AlbumScrobble} />
+								<Route path="/callback" render={() => <Redirect to={{ pathname: '/' }} />} />
+							</Suspense>
 						</Grid>
 						:
 						<Login authenticate={this.login} />
@@ -223,4 +149,4 @@ class App extends Component {
 	}
 }
 
-export default withStyles(styles, { withTheme: true })(App);
+export default styles(App);

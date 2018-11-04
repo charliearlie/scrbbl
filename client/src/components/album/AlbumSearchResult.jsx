@@ -106,7 +106,7 @@ class AlbumSearchResult extends Component {
 		}
 
 		const requestBody = {
-			tracks: this.state.resultTracks.filter(track => track.checked === true),
+			tracks: this.state.resultTracks.filter(track => track.checked),
 			albumInfo: { ...this.props.result, album: this.state.albumTitle },
 		};
 
@@ -122,6 +122,7 @@ class AlbumSearchResult extends Component {
 		}).then((response) => {
 			const { albumScrobbles } = response.data;
 			const message = `Success! You have scrobbled ${this.state.albumTitle} ${albumScrobbles} times on Scrbbl`;
+
 			this.props.handleScrobbleSuccess(message);
 			this.setState({ scrobbled: !!albumScrobbles });
 		});
@@ -247,14 +248,11 @@ class AlbumSearchResult extends Component {
 									trackNumber={index}
 								/>
 								<Checkbox
-									checked={resultTracks[index]}
+									checked={resultTracks[index].checked}
 									value={index}
-									classes={{
-										marginLeft: '16px',
-									}}
-									onChange={(e) => {
+									onChange={() => {
 										const tracks = this.state.resultTracks;
-										tracks[index] = e.target.checked;
+										tracks[index].checked = !tracks[index].checked;
 										this.setState({ resultTracks: tracks });
 									}}
 								/>
