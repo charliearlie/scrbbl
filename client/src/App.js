@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
 import { Route, Redirect } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,9 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { Snackbar } from '@material-ui/core';
-
 import './App.css';
-import styles from './AppStyles';
 import Home from './components/Home';
 import Login from './components/Login';
 import DrawerItems from './assets/DrawerItems';
@@ -26,6 +25,74 @@ import SideDrawerList from './components/SideDrawerList';
 const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
 
+const drawerWidth = 280;
+
+const styles = theme => ({
+	root: {
+		flexGrow: 1,
+		zIndex: 1,
+		overflow: 'hidden',
+		position: 'relative',
+		display: 'flex',
+		minHeight: '100vh',
+	},
+	appBar: {
+		zIndex: theme.zIndex.drawer + 1,
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		}),
+		backgroundColor: '#c3000d',
+	},
+	appBarShift: {
+		marginLeft: drawerWidth,
+		width: `calc(100% - ${drawerWidth}px)`,
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	},
+	menuButton: {
+		marginLeft: 12,
+		marginRight: 36,
+	},
+	hide: {
+		display: 'none',
+	},
+	drawerPaper: {
+		position: 'relative',
+		whiteSpace: 'nowrap',
+		width: drawerWidth,
+		transition: theme.transitions.create('width', {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	},
+	drawerPaperClose: {
+		overflowX: 'hidden',
+		transition: theme.transitions.create('width', {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		}),
+		width: 0,
+		[theme.breakpoints.up('sm')]: {
+			width: theme.spacing.unit * 9,
+		},
+	},
+	toolbar: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+		padding: '0 8px',
+		...theme.mixins.toolbar,
+	},
+	content: {
+		flexGrow: 1,
+		backgroundColor: theme.palette.background.default,
+		padding: theme.spacing.unit * 3,
+	},
+});
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -35,6 +102,10 @@ class App extends Component {
 			open: false,
 			showSnackbar: false,
 		};
+
+		this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
+		this.handleDrawerClose = this.handleDrawerClose.bind(this);
+		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 	}
 
 	componentDidMount() {
@@ -51,15 +122,15 @@ class App extends Component {
 		}
 	}
 
-	handleDrawerOpen = () => {
+	handleDrawerOpen() {
 		this.setState({ open: true });
 	}
 
-	handleDrawerClose = () => {
+	handleDrawerClose() {
 		this.setState({ open: false });
 	}
 
-	handleSnackbarClose = () => {
+	handleSnackbarClose() {
 		this.setState({ showSnackbar: false });
 	}
 
@@ -149,4 +220,4 @@ class App extends Component {
 	}
 }
 
-export default styles(App);
+export default withStyles(styles, { withTheme: true })(App);
