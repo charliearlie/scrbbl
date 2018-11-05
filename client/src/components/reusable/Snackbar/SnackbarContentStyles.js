@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 

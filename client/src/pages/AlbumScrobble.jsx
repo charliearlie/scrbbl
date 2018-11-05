@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import { Snackbar } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import Card from '../components/reusable/Card';
 import TextInput from '../components/reusable/TextInput';
