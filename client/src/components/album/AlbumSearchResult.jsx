@@ -3,7 +3,7 @@ import axios from 'axios';
 import classnames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import Checkbox from '@material-ui/core/Checkbox';
-import { withStyles } from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Config from '../../config/endpoints';
 import Card from '../reusable/Card';
