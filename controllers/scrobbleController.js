@@ -69,26 +69,21 @@ exports.albumScrobble = (req, res) => {
 		});
 	});
 
-	res.json({
-		albumScrobbles: 2,
-		artistScrobbles: 3,
-	});
+	const ret = {
+		albumScrobbles: 0,
+		artistScrobbles: 0,
+	};
 
-	// const ret = {
-	// 	albumScrobbles: 0,
-	// 	artistScrobbles: 0,
-	// };
+	const albumScrobble = new AlbumScrobble({...album, user: user.username});
+	albumScrobble
+		.save()
+		.then(async () => {
+			ret.albumScrobbles = await AlbumScrobble.count({ album: album.album, user: user.username}) || 0;
+			ret.artistScrobbles = await AlbumScrobble.count({ artist: album.artist }) || 0;
 
-	// const albumScrobble = new AlbumScrobble({...album, user: user.username});
-	// albumScrobble
-	// 	.save()
-	// 	.then(async () => {
-	// 		ret.albumScrobbles = await AlbumScrobble.count({ album: album.album, user: user.username}) || 0;
-	// 		ret.artistScrobbles = await AlbumScrobble.count({ artist: album.artist }) || 0;
-
-	// 		res.json(ret);
-	// 	})
-	// 	.catch(err => console.log(err));
+			res.json(ret);
+		})
+		.catch(err => console.log(err));
 
 	lastfm.setSessionCredentials(null, null);
 }
