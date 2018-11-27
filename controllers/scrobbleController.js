@@ -9,7 +9,7 @@ exports.manualScrobble = (req, res) => {
     const track = req.body;
     let date = Math.floor((new Date()).getTime() / 1000) - 300;
 
-	track.timestamp = date;
+		track.timestamp = date;
     
 	lastfm.setSessionCredentials(track.user, track.key); //Horrible hack until I sort sessions with this api
 	lastfm.track.scrobble({
@@ -46,15 +46,14 @@ exports.albumScrobble = (req, res) => {
 		key: req.headers.key
 	};
 
-	let time = Math.floor((new Date()).getTime() / 1000) - 300;
 	const tracks = req.body.tracks;
 	const album = req.body.albumInfo;
-	album.timestamp = time;
+	let time = album.when ? Math.floor(moment(album.when).format('x') / 1000) : Math.floor((new Date()).getTime() / 1000) - 300;
 
 	lastfm.setSessionCredentials(user.username, user.key); //Horrible hack again
 
 	_.forEachRight(tracks, (track) => {
-		time = time -= Number(track.trackTime / 1000);
+		time = time -= Math.floor(Number(track.trackTime / 1000));
 
 		lastfm.track.scrobble({
 			'artist': track.artist,
@@ -66,7 +65,7 @@ exports.albumScrobble = (req, res) => {
 			if (err) {
 				return res.json(err);
 			}
-			console.log('we did it');
+			console.log(scrobbles);
 		});
 	});
 
