@@ -22,8 +22,9 @@ import UserNav from './components/UserNav';
 import SnackbarContent from './components/reusable/Snackbar/SnackbarContent';
 import SideDrawerList from './components/SideDrawerList';
 
-const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
+const ManualScrobble = lazy(() => import('./pages/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
+const RadioScrobble = lazy(() => import('./pages/RadioScrobble'));
 
 const drawerWidth = 280;
 
@@ -193,6 +194,7 @@ class App extends Component {
 								<Route exact path="/" component={Home} />
 								<Route path="/manual" component={ManualScrobble} />
 								<Route path="/album" component={AlbumScrobble} />
+								<Route path="/radio" component={RadioScrobble} />
 								<Route path="/callback" render={() => <Redirect to={{ pathname: '/' }} />} />
 							</Suspense>
 						</Grid>

@@ -93,6 +93,7 @@ class AlbumSearchResult extends Component {
 			initialTracks: null,
 			scrobbled: false,
 			albumTitle: this.props.result.album || '',
+			when: '',
 		};
 
 		this.handleClick = this.handleClick.bind(this);
@@ -107,7 +108,7 @@ class AlbumSearchResult extends Component {
 
 		const requestBody = {
 			tracks: this.state.resultTracks.filter(track => track.checked),
-			albumInfo: { ...this.props.result, album: this.state.albumTitle },
+			albumInfo: { ...this.props.result, album: this.state.albumTitle, when: this.state.when },
 		};
 
 		axios({
@@ -238,6 +239,7 @@ class AlbumSearchResult extends Component {
 								</Button>
 							</div>
 						</div>
+						<input type="text" placeholder="Date/time" onChange={e => this.setState({ when: e.target.value })} />
 					</div>
 					<div className={trackClasses}>
 						{showTracks && resultTracks && resultTracks.map((track, index) => (

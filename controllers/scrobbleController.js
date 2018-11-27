@@ -9,7 +9,7 @@ exports.manualScrobble = (req, res) => {
     const track = req.body;
     let date = Math.floor((new Date()).getTime() / 1000) - 300;
 
-	track.timestamp = date;
+		track.timestamp = date;
     
 	lastfm.setSessionCredentials(track.user, track.key); //Horrible hack until I sort sessions with this api
 	lastfm.track.scrobble({
