@@ -46,15 +46,14 @@ exports.albumScrobble = (req, res) => {
 		key: req.headers.key
 	};
 
-	let time = Math.floor((new Date()).getTime() / 1000) - 300;
 	const tracks = req.body.tracks;
 	const album = req.body.albumInfo;
-	album.timestamp = time;
+	let time = album.when ? Math.floor(moment(album.when).format('x') / 1000) : Math.floor((new Date()).getTime() / 1000) - 300;
 
 	lastfm.setSessionCredentials(user.username, user.key); //Horrible hack again
 
 	_.forEachRight(tracks, (track) => {
-		time = time -= Number(track.trackTime / 1000);
+		time = time -= Math.floor(Number(track.trackTime / 1000));
 
 		lastfm.track.scrobble({
 			'artist': track.artist,
@@ -66,25 +65,30 @@ exports.albumScrobble = (req, res) => {
 			if (err) {
 				return res.json(err);
 			}
-			console.log('we did it');
+			console.log(scrobbles);
 		});
 	});
 
-	const ret = {
-		albumScrobbles: 0,
-		artistScrobbles: 0,
-	};
+	res.json({
+		albumScrobbles: 2,
+		artistScrobbles: 3,
+	});
 
-	const albumScrobble = new AlbumScrobble({...album, user: user.username});
-	albumScrobble
-		.save()
-		.then(async () => {
-			ret.albumScrobbles = await AlbumScrobble.count({ album: album.album, user: user.username}) || 0;
-			ret.artistScrobbles = await AlbumScrobble.count({ artist: album.artist }) || 0;
+	// const ret = {
+	// 	albumScrobbles: 0,
+	// 	artistScrobbles: 0,
+	// };
 
-			res.json(ret);
-		})
-		.catch(err => console.log(err));
+	// const albumScrobble = new AlbumScrobble({...album, user: user.username});
+	// albumScrobble
+	// 	.save()
+	// 	.then(async () => {
+	// 		ret.albumScrobbles = await AlbumScrobble.count({ album: album.album, user: user.username}) || 0;
+	// 		ret.artistScrobbles = await AlbumScrobble.count({ artist: album.artist }) || 0;
+
+	// 		res.json(ret);
+	// 	})
+	// 	.catch(err => console.log(err));
 
 	lastfm.setSessionCredentials(null, null);
 }

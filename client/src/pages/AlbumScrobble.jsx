@@ -61,6 +61,7 @@ class AlbumScrobble extends Component {
 		};
 		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
+		this.fillForm = this.fillForm.bind(this);
 	}
 
 	fillForm(albums) {
