@@ -23,6 +23,7 @@ const styles = theme => ({
 		alignItems: 'center',
 		padding: '14px 40px',
 		backgroundColor: '#fff',
+		margin: '0 16px',
 	},
 	input: {
 		margin: '36px',

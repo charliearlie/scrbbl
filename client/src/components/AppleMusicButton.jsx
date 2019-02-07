@@ -8,6 +8,7 @@ const styles = () => ({
 	appleMusicButton: {
 		backgroundColor: '#f2f2f2',
 		color: '#000',
+		textTransform: 'none',
 	},
 });
 

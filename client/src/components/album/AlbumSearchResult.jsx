@@ -20,6 +20,7 @@ const styles = () => ({
 		margin: '8px',
 		alignItems: 'center',
 		backgroundColor: '#fff',
+		borderRadius: '4px',
 	},
 	result: {
 		display: 'flex',
@@ -31,7 +32,7 @@ const styles = () => ({
 		display: 'flex',
 	},
 	resultInfo: {
-		padding: '8px 8px 0 8px',
+		padding: '0 8px',
 		fontSize: '1.1rem',
 		width: '100%',
 	},
@@ -44,6 +45,11 @@ const styles = () => ({
 	},
 	resultYear: {
 		fontSize: '.8rem',
+		color: '#666',
+	},
+	image: {
+		borderTopLeftRadius: '4px',
+		borderBottomLeftRadius: '4px',
 	},
 	showTracks: {
 		display: 'flex',
@@ -60,21 +66,27 @@ const styles = () => ({
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
-
 	},
 	button: {
 		maxWidth: '100%',
-		marginTop: '16px',
 		marginLeft: 'auto',
 		justifySelf: 'flex-end',
 		display: 'block',
-		boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
-		padding: '4px 8px',
+		boxShadow:
+			'0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+		padding: '0 8px',
 		border: 0,
 		cursor: 'pointer',
 		font: '400 11px system-ui',
 		textTransform: 'uppercase',
 		color: 'white',
+		width: '38px',
+		height: '32px',
+	},
+	calendarButton: {
+		background: '#118AB2',
+		paddingBottom: '2px',
+		marginBottom: '8px',
 	},
 	buttonNotScrobbled: {
 		backgroundColor: '#c3000d',
@@ -117,12 +129,13 @@ class AlbumSearchResult extends Component {
 			headers: {
 				username: window.localStorage.getItem('ScrbblUser'),
 				key: window.localStorage.getItem('ScrbblKey'),
-
 			},
 			data: requestBody,
-		}).then((response) => {
+		}).then(response => {
 			const { albumScrobbles } = response.data;
-			const message = `Success! You have scrobbled ${this.state.albumTitle} ${albumScrobbles} times on Scrbbl`;
+			const message = `Success! You have scrobbled ${
+				this.state.albumTitle
+			} ${albumScrobbles} times on Scrbbl`;
 
 			this.props.handleScrobbleSuccess(message);
 			this.setState({ scrobbled: !!albumScrobbles });
@@ -193,13 +206,14 @@ class AlbumSearchResult extends Component {
 		};
 
 		return (
-			<Card
-				className={classes.resultCard}
-				shadowLevel={1}
-			>
+			<Card className={classes.resultCard} shadowLevel={1}>
 				<Fragment>
 					<div className={classes.result}>
-						<img src={result.albumArtwork} alt={result.album} />
+						<img
+							className={classes.image}
+							src={result.albumArtwork}
+							alt={result.album}
+						/>
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
 								<Grid item xs={9}>
@@ -207,8 +221,10 @@ class AlbumSearchResult extends Component {
 										{renderAlbumTitle()}
 										<IconButton
 											icon="far fa-edit"
-											onClick={() => this.setState(prevState =>
-												({ editAlbumTitle: !prevState.editAlbumTitle }))
+											onClick={() =>
+												this.setState(prevState => ({
+													editAlbumTitle: !prevState.editAlbumTitle,
+												}))
 											}
 										/>
 									</div>
@@ -219,19 +235,47 @@ class AlbumSearchResult extends Component {
 									<button
 										variant="raised"
 										onClick={this.scrobble}
+										className={classnames(
+											classes.button,
+											classes.calendarButton,
+										)}
+										disabled={scrobbled}
+									>
+										{!scrobbled ? (
+											<i
+												style={{ marginTop: '4px' }}
+												className="fas fa-calendar-alt fa-2x"
+											/>
+										) : (
+											<i
+												style={{ marginTop: '4px' }}
+												className="fas fa-check fa-2x"
+											/>
+										)}
+									</button>
+									<button
+										variant="raised"
+										onClick={this.scrobble}
 										className={scrobbleButtonClasses}
 										disabled={scrobbled}
 									>
-										{!scrobbled ?
-											<i style={{ marginTop: '4px' }} className="fab fa-lastfm fa-2x" />
-											:
-											<i style={{ marginTop: '4px' }} className="fas fa-check fa-2x" />
-										}
+										{!scrobbled ? (
+											<i
+												style={{ marginTop: '4px' }}
+												className="fab fa-lastfm fa-2x"
+											/>
+										) : (
+											<i
+												style={{ marginTop: '4px' }}
+												className="fas fa-check fa-2x"
+											/>
+										)}
 									</button>
 								</Grid>
 							</Grid>
 							<div className={classes.showTracks}>
 								<Button
+									style={{ minHeight: '0', padding: '0' }}
 									onClick={this.handleClick}
 									className={classes.showTracksButton}
 								>
@@ -241,24 +285,26 @@ class AlbumSearchResult extends Component {
 						</div>
 					</div>
 					<div className={trackClasses}>
-						{showTracks && resultTracks && resultTracks.map((track, index) => (
-							<div className={classes.resultTrack}>
-								<AlbumSearchResultInput
-									handleTrackChange={this.handleTrackChange}
-									songTitle={track.songTitle}
-									trackNumber={index}
-								/>
-								<Checkbox
-									checked={resultTracks[index].checked}
-									value={index}
-									onChange={() => {
-										const tracks = this.state.resultTracks;
-										tracks[index].checked = !tracks[index].checked;
-										this.setState({ resultTracks: tracks });
-									}}
-								/>
-							</div>
-						))}
+						{showTracks &&
+							resultTracks &&
+							resultTracks.map((track, index) => (
+								<div className={classes.resultTrack}>
+									<AlbumSearchResultInput
+										handleTrackChange={this.handleTrackChange}
+										songTitle={track.songTitle}
+										trackNumber={index}
+									/>
+									<Checkbox
+										checked={resultTracks[index].checked}
+										value={index}
+										onChange={() => {
+											const tracks = this.state.resultTracks;
+											tracks[index].checked = !tracks[index].checked;
+											this.setState({ resultTracks: tracks });
+										}}
+									/>
+								</div>
+							))}
 					</div>
 				</Fragment>
 			</Card>

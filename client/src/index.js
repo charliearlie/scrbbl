@@ -6,10 +6,9 @@ import * as serviceWorker from './registerServiceWorker';
 import './index.css';
 import App from './App';
 
-
 const theme = createMuiTheme({
 	typography: {
-		fontFamily: '"Work Sans", "Roboto", "Helvetica", "Arial", sans-serif',
+		fontFamily: '"Nunito", "Roboto", "Helvetica", "Arial", sans-serif',
 	},
 });
 
@@ -18,6 +17,8 @@ ReactDOM.render(
 		<BrowserRouter>
 			<App />
 		</BrowserRouter>
-	</MuiThemeProvider>, document.getElementById('root'));
+	</MuiThemeProvider>,
+	document.getElementById('root'),
+);
 
 serviceWorker.unregister();
