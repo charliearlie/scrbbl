@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import HomeContentCard from './HomeContentCard';
 import homeContentCardData from '../assets/homeContentCardData';
 
-const styles = theme => ({
+const styles = () => ({
 	root: {
 		display: 'flex',
 		height: '100vh',
