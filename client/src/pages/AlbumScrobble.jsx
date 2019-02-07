@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
-
 import Card from '../components/reusable/Card';
 import TextInput from '../components/reusable/TextInput';
 import AppleMusicButton from '../components/AppleMusicButton';
 import AlbumSearchResults from '../components/album/AlbumSearchResults';
 import Fade from '../components/reusable/Fade';
 import SnackbarContent from '../components/reusable/Snackbar/SnackbarContent';
+import { search } from '../util/appleMusic';
 
 const styles = () => ({
 	container: {
@@ -23,6 +23,7 @@ const styles = () => ({
 		alignItems: 'center',
 		padding: '14px 40px',
 		backgroundColor: '#fff',
+		margin: '0 48px',
 	},
 	resultCard: {
 		display: 'flex',
@@ -59,9 +60,11 @@ class AlbumScrobble extends Component {
 			searchQuery: '',
 			showSnackbar: false,
 		};
+
 		this.fillForm = this.fillForm.bind(this);
 		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
 		this.handleScrobbleSuccess = this.handleScrobbleSuccess.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	fillForm(albums) {
@@ -74,6 +77,18 @@ class AlbumScrobble extends Component {
 		}));
 
 		this.setState({ searchResults: albumList });
+	}
+
+	async search() {
+		const result = await search(this.state.searchQuery, 'album');
+		this.fillForm(result);
+	}
+
+	async handleKeyPress(e) {
+		if (e.key === 'Enter') {
+			this.search();
+		}
+		return null;
 	}
 
 	handleChange(value, name) {
@@ -94,14 +109,12 @@ class AlbumScrobble extends Component {
 			<Fragment>
 				<Grid item xs={false} lg={2} />
 				<Grid item xs={12} lg={8}>
-					<Card
-						className={classes.card}
-						shadowLevel={1}
-					>
+					<Card className={classes.card} shadowLevel={1}>
 						<TextInput
 							placeholder="Search..."
 							name="searchQuery"
 							value={this.state.searchQuery}
+							onKeyPress={this.handleKeyPress}
 							onChange={e => this.handleChange(e.target.value, e.target.name)}
 							autoFocus
 							required
@@ -118,7 +131,7 @@ class AlbumScrobble extends Component {
 					</Card>
 				</Grid>
 				<Grid item xs={false} lg={2} />
-				{this.state.searchResults &&
+				{this.state.searchResults && (
 					<Fragment>
 						Search Results
 						<Fade in={this.state.searchResults}>
@@ -128,7 +141,7 @@ class AlbumScrobble extends Component {
 							/>
 						</Fade>
 					</Fragment>
-				}
+				)}
 				<Snackbar
 					anchorOrigin={{
 						vertical: 'bottom',

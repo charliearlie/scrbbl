@@ -89,7 +89,6 @@ const styles = theme => ({
 	content: {
 		flexGrow: 1,
 		backgroundColor: theme.palette.background.default,
-		padding: theme.spacing.unit * 3,
 	},
 });
 
@@ -112,13 +111,16 @@ class App extends Component {
 		const params = qs.parse(window.location.search.slice(1));
 
 		if (params.token && !this.state.displayName) {
-			axios.get(`/api/users/session/${params.token}`)
-				.then((response) => {
+			axios
+				.get(`/api/users/session/${params.token}`)
+				.then(response => {
 					window.localStorage.setItem('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
 					this.setState({ displayName: response.data.username, showSnackbar: true });
 				})
-				.catch((error) => { throw new Error(error); });
+				.catch(error => {
+					throw new Error(error);
+				});
 		}
 	}
 
@@ -137,8 +139,10 @@ class App extends Component {
 	/* eslint-disable */
 	login() {
 		const callbackUrl = window.location.href.split('?')[0];
-		const requestUrl = 'http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=' + callbackUrl;
-		return window.location.href = requestUrl;
+		const requestUrl =
+			'http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=' +
+			callbackUrl;
+		return (window.location.href = requestUrl);
 	}
 	/* eslint-enable */
 
@@ -155,7 +159,10 @@ class App extends Component {
 							color="inherit"
 							aria-label="open drawer"
 							onClick={this.handleDrawerOpen}
-							className={classNames(classes.menuButton, this.state.open && classes.hide)}
+							className={classNames(
+								classes.menuButton,
+								this.state.open && classes.hide,
+							)}
 						>
 							<MenuIcon />
 						</IconButton>
@@ -170,7 +177,10 @@ class App extends Component {
 				<Drawer
 					variant="permanent"
 					classes={{
-						paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+						paper: classNames(
+							classes.drawerPaper,
+							!this.state.open && classes.drawerPaperClose,
+						),
 					}}
 					open={this.state.open}
 				>
@@ -180,25 +190,31 @@ class App extends Component {
 						</IconButton>
 					</div>
 					<Divider />
-					<SideDrawerList closeDrawer={() => this.setState({ open: false })} items={DrawerItems} />
+					<SideDrawerList
+						closeDrawer={() => this.setState({ open: false })}
+						items={DrawerItems}
+					/>
 					<Divider />
 				</Drawer>
 
 				{/* App body */}
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{window.localStorage.getItem('ScrbblUser') ?
+					{window.localStorage.getItem('ScrbblUser') ? (
 						<Grid container spacing={24}>
 							<Suspense fallback={<div>Loading...</div>}>
 								<Route exact path="/" component={Home} />
 								<Route path="/manual" component={ManualScrobble} />
 								<Route path="/album" component={AlbumScrobble} />
-								<Route path="/callback" render={() => <Redirect to={{ pathname: '/' }} />} />
+								<Route
+									path="/callback"
+									render={() => <Redirect to={{ pathname: '/' }} />}
+								/>
 							</Suspense>
 						</Grid>
-						:
+					) : (
 						<Login authenticate={this.login} />
-					}
+					)}
 				</main>
 				<Snackbar
 					anchorOrigin={{

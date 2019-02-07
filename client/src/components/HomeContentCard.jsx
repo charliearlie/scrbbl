@@ -11,6 +11,8 @@ const styles = () => ({
 		alignItems: 'center',
 		padding: '0',
 		backgroundColor: '#fff',
+		borderRadius: '2px',
+		borderTop: '5px solid #c3000d',
 	},
 	cardHeader: {
 		width: '100%',
@@ -26,13 +28,8 @@ const styles = () => ({
 });
 
 const HomeContentCard = ({ classes, icon, content }) => (
-	<Card
-		shadowLevel={1}
-		className={classes.card}
-	>
-		<div className={classes.cardHeader}>
-			{icon}
-		</div>
+	<Card shadowLevel={1} className={classes.card}>
+		<div className={classes.cardHeader}>{icon}</div>
 
 		<Typography variant="body1" className={classes.content} gutterBottom>
 			{content}

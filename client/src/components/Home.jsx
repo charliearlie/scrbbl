@@ -1,7 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 import HomeContentCard from './HomeContentCard';
 import homeContentCardData from '../assets/homeContentCardData';
@@ -18,29 +16,24 @@ const styles = theme => ({
 		width: '100%',
 		marginBottom: '64px',
 	},
+	imageWrapper: {
+		width: '100%',
+		height: '300px',
+	},
+	headerImage: {
+		width: '100%',
+		height: '100%',
+		objectFit: 'cover',
+	},
 	header: {
 		color: 'rgba(0, 0, 0, 0.65)',
 		fontWeight: 'bold',
 		fontSize: '4rem',
 	},
-	subheader: {
-		fontSize: '2rem',
-		fontFamily: '"Work Sans"',
-		color: 'rgba(0, 0, 0, 0.54)',
-		margin: '8px',
-	},
-	construction: {
-		fontSize: '1.1rem',
-		fontFamily: '"Work Sans"',
-		color: 'rgba(0, 0, 0, 0.54)',
-		margin: '8px',
-	},
-	button: {
-		margin: theme.spacing.unit,
-		backgroundColor: '#c3000d',
-		color: 'white',
-		marginTop: '16px',
-		justifySelf: 'flex-end',
+	cards: {
+		display: 'flex',
+		width: '100%',
+		justifyContent: 'space-around',
 	},
 	'@media (max-width: 600px)': {
 		subheader: {
@@ -54,27 +47,25 @@ const styles = theme => ({
 	},
 });
 
-const Home = (props) => {
+const Home = props => {
 	const { classes } = props;
 	return (
-		<Fragment>
-			<div className={classes.headerContainer}>
-				<Typography variant="display3" className={classes.header}>
-					Scrbbl
-				</Typography>
-				<br />
-				<h3 className={classes.subheader}>The manual Last.FM scrobbler</h3>
-				<h5 className={classes.construction}>Currently under construction</h5>
+		<div className={classes.headerContainer}>
+			<div className={classes.imageWrapper}>
+				<img
+					className={classes.headerImage}
+					src="https://res.cloudinary.com/recipeze/image/upload/v1549486051/iphone.jpg"
+					alt="header"
+				/>
 			</div>
-			{homeContentCardData.map(data => (
-				<Grid item xs={12} md={4}>
-					<HomeContentCard
-						icon={data.icon}
-						content={data.content}
-					/>
-				</Grid>
-			))}
-		</Fragment>
+			<div className={classes.cards}>
+				{homeContentCardData.map(data => (
+					<div style={{ flexBasis: '25%', marginTop: '-80px' }}>
+						<HomeContentCard icon={data.icon} content={data.content} />
+					</div>
+				))}
+			</div>
+		</div>
 	);
 };
 

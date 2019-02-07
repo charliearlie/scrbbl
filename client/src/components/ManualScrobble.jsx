@@ -116,22 +116,19 @@ class ManualScrobble extends Component {
 	render() {
 		const { classes } = this.props;
 		const { albumArtist, songTitle, artistScrobbled } = this.state;
-		console.log(this.state);
 		const isDisabled = !albumArtist && !songTitle;
+
 		return (
 			<Fragment>
 				<Grid item xs={false} md={2} />
 				<Grid item xs={12} md={8}>
 					<h2 className={classes.header}>Manual Scrobble</h2>
-					<Card
-						className={classes.card}
-						shadowLevel={1}
-					>
-						{this.state.scrobbled ?
+					<Card className={classes.card} shadowLevel={1}>
+						{this.state.scrobbled ? (
 							<Fragment>
 								<div>
-									Track scrobbled successfully
-									You have scrobbled {artistScrobbled.name} {artistScrobbled.playcount} times
+									Track scrobbled successfully You have scrobbled{' '}
+									{artistScrobbled.name} {artistScrobbled.playcount} times
 								</div>
 								<div>
 									<ScrbblButton
@@ -142,7 +139,7 @@ class ManualScrobble extends Component {
 									</ScrbblButton>
 								</div>
 							</Fragment>
-							:
+						) : (
 							<Fragment>
 								<TextInput
 									placeholder="Artist"
@@ -182,7 +179,12 @@ class ManualScrobble extends Component {
 										InputLabelProps={{
 											shrink: true,
 										}}
-										onChange={e => this.handleChange(e.target.value.toString(), e.target.name)}
+										onChange={e =>
+											this.handleChange(
+												e.target.value.toString(),
+												e.target.name,
+											)
+										}
 									/>
 									<TextField
 										name="time"
@@ -192,7 +194,9 @@ class ManualScrobble extends Component {
 										InputLabelProps={{
 											shrink: true,
 										}}
-										onChange={e => this.handleChange(e.target.value, e.target.name)}
+										onChange={e =>
+											this.handleChange(e.target.value, e.target.name)
+										}
 									/>
 								</div>
 								<div className={classes.buttonSection}>
@@ -212,7 +216,7 @@ class ManualScrobble extends Component {
 									</AppleMusicButton>
 								</div>
 							</Fragment>
-						}
+						)}
 					</Card>
 					*Apple Music tagging is an experimental feature
 				</Grid>

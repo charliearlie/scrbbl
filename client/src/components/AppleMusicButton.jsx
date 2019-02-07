@@ -4,6 +4,7 @@ import axios from 'axios';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Config from '../config/endpoints';
 import ScrbblButton from './reusable/ScrbblButton';
+import { search } from '../util/appleMusic';
 
 const styles = () => ({
 	appleMusicButton: {
@@ -19,15 +20,14 @@ class AppleMusicButton extends Component {
 		this.search = this.search.bind(this);
 	}
 
-	search() {
+	// !TODO: This component is no longer needed
+	async search() {
 		const { query, type } = this.props;
-		axios.get(`${Config.endpoints.albumSearch}?term=${query.replace(' ', '+')}&media=music&entity=${type}`)
-			.then((response) => {
-				const result = type === 'album' ? response.data.results : response.data.results[0];
-				if (result) {
-					this.props.fillForm(result);
-				}
-			});
+		const result = await search(query, type);
+
+		if (result) {
+			this.props.fillForm(result);
+		}
 	}
 
 	render() {

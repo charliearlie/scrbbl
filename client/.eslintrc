@@ -1,36 +1,37 @@
 {
-    "extends": "airbnb",
-    "rules": {
-      "comma-dangle": 1,
-      "indent": [1, "tab"],
-      "react/jsx-filename-extension": 0,
-      "no-tabs": 0,
-      "react/jsx-indent": [1, "tab"],
-      "react/jsx-indent-props": [1, "tab"],
-      "jsx-a11y/anchor-is-valid": 0,
-      "jsx-a11y/click-events-have-key-events": 0,
-      "jsx-a11y/interactive-supports-focus": 0,
-      "react/prop-types": "warn",
-      "function-paren-newline": "warn",
-      "react/prefer-stateless-function": "warn"
-    },
-    "parser": "babel-eslint",
-    "globals": {
-      "window": true,
-      "fetch": true,
-      "env": true,
-      "expect": true
-    },
-    "env": {
-      "browser": true
-    },
-    "overrides": [
-      {
-        "files": ["**/*.test.js"],
-        "env": {
-            "mocha": true,
-            "jest": true
-        }
-      }
-    ]
+	"extends": "airbnb",
+	"rules": {
+		"comma-dangle": 1,
+		"indent": [1, "tab"],
+		"react/jsx-filename-extension": 0,
+		"no-tabs": 0,
+		"react/jsx-indent": [1, "tab"],
+		"react/jsx-indent-props": [1, "tab"],
+		"jsx-a11y/anchor-is-valid": 0,
+		"jsx-a11y/click-events-have-key-events": 0,
+		"jsx-a11y/interactive-supports-focus": 0,
+		"react/prop-types": "warn",
+		"function-paren-newline": "warn",
+		"react/prefer-stateless-function": "warn",
+		"arrow-parens": "warn"
+	},
+	"parser": "babel-eslint",
+	"globals": {
+		"window": true,
+		"fetch": true,
+		"env": true,
+		"expect": true
+	},
+	"env": {
+		"browser": true
+	},
+	"overrides": [
+		{
+			"files": ["**/*.test.js"],
+			"env": {
+				"mocha": true,
+				"jest": true
+			}
+		}
+	]
 }

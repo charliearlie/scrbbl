@@ -72,7 +72,8 @@ module.exports = {
 		// https://github.com/facebookincubator/create-react-app/issues/253
 		modules: ['node_modules', paths.appNodeModules].concat(
 			// It is guaranteed to exist because we tweak it in `env.js`
-			process.env.NODE_PATH.split(path.delimiter).filter(Boolean)),
+			process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
+		),
 		// These are the reasonable defaults supported by the Node ecosystem.
 		// We also include JSX as a common component filename extension to support
 		// some tools, although we do not recommend using it, see:
@@ -111,7 +112,7 @@ module.exports = {
 						options: {
 							formatter: eslintFormatter,
 							eslintPath: require.resolve('eslint'),
-
+							emitWarning: true,
 						},
 						loader: require.resolve('eslint-loader'),
 					},
@@ -140,7 +141,6 @@ module.exports = {
 						include: paths.appSrc,
 						loader: require.resolve('babel-loader'),
 						options: {
-
 							// This is a feature of `babel-loader` for webpack (not Babel itself).
 							// It enables caching results in ./node_modules/.cache/babel-loader/
 							// directory for faster rebuilds.
