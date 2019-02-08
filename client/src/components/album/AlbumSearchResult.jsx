@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
+import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Checkbox from '@material-ui/core/Checkbox';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
+import { DateTimePicker } from 'material-ui-pickers';
 import Config from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
 import IconButton from '../reusable/IconButton';
 import TextInput from '../reusable/TextInput';
+import AlbumSearchResultDateDialog from './AlbumSearchResultDateDialog';
 
 const styles = () => ({
 	resultCard: {
@@ -53,7 +56,7 @@ const styles = () => ({
 	},
 	showTracks: {
 		display: 'flex',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 	},
 	showTracksHide: {
 		height: '0',
@@ -86,7 +89,7 @@ const styles = () => ({
 	calendarButton: {
 		background: '#118AB2',
 		paddingBottom: '2px',
-		marginBottom: '8px',
+		marginBottom: '2px',
 	},
 	buttonNotScrobbled: {
 		backgroundColor: '#c3000d',
@@ -106,11 +109,20 @@ class AlbumSearchResult extends Component {
 			initialTracks: null,
 			scrobbled: false,
 			albumTitle: this.props.result.album || '',
+			dialogOpen: false,
+			date: null,
+			showDate: false,
 		};
 
 		this.handleClick = this.handleClick.bind(this);
 		this.handleTrackChange = this.handleTrackChange.bind(this);
 		this.scrobble = this.scrobble.bind(this);
+		this.handleDateChange = this.handleDateChange.bind(this);
+	}
+
+	handleDateChange(date) {
+		const newDate = Math.floor(date.format('x') / 1000);
+		this.setState({ date: newDate });
 	}
 
 	async scrobble() {
@@ -120,7 +132,11 @@ class AlbumSearchResult extends Component {
 
 		const requestBody = {
 			tracks: this.state.resultTracks.filter(track => track.checked),
-			albumInfo: { ...this.props.result, album: this.state.albumTitle },
+			albumInfo: {
+				...this.props.result,
+				album: this.state.albumTitle,
+				date: this.state.date,
+			},
 		};
 
 		axios({
@@ -214,6 +230,11 @@ class AlbumSearchResult extends Component {
 							src={result.albumArtwork}
 							alt={result.album}
 						/>
+						{/* // <AlbumSearchResultDateDialog */}
+						{/* // selectedValue={this.state.date}
+						// open={this.state.dialogOpen}
+						// onClose={this.handleClose}
+						// /> */}
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
 								<Grid item xs={9}>
@@ -232,27 +253,6 @@ class AlbumSearchResult extends Component {
 									<div className={classes.resultYear}>{result.releaseYear}</div>
 								</Grid>
 								<Grid item xs={3}>
-									<button
-										variant="raised"
-										onClick={this.scrobble}
-										className={classnames(
-											classes.button,
-											classes.calendarButton,
-										)}
-										disabled={scrobbled}
-									>
-										{!scrobbled ? (
-											<i
-												style={{ marginTop: '4px' }}
-												className="fas fa-calendar-alt fa-2x"
-											/>
-										) : (
-											<i
-												style={{ marginTop: '4px' }}
-												className="fas fa-check fa-2x"
-											/>
-										)}
-									</button>
 									<button
 										variant="raised"
 										onClick={this.scrobble}
@@ -281,6 +281,27 @@ class AlbumSearchResult extends Component {
 								>
 									{`${showTracks ? 'Hide' : 'Show'} tracks`}
 								</Button>
+								{this.state.showDate ? (
+									<AlbumSearchResultDateDialog
+										onChangeDate={this.handleDateChange}
+									/>
+								) : (
+									<button
+										variant="raised"
+										onClick={() =>
+											this.setState({ showDate: !this.state.showDate })
+										}
+										className={classnames(
+											classes.button,
+											classes.calendarButton,
+										)}
+									>
+										<i
+											style={{ marginTop: '4px' }}
+											className="fas fa-calendar-alt fa-2x"
+										/>
+									</button>
+								)}
 							</div>
 						</div>
 					</div>
