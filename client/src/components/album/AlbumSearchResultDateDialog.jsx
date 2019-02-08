@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import moment from 'moment';
-import { DateTimePicker } from 'material-ui-pickers';
+import React from 'react';
+import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 // pick utils
 import MomentUtils from '@date-io/moment';
 
-function AlbumSearchResultDateDialog({ onChangeDate }) {
-	const [selectedDate, setDate] = useState(new moment());
-
+function AlbumSearchResultDateDialog({ selectedDate, onChangeDate }) {
 	const handleDateChange = date => {
-		setDate(date);
 		onChangeDate(date);
 	};
 

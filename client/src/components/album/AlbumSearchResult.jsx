@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Checkbox from '@material-ui/core/Checkbox';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
-import { DateTimePicker } from 'material-ui-pickers';
 import Config from '../../config/endpoints';
 import Card from '../reusable/Card';
 import AlbumSearchResultInput from './AlbumSearchResultInput';
@@ -109,8 +108,7 @@ class AlbumSearchResult extends Component {
 			initialTracks: null,
 			scrobbled: false,
 			albumTitle: this.props.result.album || '',
-			dialogOpen: false,
-			date: null,
+			date: Math.floor(moment().format('x') / 1000),
 			showDate: false,
 		};
 
@@ -283,6 +281,7 @@ class AlbumSearchResult extends Component {
 								</Button>
 								{this.state.showDate ? (
 									<AlbumSearchResultDateDialog
+										selectedDate={this.state.date}
 										onChangeDate={this.handleDateChange}
 									/>
 								) : (
