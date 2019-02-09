@@ -108,7 +108,7 @@ class AlbumSearchResult extends Component {
 			initialTracks: null,
 			scrobbled: false,
 			albumTitle: this.props.result.album || '',
-			date: Math.floor(moment().format('x') / 1000),
+			date: moment(),
 			showDate: false,
 		};
 
@@ -119,8 +119,7 @@ class AlbumSearchResult extends Component {
 	}
 
 	handleDateChange(date) {
-		const newDate = Math.floor(date.format('x') / 1000);
-		this.setState({ date: newDate });
+		this.setState({ date });
 	}
 
 	async scrobble() {
@@ -133,7 +132,7 @@ class AlbumSearchResult extends Component {
 			albumInfo: {
 				...this.props.result,
 				album: this.state.albumTitle,
-				date: this.state.date,
+				date: Math.floor(this.state.date.format('x') / 1000),
 			},
 		};
 
