@@ -97,6 +97,18 @@ const styles = () => ({
 		backgroundColor: '#4CAF50',
 		cursor: 'not-allowed',
 	},
+	'@media (max-width: 500px)': {
+		resultCard: {
+			margin: '0 32px',
+			maxWidth: '80%',
+		},
+		result: {
+			flexDirection: 'column',
+		},
+		infoWrapper: {
+			padding: '8px',
+		},
+	},
 });
 
 class AlbumSearchResult extends Component {
@@ -132,7 +144,7 @@ class AlbumSearchResult extends Component {
 			albumInfo: {
 				...this.props.result,
 				album: this.state.albumTitle,
-				date: Math.floor(this.state.date.format('x') / 1000),
+				timestamp: Math.floor(this.state.date.format('x') / 1000),
 			},
 		};
 
@@ -234,7 +246,7 @@ class AlbumSearchResult extends Component {
 						// /> */}
 						<div className={classes.resultInfo}>
 							<Grid container spacing={12}>
-								<Grid item xs={9}>
+								<Grid item xs={9} className={classes.infoWrapper}>
 									<div>
 										{renderAlbumTitle()}
 										<IconButton

@@ -58,7 +58,7 @@ exports.albumScrobble = (req, res) => {
 
 	const tracks = req.body.tracks;
 	const album = req.body.albumInfo;
-	let time = album.date || Math.floor(new Date().getTime() / 1000) - 300;
+	let time = album.timestamp || Math.floor(new Date().getTime() / 1000) - 300;
 
 	lastfm.setSessionCredentials(user.username, user.key); //Horrible hack again
 
