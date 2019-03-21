@@ -1,8 +1,10 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
 import { Route, Redirect } from 'react-router-dom';
+
+// Material UI components
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
@@ -14,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Snackbar from '@material-ui/core/Snackbar';
+
+// App components
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -22,8 +26,13 @@ import UserNav from './components/UserNav';
 import SnackbarContent from './components/reusable/Snackbar/SnackbarContent';
 import SideDrawerList from './components/SideDrawerList';
 
+// Hooks
+import useLocalStorage from './hooks/useLocalStorage';
+
+// Pages
 const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
+const RadioScrobble = lazy(() => import('./pages/RadioScrobble'));
 
 const drawerWidth = 280;
 
@@ -88,152 +97,132 @@ const styles = theme => ({
 	},
 	content: {
 		flexGrow: 1,
+		padding: '24px',
 		backgroundColor: theme.palette.background.default,
 	},
 });
 
-class App extends Component {
-	constructor(props) {
-		super(props);
+function App(props) {
+	const [displayName, setDisplayName] = useLocalStorage('ScrbblUser', '');
+	const [open, toggleDrawer] = useState(false);
+	const [showSnackbar, toggleSnackbar] = useState(false);
 
-		this.state = {
-			displayName: window.localStorage.getItem('ScrbblUser'),
-			open: false,
-			showSnackbar: false,
-		};
-
-		this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
-		this.handleDrawerClose = this.handleDrawerClose.bind(this);
-		this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
-	}
-
-	componentDidMount() {
+	useEffect(() => {
 		const params = qs.parse(window.location.search.slice(1));
-
-		if (params.token && !this.state.displayName) {
+		if (params.token && !displayName) {
 			axios
 				.get(`/api/users/session/${params.token}`)
 				.then(response => {
-					window.localStorage.setItem('ScrbblUser', response.data.username);
+					setDisplayName('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
-					this.setState({ displayName: response.data.username, showSnackbar: true });
+					setDisplayName(response.data.username);
+					toggleSnackbar(true);
 				})
 				.catch(error => {
 					throw new Error(error);
 				});
 		}
-	}
+	}, []);
 
-	handleDrawerOpen() {
-		this.setState({ open: true });
-	}
+	const handleDrawerOpen = () => {
+		toggleDrawer(true);
+	};
 
-	handleDrawerClose() {
-		this.setState({ open: false });
-	}
+	const handleDrawerClose = () => {
+		toggleDrawer(false);
+	};
 
-	handleSnackbarClose() {
-		this.setState({ showSnackbar: false });
-	}
+	const handleSnackbarClose = () => {
+		toggleSnackbar(false);
+	};
 
 	/* eslint-disable */
-	login() {
+	const login = () => {
 		const callbackUrl = window.location.href.split('?')[0];
 		const requestUrl =
 			'http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=' +
 			callbackUrl;
 		return (window.location.href = requestUrl);
-	}
-	/* eslint-enable */
+	};
 
-	render() {
-		const { classes } = this.props;
-		return (
-			<div className={classes.root}>
-				<AppBar
-					position="absolute"
-					className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-				>
-					<Toolbar disableGutters={!this.state.open}>
-						<IconButton
-							color="inherit"
-							aria-label="open drawer"
-							onClick={this.handleDrawerOpen}
-							className={classNames(
-								classes.menuButton,
-								this.state.open && classes.hide,
-							)}
-						>
-							<MenuIcon />
-						</IconButton>
-						<div style={{ display: 'flex', margin: 'auto' }}>
-							<Typography variant="title" color="inherit" noWrap>
-								Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
-							</Typography>
-						</div>
-						<UserNav displayName={this.state.displayName} />
-					</Toolbar>
-				</AppBar>
-				<Drawer
-					variant="permanent"
-					classes={{
-						paper: classNames(
-							classes.drawerPaper,
-							!this.state.open && classes.drawerPaperClose,
-						),
-					}}
-					open={this.state.open}
-				>
-					<div className={classes.toolbar}>
-						<IconButton onClick={this.handleDrawerClose}>
-							<ChevronLeftIcon />
-						</IconButton>
+	const { classes } = props;
+	return (
+		<div className={classes.root}>
+			<AppBar
+				position="absolute"
+				className={classNames(classes.appBar, open && classes.appBarShift)}
+			>
+				<Toolbar disableGutters={!open}>
+					<IconButton
+						color="inherit"
+						aria-label="open drawer"
+						onClick={handleDrawerOpen}
+						className={classNames(classes.menuButton, open && classes.hide)}
+					>
+						<MenuIcon />
+					</IconButton>
+					<div style={{ display: 'flex', margin: 'auto' }}>
+						<Typography variant="title" color="inherit" noWrap>
+							Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
+						</Typography>
 					</div>
-					<Divider />
-					<SideDrawerList
-						closeDrawer={() => this.setState({ open: false })}
-						items={DrawerItems}
-					/>
-					<Divider />
-				</Drawer>
+					<UserNav displayName={displayName} />
+				</Toolbar>
+			</AppBar>
+			<Drawer
+				variant="permanent"
+				classes={{
+					paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
+				}}
+				open={open}
+			>
+				<div className={classes.toolbar}>
+					<IconButton onClick={handleDrawerClose}>
+						<ChevronLeftIcon />
+					</IconButton>
+				</div>
+				<Divider />
+				<SideDrawerList closeDrawer={() => toggleDrawer(false)} items={DrawerItems} />
+				<Divider />
+			</Drawer>
 
-				{/* App body */}
-				<main className={classes.content}>
-					<div className={classes.toolbar} />
-					{window.localStorage.getItem('ScrbblUser') ? (
-						<Grid container spacing={24}>
-							<Suspense fallback={<div>Loading...</div>}>
-								<Route exact path="/" component={Home} />
-								<Route path="/manual" component={ManualScrobble} />
-								<Route path="/album" component={AlbumScrobble} />
-								<Route
-									path="/callback"
-									render={() => <Redirect to={{ pathname: '/' }} />}
-								/>
-							</Suspense>
-						</Grid>
-					) : (
-						<Login authenticate={this.login} />
-					)}
-				</main>
-				<Snackbar
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'left',
-					}}
-					open={this.state.showSnackbar}
-					autoHideDuration={5000}
-					onClose={this.handleSnackbarClose}
-				>
-					<SnackbarContent
-						onClose={this.handleSnackbarClose}
-						variant="success"
-						message="Logged in successfully"
-					/>
-				</Snackbar>
-			</div>
-		);
-	}
+			{/* App body */}
+			<main className={classes.content}>
+				<div className={classes.toolbar} />
+				{window.localStorage.getItem('ScrbblUser') ? (
+					<Grid container spacing={24}>
+						<Suspense fallback={<div>Loading...</div>}>
+							<Route exact path="/" component={Home} />
+							<Route path="/manual" component={ManualScrobble} />
+							<Route path="/album" component={AlbumScrobble} />
+							<Route path="/radio" component={RadioScrobble} />
+							<Route
+								path="/callback"
+								render={() => <Redirect to={{ pathname: '/' }} />}
+							/>
+						</Suspense>
+					</Grid>
+				) : (
+					<Login authenticate={login} />
+				)}
+			</main>
+			<Snackbar
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'left',
+				}}
+				open={showSnackbar}
+				autoHideDuration={5000}
+				onClose={handleSnackbarClose}
+			>
+				<SnackbarContent
+					onClose={handleSnackbarClose}
+					variant="success"
+					message="Logged in successfully"
+				/>
+			</Snackbar>
+		</div>
+	);
 }
 
 export default withStyles(styles, { withTheme: true })(App);
