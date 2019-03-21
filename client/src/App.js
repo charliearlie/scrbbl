@@ -1,10 +1,10 @@
-import React, { Component, Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
 import { Route, Redirect } from 'react-router-dom';
 
-//Material UI components
+// Material UI components
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
@@ -26,13 +26,13 @@ import UserNav from './components/UserNav';
 import SnackbarContent from './components/reusable/Snackbar/SnackbarContent';
 import SideDrawerList from './components/SideDrawerList';
 
+// Hooks
+import useLocalStorage from './hooks/useLocalStorage';
+
 // Pages
 const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
 const RadioScrobble = lazy(() => import('./pages/RadioScrobble'));
-
-// Hooks
-import useLocalStorage from './hooks/useLocalStorage';
 
 const drawerWidth = 280;
 

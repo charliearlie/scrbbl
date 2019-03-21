@@ -7,12 +7,10 @@ describe('<ScrbblButton />', () => {
 	const scrobbleSpy = sinon.spy();
 
 	const target = mount(
-		<ScrbblButton
-			variant="raised"
-			onClick={scrobbleSpy}
-		>
+		<ScrbblButton variant="raised" onClick={scrobbleSpy}>
 			Scrobble
-		</ScrbblButton>);
+		</ScrbblButton>,
+	);
 
 	afterEach(() => {
 		scrobbleSpy.resetHistory();

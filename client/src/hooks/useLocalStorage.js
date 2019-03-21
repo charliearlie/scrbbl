@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 function useLocalStorage(key, initialValue) {
-	const [storedValue, setStoredValue] = useState(() => {
-		return window.localStorage.getItem(key) || initialValue;
-	});
+	const [storedValue, setStoredValue] = useState(
+		() => window.localStorage.getItem(key) || initialValue,
+	);
 
 	const setValue = value => {
 		if (value) {
