@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import qs from 'qs';
 import axios from 'axios';
 import { Route, Redirect } from 'react-router-dom';
+
+//Material UI components
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
@@ -14,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Snackbar from '@material-ui/core/Snackbar';
+
+// App components
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -22,9 +26,13 @@ import UserNav from './components/UserNav';
 import SnackbarContent from './components/reusable/Snackbar/SnackbarContent';
 import SideDrawerList from './components/SideDrawerList';
 
+// Pages
 const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
-const RadioScrobble = lazy(() => import('./pages/AlbumScrobble'));
+const RadioScrobble = lazy(() => import('./pages/RadioScrobble'));
+
+// Hooks
+import useLocalStorage from './hooks/useLocalStorage';
 
 const drawerWidth = 280;
 
@@ -89,12 +97,13 @@ const styles = theme => ({
 	},
 	content: {
 		flexGrow: 1,
+		padding: '24px',
 		backgroundColor: theme.palette.background.default,
 	},
 });
 
 function App(props) {
-	const [displayName, setDisplayName] = useState(window.localStorage.getItem('ScrbblUser'));
+	const [displayName, setDisplayName] = useLocalStorage('ScrbblUser', '');
 	const [open, toggleDrawer] = useState(false);
 	const [showSnackbar, toggleSnackbar] = useState(false);
 
@@ -104,7 +113,7 @@ function App(props) {
 			axios
 				.get(`/api/users/session/${params.token}`)
 				.then(response => {
-					window.localStorage.setItem('ScrbblUser', response.data.username);
+					setDisplayName('ScrbblUser', response.data.username);
 					window.localStorage.setItem('ScrbblKey', response.data.key);
 					setDisplayName(response.data.username);
 					toggleSnackbar(true);
