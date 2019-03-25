@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Card = (props) => {
+const Card = props => {
 	const cardShadowLevels = {
 		1: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
 		2: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
@@ -12,10 +12,7 @@ const Card = (props) => {
 
 	const { styles, className, shadowLevel } = props;
 	return (
-		<div
-			className={className}
-			style={{ ...styles, boxShadow: cardShadowLevels[shadowLevel] }}
-		>
+		<div className={className} style={{ ...styles, boxShadow: cardShadowLevels[shadowLevel] }}>
 			{props.children}
 		</div>
 	);
