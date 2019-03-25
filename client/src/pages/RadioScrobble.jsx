@@ -1,9 +1,9 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Card from '../components/reusable/Card';
-import bbcRadio1 from '../assets/bbcradio1.svg';
-import bbcRadio2 from '../assets/bbcradio2.svg';
+import bbcradio1 from '../assets/bbcradio1.svg';
+import bbcradio2 from '../assets/bbcradio2.svg';
 import bbc1xtra from '../assets/bbc1xtra.svg';
 
 const styles = () => ({
@@ -30,9 +30,9 @@ const styles = () => ({
 });
 
 const imageMap = {
-	bbcradio1: bbcRadio1,
-	bbcradio2: bbcRadio2,
-	bbc1xtra: bbc1xtra,
+	bbcradio1,
+	bbcradio2,
+	bbc1xtra,
 };
 
 function RadioScrobble({ classes }) {
@@ -40,15 +40,15 @@ function RadioScrobble({ classes }) {
 	useEffect(() => {
 		const fetchStations = async () => {
 			const response = await axios('/api/radio/getStations');
-			setStations(() => {
-				return response.data.map(
+			setStations(() =>
+				response.data.map(
 					station => ({
 						...station,
 						image: imageMap[station.profile],
 					}),
 					[],
-				);
-			});
+				),
+			);
 		};
 		fetchStations();
 	});
@@ -56,7 +56,7 @@ function RadioScrobble({ classes }) {
 		<div className={classes.stationWrapper}>
 			{stations.map(station => (
 				<Card className={classes.stationCard}>
-					<img className={classes.image} src={station.image} />
+					<img className={classes.image} src={station.image} alt={station.title} />
 				</Card>
 			))}
 		</div>
