@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const scrobbleController = require('../controllers/scrobbleController');
 const appleMusicController = require('../controllers/appleMusicController');
+const radioController = require('../controllers/radioController');
 const lastfm = require('./lastfm');
 const cors = require('cors');
 
@@ -27,5 +28,7 @@ router.get('/appleMusic/search', appleMusicController.search);
  */
 router.post('/scrobble/manual', scrobbleController.manualScrobble);
 router.post('/scrobble/album', scrobbleController.albumScrobble);
+
+router.get('/radio/getStations', radioController.getRadioStations);
 
 module.exports = router;
