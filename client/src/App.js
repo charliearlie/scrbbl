@@ -25,6 +25,8 @@ import DrawerItems from './assets/DrawerItems';
 import UserNav from './components/UserNav';
 import SnackbarContent from './components/reusable/Snackbar/SnackbarContent';
 import SideDrawerList from './components/SideDrawerList';
+import MediaQuery, { Devices } from './components/reusable/MediaQuery';
+import BottomNav from './components/BottomNav/BottomNav';
 
 // Hooks
 import useLocalStorage from './hooks/useLocalStorage';
@@ -64,6 +66,17 @@ const styles = theme => ({
 	menuButton: {
 		marginLeft: 12,
 		marginRight: 36,
+		'@media (max-width: 1024px)': {
+			display: 'none',
+		},
+	},
+	footer: {
+		position: 'fixed',
+		height: '50px',
+		bottom: '0px',
+		left: '0px',
+		right: '0px',
+		marginBottom: '0px',
 	},
 	hide: {
 		display: 'none',
@@ -169,22 +182,36 @@ function App(props) {
 					<UserNav displayName={displayName} />
 				</Toolbar>
 			</AppBar>
-			<Drawer
-				variant="permanent"
-				classes={{
-					paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
+			<MediaQuery>
+				{device => {
+					if (device === Devices.desktop) {
+						return (
+							<Drawer
+								variant="permanent"
+								classes={{
+									paper: classNames(
+										classes.drawerPaper,
+										!open && classes.drawerPaperClose,
+									),
+								}}
+								open={open}
+							>
+								<div className={classes.toolbar}>
+									<IconButton onClick={handleDrawerClose}>
+										<ChevronLeftIcon />
+									</IconButton>
+								</div>
+								<Divider />
+								<SideDrawerList
+									closeDrawer={() => toggleDrawer(false)}
+									items={DrawerItems}
+								/>
+								<Divider />
+							</Drawer>
+						);
+					}
 				}}
-				open={open}
-			>
-				<div className={classes.toolbar}>
-					<IconButton onClick={handleDrawerClose}>
-						<ChevronLeftIcon />
-					</IconButton>
-				</div>
-				<Divider />
-				<SideDrawerList closeDrawer={() => toggleDrawer(false)} items={DrawerItems} />
-				<Divider />
-			</Drawer>
+			</MediaQuery>
 
 			{/* App body */}
 			<main className={classes.content}>
@@ -205,6 +232,13 @@ function App(props) {
 				) : (
 					<Login authenticate={login} />
 				)}
+				<MediaQuery>
+					{device => {
+						if (device !== Devices.desktop) {
+							return <BottomNav items={DrawerItems} styles={classes.footer} />;
+						}
+					}}
+				</MediaQuery>
 			</main>
 			<Snackbar
 				anchorOrigin={{
