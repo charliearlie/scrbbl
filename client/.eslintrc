@@ -13,7 +13,9 @@
 		"react/prop-types": "warn",
 		"function-paren-newline": "warn",
 		"react/prefer-stateless-function": "warn",
-		"arrow-parens": "warn"
+		"arrow-parens": "warn",
+		"object-curly-newline": 0,
+		"class-methods-use-this": "warn"
 	},
 	"parser": "babel-eslint",
 	"globals": {

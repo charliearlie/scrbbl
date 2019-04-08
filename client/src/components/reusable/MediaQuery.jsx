@@ -1,58 +1,57 @@
 import React, { Component, Fragment } from 'react';
 
 export const Devices = {
-    mobile: 'mobile',
-    tablet: 'tablet',
-    desktop: 'desktop',
+	mobile: 'mobile',
+	tablet: 'tablet',
+	desktop: 'desktop',
 };
 
 const MinScreenSizes = {
-    mobile: 280,
-    tablet: 415,
-    desktop: 1025
-}
+	mobile: 280,
+	tablet: 415,
+	desktop: 1025,
+};
 
 class MediaQuery extends Component {
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            currentDevice: this.getWindowSize(window.innerWidth),
-        }
+		this.state = {
+			currentDevice: this.getWindowSize(window.innerWidth),
+		};
 
-        this.handleResize = this.handleResize.bind(this);
-    }
+		this.handleResize = this.handleResize.bind(this);
+	}
 
-    componentDidMount() {
-        window.addEventListener('resize', this.handleResize);
-    }
+	componentDidMount() {
+		window.addEventListener('resize', this.handleResize);
+	}
 
-    componentWillUnmount() {
-        window.removeEventListener('resize');
-    }
+	componentWillUnmount() {
+		window.removeEventListener('resize');
+	}
 
-    getWindowSize(width) {
-        if (width >= MinScreenSizes.mobile && width < MinScreenSizes.tablet) return Devices.mobile;
-        if (width >= MinScreenSizes.tablet && width < MinScreenSizes.desktop) return Devices.tablet;
-        if (width >= MinScreenSizes.desktop) return Devices.desktop;
-    }
+	// eslint-disable
+	getWindowSize(width) {
+		if (width >= MinScreenSizes.mobile && width < MinScreenSizes.tablet) return Devices.mobile;
+		if (width >= MinScreenSizes.tablet && width < MinScreenSizes.desktop) return Devices.tablet;
 
-    handleResize() {
-        const width = window.innerWidth;
+		return Devices.desktop;
+	}
+	// eslint-enable
 
-        if (width < MinScreenSizes.mobile) return;
-        const currentDevice = this.getWindowSize(width);
+	handleResize() {
+		const width = window.innerWidth;
 
-        this.setState({ currentDevice });
-    }
+		if (width < MinScreenSizes.mobile) return;
+		const currentDevice = this.getWindowSize(width);
 
-    render() {
-        return (
-            <Fragment>
-                {this.props.children(this.state.currentDevice)}
-            </Fragment>
-        );
-    }
+		this.setState({ currentDevice });
+	}
+
+	render() {
+		return <Fragment>{this.props.children(this.state.currentDevice)}</Fragment>;
+	}
 }
 
 export default MediaQuery;
