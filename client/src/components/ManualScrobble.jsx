@@ -24,6 +24,9 @@ const styles = theme => ({
 		padding: '14px 40px',
 		backgroundColor: '#fff',
 		margin: '0 16px',
+		'@media (max-width: 360px)': {
+			padding: '10px 0',
+		},
 	},
 	input: {
 		margin: '36px',
@@ -62,6 +65,9 @@ const styles = theme => ({
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
 		width: 270,
+		'@media (max-width: 420px)': {
+			width: '180px',
+		},
 	},
 });
 

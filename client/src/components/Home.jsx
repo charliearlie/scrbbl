@@ -32,8 +32,21 @@ const styles = () => ({
 	},
 	cards: {
 		display: 'flex',
-		width: '100%',
+		width: '75%',
 		justifyContent: 'space-around',
+	},
+	row: {
+		flexBasis: '25%',
+		marginTop: '-80px',
+	},
+	'@media (max-width: 1000px)': {
+		cards: {
+			flexDirection: 'column',
+			marginTop: '12px',
+		},
+		row: {
+			marginTop: '12px',
+		},
 	},
 	'@media (max-width: 600px)': {
 		subheader: {
@@ -60,7 +73,7 @@ const Home = props => {
 			</div>
 			<div className={classes.cards}>
 				{homeContentCardData.map(data => (
-					<div style={{ flexBasis: '25%', marginTop: '-80px' }}>
+					<div className={classes.row}>
 						<HomeContentCard icon={data.icon} content={data.content} />
 					</div>
 				))}
