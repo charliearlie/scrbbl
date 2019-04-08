@@ -9,7 +9,7 @@ function BottomNav({ items, location, history, styles }) {
 	};
 
 	return (
-		<BottomNavigation value={location.pathname} className={styles}>
+		<BottomNavigation value={location.pathname} className={styles} showLabels>
 			{items.map(item => (
 				<BottomNavigationAction
 					label={item.shortText}
