@@ -77,6 +77,7 @@ const styles = theme => ({
 		left: '0px',
 		right: '0px',
 		marginBottom: '0px',
+		boxShadow: '0px -2px 8px 0px rgba(0,0,0,0.10)',
 	},
 	hide: {
 		display: 'none',
