@@ -24,6 +24,9 @@ const styles = () => ({
 		padding: '14px 40px',
 		backgroundColor: '#fff',
 		margin: '0 48px',
+		'@media (max-width: 400px)': {
+			margin: 0,
+		},
 	},
 	resultCard: {
 		display: 'flex',
