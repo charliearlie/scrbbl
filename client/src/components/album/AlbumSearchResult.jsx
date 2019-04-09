@@ -28,7 +28,9 @@ const styles = () => ({
 		display: 'flex',
 		width: '100%',
 		alignItems: 'center',
-		minWidth: '320px',
+		'@media (min-width: 800px)': {
+			minWidth: '600px',
+		},
 	},
 	resultTrack: {
 		padding: '16px',
