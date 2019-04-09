@@ -28,6 +28,7 @@ const styles = () => ({
 		display: 'flex',
 		width: '100%',
 		alignItems: 'center',
+		minWidth: '320px',
 	},
 	resultTrack: {
 		padding: '16px',
