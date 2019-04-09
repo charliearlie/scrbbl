@@ -23,14 +23,14 @@ const styles = () => ({
 		alignItems: 'center',
 		backgroundColor: '#fff',
 		borderRadius: '4px',
+		'@media (min-width: 800px)': {
+			minWidth: '600px',
+		},
 	},
 	result: {
 		display: 'flex',
 		width: '100%',
 		alignItems: 'center',
-		'@media (min-width: 800px)': {
-			minWidth: '600px',
-		},
 	},
 	resultTrack: {
 		padding: '16px',
