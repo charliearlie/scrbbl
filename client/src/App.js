@@ -13,8 +13,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Snackbar from '@material-ui/core/Snackbar';
 
 // App components
@@ -138,10 +136,6 @@ function App(props) {
 		}
 	}, []);
 
-	const handleDrawerOpen = () => {
-		toggleDrawer(true);
-	};
-
 	const handleDrawerClose = () => {
 		toggleDrawer(false);
 	};
@@ -163,18 +157,10 @@ function App(props) {
 	return (
 		<div className={classes.root}>
 			<AppBar
-				position="absolute"
+				position="fixed"
 				className={classNames(classes.appBar, open && classes.appBarShift)}
 			>
 				<Toolbar disableGutters={!open}>
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						onClick={handleDrawerOpen}
-						className={classNames(classes.menuButton, open && classes.hide)}
-					>
-						<MenuIcon />
-					</IconButton>
 					<div style={{ display: 'flex', margin: 'auto' }}>
 						<Typography variant="title" color="inherit" noWrap>
 							Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
@@ -190,18 +176,11 @@ function App(props) {
 							<Drawer
 								variant="permanent"
 								classes={{
-									paper: classNames(
-										classes.drawerPaper,
-										!open && classes.drawerPaperClose,
-									),
+									paper: classNames(classes.drawerPaper),
 								}}
 								open={open}
 							>
-								<div className={classes.toolbar}>
-									<IconButton onClick={handleDrawerClose}>
-										<ChevronLeftIcon />
-									</IconButton>
-								</div>
+								<div className={classes.toolbar} />
 								<Divider />
 								<SideDrawerList
 									closeDrawer={() => toggleDrawer(false)}

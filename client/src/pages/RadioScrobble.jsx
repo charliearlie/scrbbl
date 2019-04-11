@@ -9,22 +9,27 @@ import bbc1xtra from '../assets/bbc1xtra.svg';
 const styles = () => ({
 	stationWrapper: {
 		display: 'flex',
-		flexDirection: 'column',
 		alignItems: 'center',
 		margin: '0 auto',
 	},
 	stationCard: {
 		display: 'flex',
-		height: '100px',
+		height: '200px',
+		width: '200px',
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: '14px 40px',
 		backgroundColor: '#fff',
 		margin: '8px 16px',
+		borderRadius: '50%',
+		cursor: 'pointer',
+		'&:hover': {
+			background: '#EEE',
+		},
 	},
 	image: {
-		height: '100%',
+		height: '40%',
 		width: 'auto',
 	},
 });
@@ -55,9 +60,9 @@ function RadioScrobble({ classes }) {
 	return (
 		<div className={classes.stationWrapper}>
 			{stations.map(station => (
-				<Card className={classes.stationCard}>
+				<button className={classes.stationCard}>
 					<img className={classes.image} src={station.image} alt={station.title} />
-				</Card>
+				</button>
 			))}
 		</div>
 	);
