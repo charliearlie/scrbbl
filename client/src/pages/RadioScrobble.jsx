@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Card from '../components/reusable/Card';
 import bbcradio1 from '../assets/bbcradio1.svg';
 import bbcradio2 from '../assets/bbcradio2.svg';
 import bbc1xtra from '../assets/bbc1xtra.svg';

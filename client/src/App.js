@@ -12,7 +12,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 
 // App components
@@ -135,10 +134,6 @@ function App(props) {
 				});
 		}
 	}, []);
-
-	const handleDrawerClose = () => {
-		toggleDrawer(false);
-	};
 
 	const handleSnackbarClose = () => {
 		toggleSnackbar(false);
