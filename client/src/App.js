@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -60,11 +59,10 @@ const styles = theme => ({
 			duration: theme.transitions.duration.enteringScreen,
 		}),
 	},
-	menuButton: {
-		marginLeft: 12,
-		marginRight: 36,
-		'@media (max-width: 1024px)': {
-			display: 'none',
+	title: {
+		margin: '0',
+		'@media (min-width: 1024px)': {
+			marginLeft: '280px',
 		},
 	},
 	footer: {
@@ -157,9 +155,9 @@ function App(props) {
 			>
 				<Toolbar disableGutters={!open}>
 					<div style={{ display: 'flex', margin: 'auto' }}>
-						<Typography variant="title" color="inherit" noWrap>
+						<h2 className={classes.title}>
 							Scrbbl <i style={{ marginTop: '4px' }} className="fab fa-lastfm" />
-						</Typography>
+						</h2>
 					</div>
 					<UserNav displayName={displayName} />
 				</Toolbar>

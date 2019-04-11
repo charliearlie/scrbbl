@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import HomeContentCard from './HomeContentCard';
-import homeContentCardData from '../assets/homeContentCardData';
+import headerSvg from '../assets/musicManual.svg';
 
 const styles = () => ({
 	root: {
@@ -14,16 +13,30 @@ const styles = () => ({
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		marginBottom: '64px',
+		marginBottom: '8px',
+	},
+	title: {
+		margin: '8px 0',
+		fontSize: '3rem',
+		fontWeight: '800',
+		letterSpacing: '4px',
+	},
+	subtitle: {
+		margin: '8px 0',
 	},
 	imageWrapper: {
 		width: '100%',
-		height: '300px',
+		height: '250px',
+		display: 'flex',
+		justifyContent: 'center',
+		'@media (max-width: 1024px)': {
+			height: '180px',
+		},
 	},
 	headerImage: {
 		width: '100%',
 		height: '100%',
-		objectFit: 'cover',
+		objectFit: 'contain',
 	},
 	header: {
 		color: 'rgba(0, 0, 0, 0.65)',
@@ -63,22 +76,18 @@ const styles = () => ({
 const Home = props => {
 	const { classes } = props;
 	return (
-		<div className={classes.headerContainer}>
-			<div className={classes.imageWrapper}>
-				<img
-					className={classes.headerImage}
-					src="https://res.cloudinary.com/recipeze/image/upload/v1549486051/iphone.jpg"
-					alt="header"
-				/>
+		<Fragment>
+			<div className={classes.headerContainer}>
+				<h2 className={classes.title}>Scrbbl</h2>
+				<h4 className={classes.subtitle}>Making manual scrobbling a bit less.. manual</h4>
+				<div className={classes.imageWrapper}>
+					<img className={classes.headerImage} src={headerSvg} alt="header" />
+				</div>
 			</div>
-			<div className={classes.cards}>
-				{homeContentCardData.map(data => (
-					<div className={classes.row}>
-						<HomeContentCard icon={data.icon} content={data.content} />
-					</div>
-				))}
+			<div>
+				<h4>Recently scrobbled albums</h4>
 			</div>
-		</div>
+		</Fragment>
 	);
 };
 
