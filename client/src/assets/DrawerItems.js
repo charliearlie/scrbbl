@@ -5,25 +5,25 @@ import CollectionIcon from '@material-ui/icons/Collections';
 
 const drawerItems = [
 	{
-		icon: <HomeIcon />,
+		icon: <i className="fas fa-home" style={{ fontSize: '25px' }} />,
 		text: 'Home',
 		shortText: 'Home',
 		route: '/',
 	},
 	{
-		icon: <i className="fab fa-lastfm" style={{ fontSize: '25px' }} />,
-		text: 'Scrobble manually',
-		shortText: 'Manual',
+		icon: <i className="fas fa-music" style={{ fontSize: '25px' }} />,
+		text: 'Scrobble song',
+		shortText: 'Song',
 		route: '/manual',
 	},
 	{
-		icon: <CollectionIcon />,
+		icon: <i className="fas fa-compact-disc" style={{ fontSize: '25px' }} />,
 		text: 'Scrobble album',
 		shortText: 'Album',
 		route: '/album',
 	},
 	{
-		icon: <RadioIcon />,
+		icon: <i className="fas fa-broadcast-tower" style={{ fontSize: '25px' }} />,
 		text: 'Scrobble from Radio',
 		shortText: 'Radio',
 		route: '/radio',

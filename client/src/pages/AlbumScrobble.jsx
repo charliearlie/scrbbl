@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
 import Card from '../components/reusable/Card';
-import TextInput from '../components/reusable/TextInput';
 import AppleMusicButton from '../components/AppleMusicButton';
 import AlbumSearchResults from '../components/album/AlbumSearchResults';
 import Fade from '../components/reusable/Fade';
@@ -17,16 +17,8 @@ const styles = () => ({
 	},
 	card: {
 		display: 'flex',
-		flexDirection: 'column',
 		justifyContent: 'center',
-		height: '200px',
 		alignItems: 'center',
-		padding: '14px 40px',
-		backgroundColor: '#fff',
-		margin: '0 48px',
-		'@media (max-width: 400px)': {
-			margin: 0,
-		},
 	},
 	resultCard: {
 		display: 'flex',
@@ -52,8 +44,29 @@ const styles = () => ({
 	textInput: {
 		width: '80%',
 	},
+	cssLabel: {
+		'&$cssFocused': {
+			color: '#c3000d',
+		},
+	},
+	cssFocused: {},
+	cssOutlinedInput: {
+		'&$cssFocused $notchedOutline': {
+			borderColor: '#c3000d',
+		},
+	},
+	searchIcon: {
+		fontSize: '18px',
+	},
 });
 
+const inputSearchButtonStyles = {
+	height: '54px',
+	margin: '0',
+	marginLeft: '-65px',
+	boxShadow: 'none',
+	background: 'transparent',
+};
 class AlbumScrobble extends Component {
 	constructor(props) {
 		super(props);
@@ -111,26 +124,42 @@ class AlbumScrobble extends Component {
 			<Fragment>
 				<Grid item xs={false} lg={2} />
 				<Grid item xs={12} lg={8}>
-					<Card className={classes.card} shadowLevel={1}>
-						<TextInput
+					<div className={classes.card} shadowLevel={1}>
+						<TextField
+							className={classes.textInput}
+							InputLabelProps={{
+								classes: {
+									root: classes.cssLabel,
+									focused: classes.cssFocused,
+								},
+							}}
+							InputProps={{
+								classes: {
+									root: classes.cssOutlinedInput,
+									focused: classes.cssFocused,
+									notchedOutline: classes.notchedOutline,
+								},
+							}}
+							label="Search for an album"
+							variant="outlined"
+							id="custom-css-outlined-input"
 							placeholder="Search..."
 							name="searchQuery"
 							value={this.state.searchQuery}
 							onKeyPress={this.handleKeyPress}
 							onChange={e => this.handleChange(e.target.value, e.target.name)}
 							autoFocus
-							required
 						/>
-						<div style={{ display: 'flex' }}>
-							<AppleMusicButton
-								query={this.state.searchQuery}
-								fillForm={this.fillForm}
-								type="album"
-							>
-								Search
-							</AppleMusicButton>
-						</div>
-					</Card>
+						<AppleMusicButton
+							query={this.state.searchQuery}
+							fillForm={this.fillForm}
+							type="album"
+							variant="text"
+							styles={inputSearchButtonStyles}
+						>
+							<i className={`fas fa-search ${classes.searchIcon}`} />
+						</AppleMusicButton>
+					</div>
 				</Grid>
 				<Grid item xs={false} lg={2} />
 				{this.state.searchResults && (
