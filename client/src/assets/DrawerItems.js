@@ -1,7 +1,4 @@
 import React from 'react';
-import HomeIcon from '@material-ui/icons/Home';
-import RadioIcon from '@material-ui/icons/Radio';
-import CollectionIcon from '@material-ui/icons/Collections';
 
 const drawerItems = [
 	{
