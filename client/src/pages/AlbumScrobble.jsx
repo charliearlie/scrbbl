@@ -155,7 +155,7 @@ class AlbumScrobble extends Component {
 							fillForm={this.fillForm}
 							type="album"
 							variant="text"
-							styles={inputSearchButtonStyles}
+							style={inputSearchButtonStyles}
 						>
 							<i className={`fas fa-search ${classes.searchIcon}`} />
 						</AppleMusicButton>

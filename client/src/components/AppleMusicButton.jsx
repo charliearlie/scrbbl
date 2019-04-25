@@ -30,14 +30,13 @@ class AppleMusicButton extends Component {
 	}
 
 	render() {
-		const { classes, styles, variant = 'raised' } = this.props;
-		console.log(variant);
+		const { classes, style, variant = 'raised' } = this.props;
 		return (
 			<ScrbblButton
 				variant={variant}
 				onClick={this.search}
 				className={classes.appleMusicButton}
-				style={styles}
+				style={style}
 			>
 				{this.props.children}
 			</ScrbblButton>
