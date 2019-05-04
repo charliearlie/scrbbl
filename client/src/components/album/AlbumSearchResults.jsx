@@ -1,23 +1,34 @@
-import React, { Fragment } from 'react';
-import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
 import AlbumSearchResult from './AlbumSearchResult';
 
-const AlbumSearchResults = ({ results, handleScrobbleSuccess }) => (
-	<Grid container spacing={24}>
+const styles = () => ({
+	container: {
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+	},
+	results: {
+		display: 'flex',
+		justifyContent: 'center',
+		flexDirection: 'column',
+		alignItems: 'center',
+		width: '100%',
+	},
+});
+
+const AlbumSearchResults = ({ results, handleScrobbleSuccess, classes }) => (
+	<div className={classes.results}>
 		{results.map(result => (
-			<Fragment>
-				<Grid item xs={false} sm={2} lg={3} />
-				<Grid item xs={12} sm={8} lg={6}>
-					<AlbumSearchResult
-						key={`${result.album}_${result.albumId}`}
-						result={result}
-						handleScrobbleSuccess={handleScrobbleSuccess}
-					/>
-				</Grid>
-				<Grid item xs={false} sm={2} lg={3} />
-			</Fragment>
+			<div className={classes.container}>
+				<AlbumSearchResult
+					key={`${result.album}_${result.albumId}`}
+					result={result}
+					handleScrobbleSuccess={handleScrobbleSuccess}
+				/>
+			</div>
 		))}
-	</Grid>
+	</div>
 );
 
-export default AlbumSearchResults;
+export default withStyles(styles)(AlbumSearchResults);

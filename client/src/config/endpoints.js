@@ -12,7 +12,6 @@ const mockEndpoints = {
 	manualScrobble: '../assets/mockApi/manualScrobble.json',
 };
 
-
 function getEndpoints() {
 	return process.env.REACT_APP_USE_MOCKS ? mockEndpoints : serverEndpoints;
 }

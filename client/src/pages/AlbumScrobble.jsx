@@ -5,7 +5,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import AppleMusicButton from '../components/AppleMusicButton';
 import AlbumSearchResults from '../components/album/AlbumSearchResults';
-import Fade from '../components/reusable/Fade';
 import SnackbarContent from '../components/reusable/Snackbar/SnackbarContent';
 import { search } from '../util/appleMusic';
 
@@ -164,12 +163,10 @@ class AlbumScrobble extends Component {
 				{this.state.searchResults && (
 					<Fragment>
 						Search Results
-						<Fade in={this.state.searchResults}>
-							<AlbumSearchResults
-								results={this.state.searchResults}
-								handleScrobbleSuccess={this.handleScrobbleSuccess}
-							/>
-						</Fade>
+						<AlbumSearchResults
+							results={this.state.searchResults}
+							handleScrobbleSuccess={this.handleScrobbleSuccess}
+						/>
 					</Fragment>
 				)}
 				<Snackbar
