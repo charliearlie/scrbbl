@@ -105,6 +105,7 @@ class AlbumSearchResult extends Component {
 						show={this.state.dialogOpen}
 						closeDialog={this.handleDialogClose}
 						album={result}
+						handleScrobbleSuccess={this.props.handleScrobbleSuccess}
 					/>
 					{/* This needs to become a button for a11y purposes */}
 					<div role="button" onClick={this.handleDialogOpen} className={classes.result}>
