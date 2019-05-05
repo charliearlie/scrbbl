@@ -36,16 +36,22 @@ class SideDrawerList extends Component {
 		return (
 			<div className={classes.root}>
 				<List component="nav">
-					{items.map(item => (
-						<ListItem button key={item.text} onClick={() => this.goTo(item.route)}>
-							<ListItemIcon>
-								{item.icon}
-							</ListItemIcon>
-							<ListItemText>
-								{item.text}
-							</ListItemText>
-						</ListItem>
-					))}
+					{items.map(item => {
+						const itemStyles = {
+							background: this.props.location.pathname === item.route ? '#eee' : null,
+						};
+						return (
+							<ListItem
+								style={itemStyles}
+								button
+								key={item.text}
+								onClick={() => this.goTo(item.route)}
+							>
+								<ListItemIcon>{item.icon}</ListItemIcon>
+								<ListItemText>{item.text}</ListItemText>
+							</ListItem>
+						);
+					})}
 				</List>
 			</div>
 		);
