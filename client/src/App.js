@@ -31,7 +31,7 @@ import useLocalStorage from './hooks/useLocalStorage';
 const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
 const RadioScrobble = lazy(() => import('./pages/RadioScrobble'));
-const AlbumADay = lazy(() => import('./pages/albumADay'));
+const AlbumADay = lazy(() => import('./pages/AlbumADay'));
 
 const drawerWidth = 280;
 
