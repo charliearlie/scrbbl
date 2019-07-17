@@ -31,6 +31,7 @@ import useLocalStorage from './hooks/useLocalStorage';
 const ManualScrobble = lazy(() => import('./components/ManualScrobble'));
 const AlbumScrobble = lazy(() => import('./pages/AlbumScrobble'));
 const RadioScrobble = lazy(() => import('./pages/RadioScrobble'));
+const AlbumADay = lazy(() => import('./pages/album-a-day'));
 
 const drawerWidth = 280;
 
@@ -196,6 +197,7 @@ function App(props) {
 							<Route path="/manual" component={ManualScrobble} />
 							<Route path="/album" component={AlbumScrobble} />
 							<Route path="/radio" component={RadioScrobble} />
+							<Route path="/album-a-day" component={AlbumADay} />
 							<Route
 								path="/callback"
 								render={() => <Redirect to={{ pathname: '/' }} />}
