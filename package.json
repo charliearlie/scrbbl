@@ -16,7 +16,7 @@
     "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-parser": "~1.18.2",
     "concurrently": "^3.5.1",
     "connect-mongo": "^2.0.1",
