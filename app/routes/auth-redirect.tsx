@@ -1,8 +1,9 @@
-import { LoaderArgs } from "@remix-run/server-runtime";
-import { LastfmApiSession, User } from "lastfmapi";
 import { typedjson } from "remix-typedjson";
 import { lastfm } from "~/services/lastfm.server";
 import { createUserSession } from "~/services/session.server";
+
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import type { LastfmApiSession, User } from "lastfmapi";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { url } = request;

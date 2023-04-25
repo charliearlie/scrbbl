@@ -1,6 +1,7 @@
 import axios from "axios";
-import { LastfmApiTrack } from "lastfmapi";
 import { defaultManualScrobbleState } from "~/utils";
+
+import type { LastfmApiTrack } from "lastfmapi";
 
 const baseUrl = "https://itunes.apple.com";
 

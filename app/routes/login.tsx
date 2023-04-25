@@ -1,9 +1,7 @@
-import { useLocation, useMatches } from "@remix-run/react";
-import { LoaderArgs } from "@remix-run/server-runtime";
-import { typedjson, useTypedLoaderData } from "remix-typedjson";
+import { typedjson } from "remix-typedjson";
 import LoginButton from "~/components/login-button";
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async () => {
   return typedjson({
     frontendUrl: `${process.env.FRONTEND_URL}/auth-redirect`,
   });

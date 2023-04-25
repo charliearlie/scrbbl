@@ -1,11 +1,13 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useSubmit } from "@remix-run/react";
 import InputWithLabel from "./input-with-label";
 import { searchSong } from "~/services/apple-music";
-import { LastfmApiTrack } from "lastfmapi";
 import { defaultManualScrobbleState } from "~/utils";
 
 import appleLogo from "~/assets/Apple_logo_black.svg";
+
+import type { ChangeEvent } from "react";
+import type { LastfmApiTrack } from "lastfmapi";
 
 export default function ManualScrobbleForm() {
   const submit = useSubmit();
@@ -30,7 +32,7 @@ export default function ManualScrobbleForm() {
 
   const handleSubmit = () => {
     const formData = new FormData();
-    Object.entries(formState).map(([key, value]) => {
+    Object.entries(formState).forEach(([key, value]) => {
       formData.append(key, value);
     });
 
@@ -88,7 +90,14 @@ export default function ManualScrobbleForm() {
             aria-label="Search for song with Apple Music"
             disabled={areButtonsDisabled}
           >
-            <img src={appleLogo} height="20px" width="20px" className="-mt-1" />
+            <img
+              src={appleLogo}
+              aria-hidden="true"
+              alt="Apple logo"
+              height="20px"
+              width="20px"
+              className="-mt-1"
+            />
             Apple search
           </button>
         </div>

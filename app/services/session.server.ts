@@ -1,11 +1,7 @@
-import {
-  createCookieSessionStorage,
-  Headers,
-  redirect as remixRedirect,
-} from "@remix-run/node";
-import { LastfmApiSession, User } from "lastfmapi";
+import { createCookieSessionStorage, Headers } from "@remix-run/node";
 import { redirect } from "remix-typedjson";
-import { lastfm } from "./lastfm.server";
+
+import type { LastfmApiSession, User } from "lastfmapi";
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {

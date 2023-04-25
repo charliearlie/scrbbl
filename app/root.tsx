@@ -1,9 +1,4 @@
-import type {
-  ActionArgs,
-  LinksFunction,
-  LoaderArgs,
-  MetaFunction,
-} from "@remix-run/node";
+import type { LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -13,22 +8,11 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import LastfmApi from "lastfmapi";
 import { useState } from "react";
-import {
-  typedjson,
-  useTypedActionData,
-  useTypedLoaderData,
-} from "remix-typedjson";
+import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import tailwindStylesheetUrl from "~/tailwind.css";
-import { lastfm } from "./services/lastfm.server";
-import {
-  getLastfmSession,
-  getUserInfo,
-  getUserSession,
-  getUserToken,
-} from "./services/session.server";
+import { getUserInfo } from "./services/session.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
