@@ -12,11 +12,24 @@
       @apply bg-gray-600 text-gray-300;
     }
   }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-3xl font-bold;
+  }
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+  h4 {
+    @apply text-xl font-semibold;
+  }
 }
 
 @layer components {
   .button {
-    @apply rounded px-3 py-2 text-lg font-semibold text-white;
+    @apply rounded px-3 py-2 text-lg font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-400 disabled:text-slate-50 disabled:hover:bg-slate-400;
   }
 
   .button-primary {

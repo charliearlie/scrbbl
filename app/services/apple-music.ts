@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { defaultManualScrobbleState } from "~/utils";
 
-import type { LastfmApiTrack } from "lastfmapi";
+import type { AppleMusicAlbumSearchResult, LastfmApiTrack } from "lastfmapi";
 
 const baseUrl = "https://itunes.apple.com";
 
@@ -28,15 +28,26 @@ export async function searchSong(query: string) {
   }
 }
 
+type AlbumResponse = {
+  results: AppleMusicAlbumSearchResult[];
+};
+
+export type AlbumInfo = {
+  albumId: number;
+  artist: string;
+  album: string;
+  albumArtwork: string;
+};
+
 export async function searchAlbum(query: string) {
-  const response = await axios.get(
+  const response: AxiosResponse<AlbumResponse> = await axios.get(
     `${baseUrl}/search?term=${query.replace(" ", "+")}&media=music&entity=album`
   );
-  // We'll map over this
-  return response.data.results.map((result: any) => ({
+
+  return response.data.results.map((result) => ({
+    albumId: result.collectionId,
     artist: result.artistName,
     album: result.collectionName,
-    albumArtist: result.artistName, //Need to actually get the album artist
-    track: result.trackName,
-  })) as LastfmApiTrack[];
+    albumArtwork: result.artworkUrl100,
+  })) as AlbumInfo[];
 }

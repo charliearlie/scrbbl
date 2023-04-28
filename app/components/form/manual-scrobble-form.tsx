@@ -4,10 +4,9 @@ import InputWithLabel from "./input-with-label";
 import { searchSong } from "~/services/apple-music";
 import { defaultManualScrobbleState } from "~/utils";
 
-import appleLogo from "~/assets/Apple_logo_black.svg";
-
 import type { ChangeEvent } from "react";
 import type { LastfmApiTrack } from "lastfmapi";
+import AppleMusicButton from "../apple-music-button";
 
 export default function ManualScrobbleForm() {
   const submit = useSubmit();
@@ -84,22 +83,12 @@ export default function ManualScrobbleForm() {
           Scrobble
         </button>
         <div className="flex w-full flex-col items-end">
-          <button
-            className="button button-secondary flex w-full items-center justify-center gap-4 disabled:cursor-not-allowed sm:w-48"
+          <AppleMusicButton
+            className="button button-secondary flex w-full items-center justify-center gap-4 sm:w-48"
             onClick={appleMusicSearch}
             aria-label="Search for song with Apple Music"
             disabled={areButtonsDisabled}
-          >
-            <img
-              src={appleLogo}
-              aria-hidden="true"
-              alt="Apple logo"
-              height="20px"
-              width="20px"
-              className="-mt-1"
-            />
-            Apple search
-          </button>
+          />
         </div>
       </div>
     </div>
