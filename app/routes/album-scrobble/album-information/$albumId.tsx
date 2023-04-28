@@ -1,4 +1,5 @@
 import { LoaderArgs } from "@remix-run/server-runtime";
+import { useLayoutEffect } from "react";
 import { redirect, useTypedLoaderData } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { Card, CardContent } from "~/components/card";
@@ -21,11 +22,24 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 export default function AlbumDetails() {
   const loaderData = useTypedLoaderData<typeof loader>();
 
+  const scrollToElement = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useLayoutEffect(() => {
+    scrollToElement("album-name");
+  }, []);
+
   if (loaderData) {
     return (
       <Card>
         <CardContent className="py-8 px-8">
-          <h2>{loaderData.collectionName}</h2>
+          <h2 id="album-name" className="scroll-mt-16">
+            {loaderData.collectionName}
+          </h2>
           <h3>{loaderData.artistName}</h3>
           <button className="button button-danger">Scrobble album</button>
           <div>
