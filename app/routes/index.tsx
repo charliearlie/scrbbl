@@ -15,16 +15,16 @@ export default function Index() {
         <CardContent className="py-8 px-8">
           <h2>Welcome lad</h2>
           <p>
-            Click scrobble song in the sidebar, if not logged in it should
+            Click scrobble album in the sidebar, if not logged in it should
             instantly redirect you to a login page
           </p>
+          <p>Ensure you're on the scrobble album page</p>
+          <p>Search for any artist or album name</p>
+          <p>Are the results both quick and accurate?</p>
+          <p>Click an album (ignore design)</p>
           <p>
-            If you've come back here after logging in, check if your Last FM
-            profile picture is in the nav bar (top right)
-          </p>
-          <p>
-            If the above is true, go back to Scrobble song and scrobble
-            something
+            Clicking the album should auto scroll you to the album's name,
+            artist and list of tracks. Again this should be instant.
           </p>
         </CardContent>
       </Card>
