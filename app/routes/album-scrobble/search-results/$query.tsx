@@ -25,7 +25,7 @@ export default function SearchResults() {
     return null;
   }
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {loaderData.map((result) => (
         <Card>
           <CardContent>

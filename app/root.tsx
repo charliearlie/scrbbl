@@ -7,8 +7,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import tailwindStylesheetUrl from "~/tailwind.css";
@@ -34,11 +35,17 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function App() {
   const loaderData = useTypedLoaderData<typeof loader>();
+  const location = useLocation();
 
   const userImage =
     loaderData?.image.find((image) => image.size === "medium")?.["#text"] || "";
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    setDrawerOpen(false);
+  }, [location]);
+
   return (
     <html lang="en" className="h-full">
       <head>
