@@ -172,7 +172,7 @@ export default function App() {
             <ul className="space-y-2 font-medium">
               <li>
                 <Link
-                  to="manual-scrobble"
+                  to="/"
                   className="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 >
                   <svg
