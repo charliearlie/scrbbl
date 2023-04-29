@@ -14,7 +14,6 @@ import { Card, CardContent } from "~/components/card";
 import LastfmApi, { LastfmApiTrack } from "lastfmapi";
 import Alert from "~/components/alert";
 import AlbumSearch from "~/components/album/album-search";
-import { AlbumInfo, searchAlbum } from "~/services/apple-music";
 import { useState } from "react";
 import { Link, Outlet } from "@remix-run/react";
 
@@ -61,17 +60,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function AlbumScrobble() {
-  const { token } = useTypedLoaderData<typeof loader>();
   const actionData = useTypedActionData<typeof action>();
-
-  const [searchResults, setSearchResults] = useState<AlbumInfo[]>([]);
-
-  const handleSearch = async (query: string) => {
-    const results = await searchAlbum(query);
-    setSearchResults(results);
-  };
-
-  const hasSearchResults = searchResults.length > 0;
 
   return (
     <main className="mt-12 p-2">
@@ -79,28 +68,9 @@ export default function AlbumScrobble() {
         <CardContent className="py-8 px-8">
           <h1>Album search</h1>
           <Alert visible={!!actionData}>Scrobbled Successfully</Alert>
-          <AlbumSearch handleSearch={handleSearch} />
+          <AlbumSearch />
         </CardContent>
       </Card>
-      {hasSearchResults && (
-        <Card>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {searchResults.map((result) => (
-                <Link
-                  to={encodeURI(
-                    `/album-scrobble/album-information/${result.albumId}`
-                  )}
-                >
-                  <img src={result.albumArtwork} alt={result.album} />
-                  <h3>{result.album}</h3>
-                  <p>{result.artist}</p>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
       <div className="mt-4">
         <Outlet />
       </div>

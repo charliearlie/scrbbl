@@ -1,10 +1,8 @@
 import { ChangeEvent, useState } from "react";
 import InputWithLabel from "../form/input-with-label";
+import { Link } from "@remix-run/react";
 
-type Props = {
-  handleSearch: (query: string) => void;
-};
-export default function AlbumSearch({ handleSearch }: Props) {
+export default function AlbumSearch() {
   const [query, setQuery] = useState<string>("");
   return (
     <div>
@@ -19,13 +17,12 @@ export default function AlbumSearch({ handleSearch }: Props) {
         }
       />
       <div className="flex justify-center">
-        <button
+        <Link
+          to={`/album-scrobble/search-results/${query}`}
           className="button button-primary mt-4 px-12"
-          onClick={() => handleSearch(query)}
-          disabled={!!!query}
         >
           Search
-        </button>
+        </Link>
       </div>
     </div>
   );
