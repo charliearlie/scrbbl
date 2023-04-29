@@ -36,6 +36,15 @@ export async function getAlbumDetails(
   );
 
   if (albumDetails) {
+    // const albumDetailsLastFM = lastfm.album.getInfo(
+    //   {
+    //     artist: albumDetails?.artistName,
+    //     album: albumDetails?.collectionName,
+    //   },
+    //   (err, album) => {
+    //     console.log("album", album);
+    //   }
+    // );
     const { artistName, collectionName, releaseDate } = albumDetails;
     // We'll map over this
     const tracks = response.data.results
@@ -45,7 +54,7 @@ export async function getAlbumDetails(
         artist: result.artistName,
         track: result?.trackName,
         album: result.collectionName,
-        releaseDate: result.releaseDate,
+        releaseDate: new Date(result.releaseDate ?? "").getFullYear(),
         trackNumber: result.trackNumber,
       })) as LastfmApiTrack[];
 
@@ -69,6 +78,7 @@ export type AlbumInfo = {
   artist: string;
   album: string;
   albumArtwork: string;
+  releaseDate: number;
 };
 
 export async function searchAlbum(query: string) {
@@ -81,5 +91,6 @@ export async function searchAlbum(query: string) {
     artist: result.artistName,
     album: result.collectionName,
     albumArtwork: result.artworkUrl100,
+    releaseDate: new Date(result.releaseDate).getFullYear(),
   })) as AlbumInfo[];
 }

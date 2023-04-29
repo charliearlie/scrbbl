@@ -62,21 +62,6 @@ declare module "lastfmapi" {
     type: string;
   }
 
-  type AuthenticateCallback = (
-    error: LastfmApiError | null,
-    session: LastfmApiSession
-  ) => void;
-
-  type ScrobbleCallback = (
-    error: LastfmApiError | null,
-    scrobbledTracks: LastfmApiTrack[]
-  ) => void;
-
-  type GetInfoCallback = (
-    error: LastfmApiError | null,
-    user: User // will sort out type
-  ) => void;
-
   export type AppleMusicAlbumSearchResult = {
     amgArtistId: number;
     artistId: number;
@@ -187,6 +172,14 @@ declare module "lastfmapi" {
     authenticate(token: string, callback: AuthenticateCallback): void;
     setSessionCredentials(name: string | null, key: string | null): void;
 
+    album: {
+      getInfo(
+        { artist: string, album: string },
+        callback: AlbumDetailsCallback
+      ): void;
+      search({ album: string }, callback: AlbumSearchCallback): void;
+    };
+
     track: {
       scrobble(track: LastfmApiTrack, callback: ScrobbleCallback): void;
     };
@@ -200,3 +193,23 @@ declare module "lastfmapi" {
 
   export = LastfmApi;
 }
+
+type AuthenticateCallback = (
+  error: LastfmApiError | null,
+  session: LastfmApiSession
+) => void;
+
+type ScrobbleCallback = (
+  error: LastfmApiError | null,
+  scrobbledTracks: LastfmApiTrack[]
+) => void;
+
+type GetInfoCallback = (error: LastfmApiError | null, user: User) => void;
+
+type AlbumSearchCallback = (
+  error: LastfmApiError | null,
+  results: any // will sort out type
+) => void;
+
+// todo get the type for album
+type AlbumDetailsCallback = (error: LastfmApiError | null, album: any) => void;
