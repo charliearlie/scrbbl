@@ -171,8 +171,8 @@ export default function App() {
           <div className="h-full overflow-y-auto bg-white px-3 pb-4 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="manual-scrobble"
                   className="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 >
                   <svg
@@ -185,8 +185,8 @@ export default function App() {
                     <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                     <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                   </svg>
-                  <span className="ml-3">Home</span>
-                </a>
+                  <span className="ml-3 flex-1 whitespace-nowrap">Home</span>
+                </Link>
               </li>
               <li>
                 <Link

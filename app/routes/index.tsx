@@ -24,7 +24,7 @@ export default function Index() {
           <p>Click an album (ignore design)</p>
           <p>
             Clicking the album should auto scroll you to the album's name,
-            artist and list of tracks. Again this should be instant.
+            artist and list of tracks. Again this should be almost instant.
           </p>
         </CardContent>
       </Card>
