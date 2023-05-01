@@ -19,36 +19,41 @@ import { Link, Outlet } from "@remix-run/react";
 
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
-  const albumArtist = formData.get("albumArtist");
-  const artist = formData.get("artist");
-  const track = formData.get("track");
-  const album = formData.get("album");
-  let timestamp = Math.floor(new Date().getTime() / 1000) - 300;
+  const albumName = formData.get("albumName");
+  const timestamp = formData.get("timestamp");
+  const tracks = formData.get("tracks");
 
-  if (typeof artist !== "string" || typeof track !== "string") return null;
+  console.log("albumName", albumName);
+  console.log("tracks", tracks);
+
+  if (typeof albumName !== "string" || typeof tracks !== "string") return null;
   const lastfmSession = await getLastfmSession(request);
 
   if (!lastfmSession?.key || !lastfmSession?.username)
     return typedjson({ error: "No Last.FM session found" });
 
-  const trackToScrobble: LastfmApi.LastfmApiTrack = {
-    albumArtist: typeof albumArtist === "string" ? albumArtist : "",
-    artist: artist || "",
-    track,
-    timestamp,
-    album: album ? String(album) : "",
-  };
+  const parsedTracks: LastfmApiTrack[] = JSON.parse(tracks);
 
-  lastfm.setSessionCredentials(lastfmSession?.username, lastfmSession?.key);
+  return null;
 
-  const scrobbles: LastfmApiTrack[] = await new Promise((resolve, reject) => {
-    lastfm.track.scrobble(trackToScrobble, (error, scrobbles) => {
-      if (error) {
-        reject(error);
-      }
-      resolve(scrobbles);
-    });
-  });
+  // const trackToScrobble: LastfmApi.LastfmApiTrack = {
+  //   albumArtist: typeof albumArtist === "string" ? albumArtist : "",
+  //   artist: artist || "",
+  //   track,
+  //   timestamp,
+  //   album: album ? String(album) : "",
+  // };
+
+  // lastfm.setSessionCredentials(lastfmSession?.username, lastfmSession?.key);
+
+  // const scrobbles: LastfmApiTrack[] = await new Promise((resolve, reject) => {
+  //   lastfm.track.scrobble(trackToScrobble, (error, scrobbles) => {
+  //     if (error) {
+  //       reject(error);
+  //     }
+  //     resolve(scrobbles);
+  //   });
+  // });
 
   return typedjson({ scrobbles });
 };

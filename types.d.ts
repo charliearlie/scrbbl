@@ -29,6 +29,7 @@ declare module "lastfmapi" {
     duration?: number;
     albumArtist?: string;
     albumArtwork?: string;
+    releaseDate?: number;
   }
 
   type ImageSize = "small" | "medium" | "large" | "extralarge";

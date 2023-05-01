@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
   useLocation,
 } from "@remix-run/react";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import tailwindStylesheetUrl from "~/tailwind.css";
@@ -21,7 +21,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "Scrbbl",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -42,7 +42,7 @@ export default function App() {
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setDrawerOpen(false);
   }, [location]);
 

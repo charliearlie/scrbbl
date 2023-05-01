@@ -46,6 +46,15 @@ export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
 }
 
+export function forEachRight<T>(
+  array: T[],
+  callback: (value: T, index: number, array: T[]) => void
+): void {
+  for (let index = array.length - 1; index >= 0; index--) {
+    callback(array[index], index, array);
+  }
+}
+
 export const defaultManualScrobbleState = {
   artist: "",
   track: "",

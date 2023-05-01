@@ -36,15 +36,6 @@ export async function getAlbumDetails(
   );
 
   if (albumDetails) {
-    // const albumDetailsLastFM = lastfm.album.getInfo(
-    //   {
-    //     artist: albumDetails?.artistName,
-    //     album: albumDetails?.collectionName,
-    //   },
-    //   (err, album) => {
-    //     console.log("album", album);
-    //   }
-    // );
     const { artistName, collectionName, releaseDate } = albumDetails;
     // We'll map over this
     const tracks = response.data.results
@@ -52,6 +43,7 @@ export async function getAlbumDetails(
       .map((result) => ({
         albumId: result.collectionId,
         artist: result.artistName,
+        duration: result.trackTimeMillis || 3000,
         track: result?.trackName,
         album: result.collectionName,
         releaseDate: new Date(result.releaseDate ?? "").getFullYear(),
