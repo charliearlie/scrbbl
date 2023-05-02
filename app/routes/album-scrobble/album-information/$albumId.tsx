@@ -1,16 +1,22 @@
-import { useSubmit } from "@remix-run/react";
+import { useEffect } from "react";
+import { useNavigation, useSubmit } from "@remix-run/react";
 import { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { LastfmApiTrack } from "lastfmapi";
-import { useEffect } from "react";
-import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
+import {
+  redirect,
+  typedjson,
+  useTypedActionData,
+  useTypedLoaderData,
+} from "remix-typedjson";
 import invariant from "tiny-invariant";
+import Alert from "~/components/alert";
 import { Card, CardContent } from "~/components/card";
 import InputWithLabel from "~/components/form/input-with-label";
 import { getAlbumDetails } from "~/services/apple-music.server";
 import { lastfm, scrobbleAlbum } from "~/services/lastfm.server";
 import { getLastfmSession } from "~/services/session.server";
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params }: LoaderArgs) => {
   invariant(params.albumId, "Expected an album id you sausage");
 
   const { albumId } = params;
@@ -36,12 +42,13 @@ export const action = async ({ request }: ActionArgs) => {
     typeof timestamp !== "string" ||
     typeof albumArtist !== "string" ||
     typeof tracks !== "string"
-  )
-    return null;
+  ) {
+    return typedjson({ success: false, error: "Vital details are missing" });
+  }
   const lastfmSession = await getLastfmSession(request);
 
   if (!lastfmSession?.key || !lastfmSession?.username)
-    return typedjson({ error: "No Last.FM session found" });
+    return typedjson({ success: false, error: "No Last.FM session found" });
 
   const tracksToScrobble: LastfmApiTrack[] = JSON.parse(tracks);
 
@@ -52,11 +59,14 @@ export const action = async ({ request }: ActionArgs) => {
     albumArtist
   );
 
-  return typedjson(scrobbled);
+  return typedjson({ success: scrobbled, error: null });
 };
 
 export default function AlbumDetails() {
   const loaderData = useTypedLoaderData<typeof loader>();
+  const actionData = useTypedActionData<typeof action>();
+
+  const navigation = useNavigation();
   const submit = useSubmit();
 
   const scrollToElement = (elementId: string) => {
@@ -86,7 +96,6 @@ export default function AlbumDetails() {
     return false;
   };
 
-  console.log("loaderData", loaderData);
   if (loaderData) {
     return (
       <Card>
@@ -95,10 +104,13 @@ export default function AlbumDetails() {
             {loaderData.collectionName}
           </h2>
           <h3>{loaderData.artistName}</h3>
-          <button className="button button-danger" onClick={handleScrobble}>
-            Scrobble album
-          </button>
-          <div>
+          <div className="py-4">
+            <Alert visible={actionData?.success || !!actionData?.error}>
+              {`${actionData?.error || "Album scrobbled successfully"}`}
+            </Alert>
+          </div>
+          <div className={`${actionData?.success ? "opacity-30" : ""}`}>
+            <h4>Tracklist</h4>
             {loaderData.tracks.map((track) => (
               <div className="flex items-center justify-between">
                 <div className="flex w-3/4">
@@ -120,7 +132,9 @@ export default function AlbumDetails() {
             ))}
           </div>
           <button onClick={handleScrobble} className="button button-danger">
-            Scrobble album
+            {`${
+              navigation.state === "loading" ? "submitting" : "Scrobble album"
+            }`}
           </button>
         </CardContent>
       </Card>
