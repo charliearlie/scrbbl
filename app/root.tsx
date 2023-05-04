@@ -53,8 +53,8 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <nav className="fixed top-0 z-50 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-          <div className="px-3 py-3 lg:px-5 lg:pl-3">
+        <nav className="fixed top-0 z-50 h-16 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+          <div className="px-2 py-3 md:px-5 lg:pl-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-start">
                 <button
@@ -81,7 +81,7 @@ export default function App() {
                   </svg>
                 </button>
                 <a href="https://flowbite.com" className="ml-2 flex md:mr-24">
-                  <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl">
+                  <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
                     Scrbbl
                   </span>
                 </a>
@@ -286,7 +286,7 @@ export default function App() {
           </div>
         </aside>
 
-        <div className="p-4 sm:ml-64">
+        <div className="mt-16 sm:ml-64">
           <Outlet />
           <ScrollRestoration />
           <Scripts />
