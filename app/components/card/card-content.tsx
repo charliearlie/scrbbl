@@ -14,7 +14,7 @@ export default function CardContent({
 }: Props) {
   return (
     <div
-      className={`py-2 ${noPadding ? "" : "px-2"} ${className || ""}`}
+      className={`py-4 ${noPadding ? "" : "px-4"} ${className || ""}`}
       {...divProps}
     >
       {children}
