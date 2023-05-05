@@ -44,7 +44,7 @@ declare module "lastfmapi" {
     "#text": number;
   }
 
-  export interface User {
+  export type User = {
     name: string;
     age: string;
     subscriber: string;
@@ -61,7 +61,7 @@ declare module "lastfmapi" {
     gender: string;
     url: string;
     type: string;
-  }
+  };
 
   export type AppleMusicAlbumSearchResult = {
     amgArtistId: number;

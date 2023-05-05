@@ -1,5 +1,11 @@
-import type { LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type {
+  ActionArgs,
+  LinksFunction,
+  LoaderArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import {
+  Form,
   Link,
   Links,
   LiveReload,
@@ -13,7 +19,9 @@ import { useEffect, useState } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import tailwindStylesheetUrl from "~/tailwind.css";
-import { getUserInfo } from "./services/session.server";
+import { getUserInfo, logout } from "./services/session.server";
+import UserProfileNavButton from "./components/user/user-profile-nav-button";
+import LoginButton from "./components/login-link-button";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -31,6 +39,10 @@ export const loader = async ({ request }: LoaderArgs) => {
   if (!user) return typedjson(null);
 
   return typedjson(user);
+};
+
+export const action = async ({ request }: ActionArgs) => {
+  return await logout(request);
 };
 
 export default function App() {
@@ -86,84 +98,6 @@ export default function App() {
                   </span>
                 </a>
               </div>
-              <div className="flex items-center">
-                <div className="ml-3 flex items-center">
-                  <div>
-                    {loaderData && (
-                      <button
-                        type="button"
-                        className="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                        aria-expanded="false"
-                        data-dropdown-toggle="dropdown-user"
-                      >
-                        <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={userImage}
-                          alt="user photo"
-                        />
-                      </button>
-                    )}
-                  </div>
-                  <div
-                    className="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
-                    id="dropdown-user"
-                  >
-                    <div className="px-4 py-3" role="none">
-                      <p
-                        className="text-sm text-gray-900 dark:text-white"
-                        role="none"
-                      >
-                        Neil Sims
-                      </p>
-                      <p
-                        className="truncate text-sm font-medium text-gray-900 dark:text-gray-300"
-                        role="none"
-                      >
-                        neil.sims@flowbite.com
-                      </p>
-                    </div>
-                    <ul className="py-1" role="none">
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Dashboard
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Settings
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Earnings
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Sign out
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </nav>
@@ -175,7 +109,7 @@ export default function App() {
           }  border-gray-200 bg-white pt-20 transition-transform dark:border-gray-700 dark:bg-gray-800 sm:translate-x-0`}
           aria-label="Sidebar"
         >
-          <div className="h-full overflow-y-auto bg-white px-3 pb-4 dark:bg-gray-800">
+          <div className="flex h-full flex-col justify-between overflow-y-auto bg-white px-3 pb-4 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
               <li>
                 <Link
@@ -283,6 +217,20 @@ export default function App() {
                 </a>
               </li>
             </ul>
+            {loaderData ? (
+              <div>
+                <UserProfileNavButton
+                  profilePhoto={userImage}
+                  scrobbleCount={loaderData?.playcount!}
+                  username={loaderData?.name!}
+                />
+                <Form method="post">
+                  <button className="button button-danger">Log out</button>
+                </Form>
+              </div>
+            ) : (
+              <LoginButton />
+            )}
           </div>
         </aside>
 

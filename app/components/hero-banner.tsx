@@ -1,6 +1,6 @@
 import { User } from "lastfmapi";
 import { Card, CardContent } from "./card";
-import LoginButton from "./login-button";
+import LoginButton from "./login-link-button";
 
 type Props = {
   user: User | null;
@@ -19,7 +19,7 @@ export default function HeroBanner({ user }: Props) {
           </p>
           {user?.name ? (
             <>
-              <Card className="md:max-w-2xl">
+              <Card className="m-auto mt-4 md:max-w-2xl">
                 <CardContent>
                   <h2 className="mb-2 text-xl font-semibold">User insight</h2>
                   <a

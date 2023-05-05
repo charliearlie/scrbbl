@@ -89,7 +89,7 @@ export async function logout(request: Request) {
   if (!session) {
     return redirect("/");
   }
-  return redirect("/login", {
+  return redirect("/", {
     headers: {
       "Set-Cookie": await sessionStorage.destroySession(session),
     },
