@@ -8,23 +8,17 @@ import { installGlobals } from "@remix-run/node";
 import { parse } from "cookie";
 
 import { createUserSession } from "~/services/session.server";
+import user from "../fixtures/user.json";
 
 installGlobals();
 
-async function createAndLogin(email: string) {
-  if (!email) {
-    throw new Error("email required for login");
-  }
-  if (!email.endsWith("@example.com")) {
-    throw new Error("All test emails must end in @example.com");
-  }
-
+async function createAndLogin() {
   const lastFmSession = {
     name: "Dave",
-    key: "Hello"
+    key: "Hello",
   };
 
-  const response = await createUserSession("Atoken", lastFmSession, );
+  const response = await createUserSession("Atoken", lastFmSession, user);
 
   const cookieValue = response.headers.get("Set-Cookie");
   if (!cookieValue) {
@@ -42,4 +36,4 @@ async function createAndLogin(email: string) {
   );
 }
 
-createAndLogin(process.argv[2]);
+createAndLogin();
