@@ -1,5 +1,5 @@
 import { typedjson } from "remix-typedjson";
-import LoginButton from "~/components/login-button";
+import LoginButton from "~/components/login-link-button";
 
 export const loader = async () => {
   return typedjson({

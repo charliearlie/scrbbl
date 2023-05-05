@@ -18,7 +18,8 @@
   "eslintIgnore": [
     "/node_modules",
     "/build",
-    "/public/build"
+    "/public/build",
+    "/.vscode"
   ],
   "dependencies": {
     "@remix-run/node": "^1.15.0",
