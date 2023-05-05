@@ -17,7 +17,7 @@ export default function Login() {
   return (
     <div className="mt-10">
       You have to log in to scrobble lad
-      <LoginButton redirect={redirectUrl} />
+      <LoginButton />
     </div>
   );
 }
