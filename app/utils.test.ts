@@ -1,5 +1,4 @@
 import { validateEmail } from "./utils";
-import { describe, expect, it } from "vitest";
 
 describe("validateEmail", () => {
   it("should return false for non-emails", () => {

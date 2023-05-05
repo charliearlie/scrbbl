@@ -1,0 +1,19 @@
+{
+    "name": "testguy",
+    "age": 0,
+    "subscriber": "string",
+    "realname": "Test Guy",
+    "bootstrap": "",
+    "playcount": "10000",
+    "artist_count": "100",
+    "playlists": "some string",
+    "track_count": "1500",
+    "album_count": "65",
+    "image": Image[],
+    "registered": Registered,
+    "country": "UK",
+    "gender": "male",
+    "url": "https://last.fm/user/testguy",
+    "type": string,
+}
+
