@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Build
           command: yarn build
-  lint:
+  validate:
     docker:
       - image: node:16.17.0
     steps:
@@ -20,15 +20,15 @@ jobs:
           name: Install dependencies
           command: yarn install
       - run:
-          name: Lint
-          command: yarn lint
+          name: Validate
+          command: yarn validate
 
 workflows:
   version: 2
-  build-and-lint:
+  build-and-validate:
     jobs:
       - build
-      - lint:
+      - validate:
           requires:
             - build
           filters:
