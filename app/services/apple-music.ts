@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { defaultManualScrobbleState } from "~/utils";
 
 import type { AppleMusicAlbumSearchResult, LastfmApiTrack } from "lastfmapi";
 
@@ -24,6 +23,6 @@ export async function searchSong(query: string) {
     } as LastfmApiTrack;
   } catch {
     console.error("Something went wrong with the search");
-    return defaultManualScrobbleState;
+    return null;
   }
 }

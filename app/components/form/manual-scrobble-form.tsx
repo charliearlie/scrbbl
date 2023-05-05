@@ -2,18 +2,28 @@ import { useState } from "react";
 import { useSubmit } from "@remix-run/react";
 import InputWithLabel from "./input-with-label";
 import { searchSong } from "~/services/apple-music";
-import { defaultManualScrobbleState } from "~/utils";
 
 import type { ChangeEvent } from "react";
-import type { LastfmApiTrack } from "lastfmapi";
+
 import AppleMusicButton from "../apple-music-button";
+
+const defaultManualScrobbleState = {
+  artist: "",
+  track: "",
+  album: "",
+  albumArtist: "",
+};
+
+type FormState = typeof defaultManualScrobbleState & {
+  datetime?: string;
+};
 
 export default function ManualScrobbleForm() {
   const submit = useSubmit();
-  const [formState, setFormState] = useState<LastfmApiTrack>(
+  const [formState, setFormState] = useState<FormState>(
     defaultManualScrobbleState
   );
-  const { artist, album, albumArtist, track } = formState;
+  const { artist, album, albumArtist, datetime, track } = formState;
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormState({
@@ -24,8 +34,15 @@ export default function ManualScrobbleForm() {
 
   const appleMusicSearch = async () => {
     const result = await searchSong(`${artist} ${track}`);
-    if (result.artist && result.track) {
-      setFormState(result);
+    if (!result) {
+      setFormState(defaultManualScrobbleState);
+    } else if (result.artist && result.track) {
+      setFormState({
+        artist: result.artist,
+        album: result.album!,
+        albumArtist: result.albumArtist!,
+        track: result.track,
+      });
     }
   };
 
@@ -68,6 +85,13 @@ export default function ManualScrobbleForm() {
           type="text"
           name="albumArtist"
           value={albumArtist}
+          onChange={handleInputChange}
+        />
+        <InputWithLabel
+          label="Date"
+          type="datetime-local"
+          name="datetime"
+          value={datetime}
           onChange={handleInputChange}
         />
         <p className="font-sm italic">

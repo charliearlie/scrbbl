@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation, useSubmit } from "@remix-run/react";
 import { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { LastfmApiTrack } from "lastfmapi";
@@ -34,12 +34,18 @@ export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const albumName = formData.get("albumName");
   const albumArtist = formData.get("albumArtist");
-  const timestamp = formData.get("timestamp");
   const tracks = formData.get("tracks");
+  const datetime = formData.get("datetime");
+
+  const isDateTimeValid = datetime && typeof datetime === "string";
+  const timestamp =
+    Math.floor(
+      (isDateTimeValid ? new Date(datetime).getTime() : new Date().getTime()) /
+        1000
+    ) - 300;
 
   if (
     typeof albumName !== "string" ||
-    typeof timestamp !== "string" ||
     typeof albumArtist !== "string" ||
     typeof tracks !== "string"
   ) {
@@ -56,13 +62,15 @@ export const action = async ({ request }: ActionArgs) => {
   const scrobbled = await scrobbleAlbum(
     albumName,
     tracksToScrobble,
-    albumArtist
+    albumArtist,
+    timestamp
   );
 
   return typedjson({ success: scrobbled, error: null });
 };
 
 export default function AlbumDetails() {
+  const [dateTime, setDateTime] = useState<string>("");
   const loaderData = useTypedLoaderData<typeof loader>();
   const actionData = useTypedActionData<typeof action>();
 
@@ -80,16 +88,17 @@ export default function AlbumDetails() {
     scrollToElement("album-name");
   }, []);
 
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDateTime(event.target.value);
+  };
+
   const handleScrobble = () => {
     if (loaderData) {
       const formData = new FormData();
       formData.append("albumArtist", loaderData.artistName);
       formData.append("albumName", loaderData.collectionName ?? "");
       formData.append("tracks", JSON.stringify(loaderData.tracks));
-      formData.append(
-        "timestamp",
-        String(Math.floor(new Date().getTime() / 1000))
-      );
+      formData.append("timestamp", dateTime);
 
       submit(formData, { method: "post" });
     }
@@ -109,6 +118,12 @@ export default function AlbumDetails() {
               {`${actionData?.error || "Album scrobbled successfully"}`}
             </Alert>
           </div>
+          <InputWithLabel
+            label="Date and time"
+            type="datetime-local"
+            defaultValue={new Date().toISOString().slice(0, 16)}
+            onChange={handleDateChange}
+          />
           <div className={`${actionData?.success ? "opacity-30" : ""}`}>
             <h4>Tracklist</h4>
             {loaderData.tracks.map((track) => (

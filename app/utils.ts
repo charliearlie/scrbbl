@@ -54,10 +54,3 @@ export function forEachRight<T>(
     callback(array[index], index, array);
   }
 }
-
-export const defaultManualScrobbleState = {
-  artist: "",
-  track: "",
-  album: "",
-  albumArtist: "",
-};

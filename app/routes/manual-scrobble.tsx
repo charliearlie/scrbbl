@@ -21,7 +21,14 @@ export const action = async ({ request }: ActionArgs) => {
   const artist = formData.get("artist");
   const track = formData.get("track");
   const album = formData.get("album");
-  let timestamp = Math.floor(new Date().getTime() / 1000) - 300;
+  const datetime = formData.get("datetime");
+
+  const isDateTimeValid = datetime && typeof datetime === "string";
+  const timestamp =
+    Math.floor(
+      (isDateTimeValid ? new Date(datetime).getTime() : new Date().getTime()) /
+        1000
+    ) - 300;
 
   if (typeof artist !== "string" || typeof track !== "string") return null;
   const lastfmSession = await getLastfmSession(request);
