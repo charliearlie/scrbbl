@@ -1,4 +1,4 @@
-import { LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import { redirect, useTypedLoaderData } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import AlbumSearchResult from "~/components/album/album-search-result";
@@ -26,7 +26,7 @@ export default function SearchResults() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {loaderData.map((result) => (
-        <AlbumSearchResult {...result} />
+        <AlbumSearchResult key={result.albumId} {...result} />
       ))}
     </div>
   );

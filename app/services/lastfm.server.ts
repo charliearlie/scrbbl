@@ -1,4 +1,5 @@
-import LastfmApi, { LastfmApiTrack } from "lastfmapi";
+import type { LastfmApiTrack } from "lastfmapi";
+import LastfmApi from "lastfmapi";
 import { forEachRight } from "~/utils";
 
 export const lastfm = new LastfmApi({

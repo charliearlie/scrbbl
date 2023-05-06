@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 import appleLogo from "~/assets/Apple_logo_black.svg";
 

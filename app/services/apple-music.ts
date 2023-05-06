@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
-import type { AppleMusicAlbumSearchResult, LastfmApiTrack } from "lastfmapi";
+import type { LastfmApiTrack } from "lastfmapi";
 
 const baseUrl = "https://itunes.apple.com";
 

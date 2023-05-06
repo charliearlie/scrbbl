@@ -1,7 +1,8 @@
 // This file is specifically for Apple music functions called on the server.
 
-import axios, { AxiosResponse } from "axios";
-import {
+import type { AxiosResponse } from "axios";
+import axios from "axios";
+import type {
   AlbumDetailsApiResponse,
   AppleMusicAlbumDetailsResult,
   AppleMusicAlbumSearchResult,

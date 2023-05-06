@@ -1,4 +1,4 @@
-import { User } from "lastfmapi";
+import type { User } from "lastfmapi";
 import { Card, CardContent } from "./card";
 import LoginButton from "./login-link-button";
 

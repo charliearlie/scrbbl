@@ -11,7 +11,8 @@ import {
 } from "remix-typedjson";
 import { lastfm } from "~/services/lastfm.server";
 import { Card, CardContent } from "~/components/card";
-import LastfmApi, { LastfmApiTrack } from "lastfmapi";
+import type { LastfmApiTrack } from "lastfmapi";
+import type LastfmApi from "lastfmapi";
 import ManualScrobbleForm from "~/components/form/manual-scrobble-form";
 import Alert from "~/components/alert";
 
@@ -65,7 +66,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function ManualScrobble() {
-  const { token } = useTypedLoaderData<typeof loader>();
   const actionData = useTypedActionData<typeof action>();
   return (
     <main className="mt-12 p-2">

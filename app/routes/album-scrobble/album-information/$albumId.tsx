@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigation, useSubmit } from "@remix-run/react";
-import { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
-import { LastfmApiTrack } from "lastfmapi";
+import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
+import type { LastfmApiTrack } from "lastfmapi";
 import {
   redirect,
   typedjson,
@@ -127,7 +127,10 @@ export default function AlbumDetails() {
           <div className={`${actionData?.success ? "opacity-30" : ""}`}>
             <h4>Tracklist</h4>
             {loaderData.tracks.map((track) => (
-              <div className="flex items-center justify-between">
+              <div
+                key={track.track}
+                className="flex items-center justify-between"
+              >
                 <div className="flex w-3/4">
                   <div className="w-full">
                     <InputWithLabel
