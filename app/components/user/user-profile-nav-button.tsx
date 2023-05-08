@@ -15,7 +15,7 @@ export default function UserProfileNavButton({
       <div className="flex gap-2">
         <img
           className="h-8 w-8 rounded-full"
-          alt="Last.FM profile picture"
+          alt="Last.FM profile"
           src={profilePhoto}
         />
         <div className="">

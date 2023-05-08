@@ -1,8 +1,16 @@
 import { Settings } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
-import { Form } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
+import { LogOut } from "lucide-react";
+import { useTypedLoaderData } from "remix-typedjson";
+
+import { loader } from "~/root";
+import LoginLinkButton from "../login-link-button";
 
 export default function SettingsPopover() {
+  const user = useTypedLoaderData<typeof loader>();
+  const userImage =
+    user?.image.find((image) => image.size === "large")?.["#text"] || "";
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -11,10 +19,67 @@ export default function SettingsPopover() {
           <span className="sr-only">Open popover</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white dark:bg-slate-900">
-        <Form method="post" action="/">
-          <button className="button button-danger">Log out</button>
-        </Form>
+      <PopoverContent className="w-80 bg-white p-4 dark:bg-slate-900">
+        {user && (
+          <div>
+            <div className="flex flex-col items-center">
+              <img
+                className="h-16 w-16 rounded-full"
+                alt="Last.FM profile"
+                src={userImage}
+              />
+              <h4 className="text-2xl">
+                <Link
+                  className="hover:text-blue-600 hover:underline"
+                  to="user/profile"
+                >
+                  {user.name}
+                </Link>
+              </h4>
+              <p>{user.playcount} Scrobbles</p>
+            </div>
+            <div className="grid grid-cols-3">
+              <div className="flex flex-col items-center">
+                <a
+                  className="hover:text-blue-600 hover:underline"
+                  href={`${user.url}/library/tracks`}
+                >
+                  Tracks
+                </a>
+                <p className="text-slate-600">{user.track_count}</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <a
+                  className="hover:text-blue-600 hover:underline"
+                  href={`${user.url}/library/artists`}
+                >
+                  Artists
+                </a>
+                <p className="text-slate-600">{user.artist_count}</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <a
+                  className="hover:text-blue-600 hover:underline"
+                  href={`${user.url}/library/albums`}
+                >
+                  Albums
+                </a>
+                <p className="text-slate-600">{user.album_count}</p>
+              </div>
+            </div>
+            <div className="divider" />
+            <div className="flex items-center justify-between p-4">
+              <a className="standard-link" href={user.url}>
+                View on Last.FM
+              </a>
+              <Form method="post" action="/">
+                <button className="button button-danger flex items-center gap-1">
+                  Log out <LogOut className="h-4 w-4" strokeWidth={4} />
+                </button>
+              </Form>
+            </div>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );

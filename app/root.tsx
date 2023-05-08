@@ -18,10 +18,11 @@ import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { Boxes, Database, Home, Music, RadioTower } from "lucide-react";
 
 import tailwindStylesheetUrl from "~/tailwind.css";
-import { getUserInfo, logout } from "./services/session.server";
+import { logout } from "./services/session.server";
 import UserProfileNavButton from "./components/user/user-profile-nav-button";
 import LoginButton from "./components/login-link-button";
 import NavigationLink from "./components/navigation/navigation-link";
+import { getUserData } from "./services/lastfm.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -34,11 +35,10 @@ export const meta: MetaFunction = () => ({
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const user = await getUserInfo(request);
-
+  const user = await getUserData(request);
   if (!user) return typedjson(null);
 
-  return typedjson(user);
+  return user;
 };
 
 export const action = async ({ request }: ActionArgs) => {

@@ -42,6 +42,10 @@
   }
 
   .button-danger {
-    @apply bg-red-500 hover:bg-red-600;
+    @apply bg-rose-500 hover:bg-rose-600;
+  }
+
+  .standard-link {
+    @apply text-blue-600 underline visited:text-purple-600 hover:text-blue-800;
   }
 }

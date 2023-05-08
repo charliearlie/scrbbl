@@ -1,6 +1,8 @@
-import type { LastfmApiTrack } from "lastfmapi";
+import type { LastfmApiTrack, User } from "lastfmapi";
 import LastfmApi from "lastfmapi";
 import { forEachRight } from "~/utils";
+import { getLastfmSession } from "./session.server";
+import { typedjson } from "remix-typedjson";
 
 export const lastfm = new LastfmApi({
   api_key: "5e51b3c171721101d22f4101dd227f66",
@@ -42,4 +44,24 @@ export const scrobbleAlbum = async (
   });
 
   return scrobbles ? true : false;
+};
+
+export const getUserData = async (request: Request) => {
+  const session = await getLastfmSession(request);
+  if (session) {
+    lastfm.setSessionCredentials(session?.username, session?.key);
+    const userInfo: User = await new Promise((resolve, reject) => {
+      lastfm.user.getInfo("", (error, info) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(info);
+        }
+      });
+    });
+
+    return typedjson(userInfo);
+  }
+
+  return typedjson(null);
 };
