@@ -1,4 +1,4 @@
-import type { ChangeEvent} from "react";
+import type { ChangeEvent } from "react";
 import { useState } from "react";
 import InputWithLabel from "../form/input-with-label";
 import { Link } from "@remix-run/react";
