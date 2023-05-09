@@ -20,7 +20,7 @@ export default function AlbumSearch() {
       <div className="flex justify-center">
         <Link
           to={`/album-scrobble/search-results/${query}`}
-          className="button button-primary mt-4 px-12"
+          className="button button-secondary mt-4 px-12"
         >
           Search
         </Link>
