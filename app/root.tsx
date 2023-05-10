@@ -22,9 +22,10 @@ import { themeChange } from "theme-change";
 import tailwindStylesheetUrl from "~/tailwind.css";
 import { logout } from "./services/session.server";
 import UserProfileNavButton from "./components/user/user-profile-nav-button";
-import LoginButton from "./components/login-link-button";
+import LoginButton from "./components/common/login-link-button";
 import NavigationLink from "./components/navigation/navigation-link";
 import { getUserData } from "./services/lastfm.server";
+import ThemeDropdown from "./components/theme-dropdown";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -99,78 +100,13 @@ export default function App() {
                   </svg>
                 </button>
                 <Link to="/" className="ml-2 flex text-primary md:mr-24">
-                  <span className="self-center whitespace-nowrap text-2xl font-semibold">
+                  <span className="self-center whitespace-nowrap text-3xl font-black">
                     Scrbbl
                   </span>
                 </Link>
               </div>
               <div>
-                <div className="dropdown">
-                  <label tabIndex={0} className="btn m-1">
-                    Theme
-                  </label>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content menu rounded-box w-52 bg-base-300 p-2 shadow"
-                  >
-                    <li>
-                      <button
-                        data-set-theme="light"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Light
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        data-set-theme="dark"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Dark
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        data-set-theme="fantasy"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Fantasy
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        data-set-theme="dracula"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Dracula
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        data-set-theme="synthwave"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Synthwave
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        data-set-theme="cupcake"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Cupcake
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        data-set-theme="cmyk"
-                        data-act-class="ACTIVECLASS"
-                      >
-                        Cmyk
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                <ThemeDropdown />
               </div>
             </div>
           </div>

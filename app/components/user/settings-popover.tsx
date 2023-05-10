@@ -1,5 +1,5 @@
 import { Settings } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../common/popover";
 import { Form, Link } from "@remix-run/react";
 import { LogOut } from "lucide-react";
 import { useTypedLoaderData } from "remix-typedjson";

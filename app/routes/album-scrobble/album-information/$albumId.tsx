@@ -9,9 +9,9 @@ import {
   useTypedLoaderData,
 } from "remix-typedjson";
 import invariant from "tiny-invariant";
-import Alert from "~/components/alert";
-import { Card, CardContent } from "~/components/card";
-import InputWithLabel from "~/components/form/input-with-label";
+import Alert from "~/components/common/alert";
+import { Card, CardContent } from "~/components/common/card";
+import InputWithLabel from "~/components/common/input-with-label";
 import { getAlbumDetails } from "~/services/apple-music.server";
 import { lastfm, scrobbleAlbum } from "~/services/lastfm.server";
 import { getLastfmSession } from "~/services/session.server";

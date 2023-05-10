@@ -54,3 +54,10 @@ export function forEachRight<T>(
     callback(array[index], index, array);
   }
 }
+
+export const capitalise = (str: string) => {
+  const firstCharacter = str[0].toUpperCase();
+  const remainingString = str.slice(1).toLowerCase();
+
+  return `${firstCharacter}${remainingString}`;
+};

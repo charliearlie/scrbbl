@@ -2,7 +2,7 @@ import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 import { typedjson } from "remix-typedjson";
 import { getUserToken, requireLogin } from "~/services/session.server";
-import { Card, CardContent } from "~/components/card";
+import { Card, CardContent } from "~/components/common/card";
 import AlbumSearch from "~/components/album/album-search";
 
 export const meta: MetaFunction = () => ({

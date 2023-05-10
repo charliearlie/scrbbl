@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSubmit } from "@remix-run/react";
-import InputWithLabel from "./input-with-label";
+import InputWithLabel from "../common/input-with-label";
 import { searchSong } from "~/services/apple-music";
 
 import type { ChangeEvent } from "react";

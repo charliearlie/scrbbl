@@ -5,7 +5,6 @@ export default function LoginLinkButton() {
 
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
-    console.log(isBrowser);
     if (isBrowser) {
       const origin = window.location.origin;
       const redirectUrl = `${origin}/auth-redirect`;

@@ -1,6 +1,6 @@
 import type { User } from "lastfmapi";
-import { Card, CardContent } from "./card";
-import LoginButton from "./login-link-button";
+import { Card, CardContent } from "./common/card";
+import LoginButton from "./common/login-link-button";
 
 type Props = {
   user: User | null;

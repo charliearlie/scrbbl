@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { Card, CardAction, CardContent } from "../card";
+import { Card, CardAction, CardContent } from "../common/card";
 
 type Props = {
   album: string;

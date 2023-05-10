@@ -10,11 +10,11 @@ import {
   useTypedLoaderData,
 } from "remix-typedjson";
 import { lastfm } from "~/services/lastfm.server";
-import { Card, CardContent } from "~/components/card";
+import { Card, CardContent } from "~/components/common/card";
 import type { LastfmApiTrack } from "lastfmapi";
 import type LastfmApi from "lastfmapi";
 import ManualScrobbleForm from "~/components/form/manual-scrobble-form";
-import Alert from "~/components/alert";
+import Alert from "~/components/common/alert";
 
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();

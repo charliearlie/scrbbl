@@ -15,10 +15,14 @@ export default function NavigationLink({ bannerText, Icon, text, to }: Props) {
     <Link
       to={to}
       className={`flex items-center gap-4 rounded-lg p-2 ${
-        isActiveLink ? "bg-primary text-base-300" : ""
+        isActiveLink ? "bg-primary text-primary-content" : ""
       }`}
     >
-      <Icon className="text-secondary" size={28} strokeWidth={3} />
+      <Icon
+        className={`${isActiveLink ? "text-primary-content" : "text-primary"}`}
+        size={28}
+        strokeWidth={3}
+      />
       <span className="link-hover link flex-1 whitespace-nowrap text-lg no-underline">
         {text}
       </span>
