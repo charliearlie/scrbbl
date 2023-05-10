@@ -100,7 +100,7 @@ export default function ManualScrobbleForm() {
       </form>
       <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-between">
         <button
-          className="button button-danger h-3/6 w-full disabled:cursor-not-allowed sm:w-48"
+          className="btn-primary btn w-full sm:w-48"
           disabled={areButtonsDisabled}
           onClick={handleSubmit}
         >
@@ -108,7 +108,7 @@ export default function ManualScrobbleForm() {
         </button>
         <div className="flex w-full flex-col items-end">
           <AppleMusicButton
-            className="button button-secondary flex w-full items-center justify-center gap-4 sm:w-48"
+            className="btn-secondary btn flex w-full items-center justify-center gap-4 sm:w-48"
             onClick={appleMusicSearch}
             aria-label="Search for song with Apple Music"
             disabled={areButtonsDisabled}

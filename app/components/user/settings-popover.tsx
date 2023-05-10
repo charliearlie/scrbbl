@@ -19,7 +19,7 @@ export default function SettingsPopover() {
           <span className="sr-only">Open popover</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white p-4 dark:bg-slate-900">
+      <PopoverContent className="w-96 bg-base-100 p-4">
         {user && (
           <div>
             <div className="flex flex-col items-center">
@@ -41,30 +41,30 @@ export default function SettingsPopover() {
             <div className="grid grid-cols-3">
               <div className="flex flex-col items-center">
                 <a
-                  className="hover:text-blue-600 hover:underline"
+                  className="link-hover link"
                   href={`${user.url}/library/tracks`}
                 >
                   Tracks
                 </a>
-                <p className="text-slate-600">{user.track_count}</p>
+                <p className="">{user.track_count}</p>
               </div>
               <div className="flex flex-col items-center">
                 <a
-                  className="hover:text-blue-600 hover:underline"
+                  className="link-hover link"
                   href={`${user.url}/library/artists`}
                 >
                   Artists
                 </a>
-                <p className="text-slate-600">{user.artist_count}</p>
+                <p>{user.artist_count}</p>
               </div>
               <div className="flex flex-col items-center">
                 <a
-                  className="hover:text-blue-600 hover:underline"
+                  className="link-hover link"
                   href={`${user.url}/library/albums`}
                 >
                   Albums
                 </a>
-                <p className="text-slate-600">{user.album_count}</p>
+                <p>{user.album_count}</p>
               </div>
             </div>
             <div className="divider" />

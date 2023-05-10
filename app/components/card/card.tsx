@@ -6,7 +6,7 @@ export default function Card({
 }: PropsWithChildren<{ className?: string }>) {
   return (
     <div
-      className={`flex flex-col rounded-lg bg-white shadow shadow-gray-400 focus:outline-4 focus:outline-blue-400 dark:bg-gray-800 dark:shadow-gray-900 ${className}`}
+      className={`card flex flex-col bg-base-100 focus:outline-4 focus:outline-blue-400 ${className}`}
     >
       {children}
     </div>

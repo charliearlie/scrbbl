@@ -38,7 +38,7 @@ export default function AlbumSearchResult({
           to={encodeURI(`/album-scrobble/album-information/${albumId}`)}
         >
           <span className="text-xl font-semibold">View track list</span>
-          <div className="cursor-pointer rounded p-2 text-gray-800 outline outline-1 outline-gray-400 dark:text-gray-300">
+          <div className="cursor-pointer rounded p-2 outline outline-1 outline-gray-400 dark:text-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

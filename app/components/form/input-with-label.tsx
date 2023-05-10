@@ -10,7 +10,7 @@ export default function InputWithLabel({ label, ...inputProps }: Props) {
       <label className="flex flex-col py-1 font-semibold">
         {label}
         <input
-          className="rounded-lg bg-slate-200 p-2 text-lg font-normal dark:bg-slate-700 dark:autofill:bg-slate-700"
+          className="input-bordered input rounded-lg bg-base-300 p-2 text-lg font-normal"
           {...inputProps}
         />
       </label>

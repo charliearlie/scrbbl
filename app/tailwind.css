@@ -4,16 +4,6 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-slate-100;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body {
-      @apply bg-gray-600 text-gray-300;
-    }
-  }
-
   h1 {
     @apply text-4xl font-bold;
   }

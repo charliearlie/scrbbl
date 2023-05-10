@@ -149,7 +149,7 @@ export default function AlbumDetails() {
               </div>
             ))}
           </div>
-          <button onClick={handleScrobble} className="button button-danger">
+          <button onClick={handleScrobble} className="btn-primary btn">
             {`${
               navigation.state === "loading" ? "submitting" : "Scrobble album"
             }`}
