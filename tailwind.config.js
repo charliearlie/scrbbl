@@ -36,7 +36,7 @@ module.exports = {
       "retro",
       "valentine",
       "wireframe",
-    ];,
+    ],
     styled: true,
     base: true,
     utils: true,
