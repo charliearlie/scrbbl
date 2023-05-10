@@ -17,7 +17,7 @@ export default function LoginLinkButton() {
   return (
     <a
       href={`http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=${redirectUrl}`}
-      className="button button-danger gap-4"
+      className="btn-error btn gap-4"
     >
       Login with Last.FM
     </a>

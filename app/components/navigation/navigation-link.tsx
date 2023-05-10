@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import type { LucideIcon } from "lucide-react";
 type Props = {
   Icon: LucideIcon;
@@ -8,9 +8,17 @@ type Props = {
 };
 
 export default function NavigationLink({ bannerText, Icon, text, to }: Props) {
+  const location = useLocation();
+
+  const isActiveLink = location.pathname === to;
   return (
-    <Link to={to} className="flex items-center gap-4 rounded-lg p-2">
-      <Icon className="link-accent link" size={28} strokeWidth={3} />
+    <Link
+      to={to}
+      className={`flex items-center gap-4 rounded-lg p-2 ${
+        isActiveLink ? "bg-primary text-base-300" : ""
+      }`}
+    >
+      <Icon className="text-secondary" size={28} strokeWidth={3} />
       <span className="link-hover link flex-1 whitespace-nowrap text-lg no-underline">
         {text}
       </span>

@@ -5,6 +5,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -97,11 +98,11 @@ export default function App() {
                     ></path>
                   </svg>
                 </button>
-                <a href="https://flowbite.com" className="ml-2 flex md:mr-24">
-                  <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+                <Link to="/" className="ml-2 flex text-primary md:mr-24">
+                  <span className="self-center whitespace-nowrap text-2xl font-semibold">
                     Scrbbl
                   </span>
-                </a>
+                </Link>
               </div>
               <div>
                 <div className="dropdown">
@@ -190,14 +191,14 @@ export default function App() {
               <li>
                 <NavigationLink
                   Icon={Music}
-                  to="manual-scrobble"
+                  to="/manual-scrobble"
                   text="Scrobble song"
                 />
               </li>
               <li>
                 <NavigationLink
                   Icon={Boxes}
-                  to="album-scrobble"
+                  to="/album-scrobble"
                   text="Scrobble album"
                 />
               </li>
