@@ -21,12 +21,10 @@ const themes = [
   "forest",
   "lemonade",
   "lofi",
-  "luxury",
   "night",
   "pastel",
   "retro",
   "valentine",
-  "wireframe",
 ];
 export default function ThemeDropdown() {
   const [currentTheme, setCurrentTheme] = useState("");
@@ -39,19 +37,19 @@ export default function ThemeDropdown() {
   useEffect(() => {}, [currentTheme]);
 
   return (
-    <div className="dropdown dropdown-left">
+    <div className="dropdown-left dropdown">
       <label tabIndex={0} className="btn m-1">
         {currentTheme}
       </label>
       <ul
         tabIndex={0}
-        className="dropdown-content menu rounded-box w-52 bg-base-300 p-2 shadow"
+        className="dropdown-content menu rounded-box w-52 overflow-scroll bg-base-300 p-2 shadow"
       >
         {themes.map((theme) => {
           return (
             <li>
               <button
-                className={`${
+                className={`p-2 ${
                   theme === currentTheme
                     ? "bg-primary text-primary-content"
                     : ""
