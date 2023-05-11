@@ -66,7 +66,7 @@ export default function App() {
   }, [location]);
 
   return (
-    <html lang="en" className="h-full bg-base-300">
+    <html lang="en" data-theme="dracula" className="h-full bg-base-300">
       <head>
         <Meta />
         <Links />
@@ -145,14 +145,14 @@ export default function App() {
                   text="Scrobble radio"
                 />
               </li>
-              {/* <li>
+              <li>
                 <NavigationLink
                   bannerText="Pro"
                   Icon={Database}
                   to="#"
                   text="Bulk Scrobble"
                 />
-              </li> */}
+              </li>
             </ul>
             {loaderData ? (
               <div className="border-t-2 p-2">

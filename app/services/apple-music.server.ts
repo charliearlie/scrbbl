@@ -75,9 +75,12 @@ export type AlbumInfo = {
 };
 
 export async function searchAlbum(query: string) {
-  const response: AxiosResponse<AlbumResponse> = await axios.get(
-    `${baseUrl}/search?term=${query.replace(" ", "+")}&media=music&entity=album`
-  );
+  const uri = `${baseUrl}/search?term=${query.replace(
+    " ",
+    "+"
+  )}&media=music&entity=album`;
+  const encodedUri = encodeURI(uri);
+  const response: AxiosResponse<AlbumResponse> = await axios.get(encodedUri);
 
   return response.data.results.map((result) => ({
     albumId: result.collectionId,

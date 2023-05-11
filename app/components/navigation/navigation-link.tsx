@@ -26,11 +26,7 @@ export default function NavigationLink({ bannerText, Icon, text, to }: Props) {
       <span className="link-hover link flex-1 whitespace-nowrap text-lg no-underline">
         {text}
       </span>
-      {bannerText && (
-        <span className="ml-3 inline-flex items-center justify-center rounded-full bg-base-content px-2 text-sm font-medium text-base-100">
-          Pro
-        </span>
-      )}
+      {bannerText && <span className="badge-primary badge">Pro</span>}
     </Link>
   );
 }

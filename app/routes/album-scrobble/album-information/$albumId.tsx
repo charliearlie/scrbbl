@@ -141,10 +141,9 @@ export default function AlbumDetails() {
                   </div>
                 </div>
                 <input
-                  className="flex-1/4"
+                  className="flex-1/4 checkbox"
                   type="checkbox"
                   onChange={() => {}}
-                  checked
                 />
               </div>
             ))}

@@ -5,26 +5,14 @@ import { capitalise } from "~/utils";
 const themes = [
   "light",
   "dark",
-  "acid",
   "aqua",
-  "autumn",
   "black",
-  "bumblebee",
-  "business",
-  "cmyk",
-  "corporate",
   "cupcake",
-  "cyberpunk",
   "dracula",
   "emerald",
   "fantasy",
   "forest",
-  "lemonade",
-  "lofi",
   "night",
-  "pastel",
-  "retro",
-  "valentine",
 ];
 export default function ThemeDropdown() {
   const [currentTheme, setCurrentTheme] = useState("");
@@ -37,7 +25,7 @@ export default function ThemeDropdown() {
   useEffect(() => {}, [currentTheme]);
 
   return (
-    <div className="dropdown-left dropdown">
+    <div className="dropdown dropdown-left">
       <label tabIndex={0} className="btn m-1">
         {currentTheme}
       </label>

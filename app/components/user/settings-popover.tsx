@@ -22,11 +22,11 @@ export default function SettingsPopover() {
         {user && (
           <div>
             <div className="flex flex-col items-center">
-              <img
-                className="h-16 w-16 rounded-full"
-                alt="Last.FM profile"
-                src={userImage}
-              />
+              <div className="avatar">
+                <div className="mask mask-hexagon w-24">
+                  <img alt="Last.FM profile" src={userImage} />
+                </div>
+              </div>
               <h4 className="text-2xl">
                 <Link
                   className="hover:text-blue-600 hover:underline"
@@ -37,36 +37,39 @@ export default function SettingsPopover() {
               </h4>
               <p>{user.playcount} Scrobbles</p>
             </div>
-            <div className="grid grid-cols-3">
-              <div className="flex flex-col items-center">
+            <div className="stats grid grid-cols-3 shadow">
+              <div className="stat place-items-center">
                 <a
-                  className="link-hover link"
+                  className="link-hover stat-title"
                   href={`${user.url}/library/tracks`}
                 >
                   Tracks
                 </a>
-                <p className="">{user.track_count}</p>
+                <div className="stat-value text-2xl">{user.track_count}</div>
               </div>
-              <div className="flex flex-col items-center">
+
+              <div className="stat place-items-center">
                 <a
-                  className="link-hover link"
+                  className="link-hover stat-title"
                   href={`${user.url}/library/artists`}
                 >
                   Artists
                 </a>
-                <p>{user.artist_count}</p>
+                <div className="stat-value text-2xl text-secondary">
+                  {user.artist_count}
+                </div>
               </div>
-              <div className="flex flex-col items-center">
+
+              <div className="stat place-items-center">
                 <a
-                  className="link-hover link"
+                  className="link-hover stat-title"
                   href={`${user.url}/library/albums`}
                 >
                   Albums
                 </a>
-                <p>{user.album_count}</p>
+                <div className="stat-value text-2xl">{user.album_count}</div>
               </div>
             </div>
-            <div className="divider" />
             <div className="flex items-center justify-between p-4">
               <a className="standard-link" href={user.url}>
                 View on Last.FM
