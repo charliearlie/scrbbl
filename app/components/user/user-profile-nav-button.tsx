@@ -13,11 +13,11 @@ export default function UserProfileNavButton({
   return (
     <div className="flex items-center justify-between">
       <div className="flex gap-2">
-        <img
-          className="h-8 w-8 rounded-full"
-          alt="Last.FM profile"
-          src={profilePhoto}
-        />
+        <div className="avatar flex items-center">
+          <div className="h-8 w-8 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+            <img alt="Last.FM profile" src={profilePhoto} />
+          </div>
+        </div>
         <div className="">
           <Link to={`user/${username}`} className="text-xl hover:opacity-70">
             {username}

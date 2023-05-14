@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { Link } from "@remix-run/react";
-import InputWithLabel from "../form/input-with-label";
+import InputWithLabel from "../common/input-with-label";
 
 export default function AlbumSearch() {
   const [query, setQuery] = useState<string>("");
@@ -20,7 +20,7 @@ export default function AlbumSearch() {
       <div className="flex justify-center">
         <Link
           to={`/album-scrobble/search-results/${query}`}
-          className="button button-secondary mt-4 px-12"
+          className="btn-primary btn mt-4 px-12"
         >
           Search
         </Link>

@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import type { LucideIcon } from "lucide-react";
 type Props = {
   Icon: LucideIcon;
@@ -8,22 +8,25 @@ type Props = {
 };
 
 export default function NavigationLink({ bannerText, Icon, text, to }: Props) {
+  const location = useLocation();
+
+  const isActiveLink = location.pathname === to;
   return (
     <Link
       to={to}
-      className="flex items-center gap-4 rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+      className={`flex items-center gap-4 rounded-lg p-2 ${
+        isActiveLink ? "bg-primary text-primary-content" : ""
+      }`}
     >
       <Icon
-        className="text-slate-700 group-hover:text-gray-900 dark:text-gray-400"
+        className={`${isActiveLink ? "text-primary-content" : "text-primary"}`}
         size={28}
         strokeWidth={3}
       />
-      <span className="flex-1 whitespace-nowrap text-lg">{text}</span>
-      {bannerText && (
-        <span className="ml-3 inline-flex items-center justify-center rounded-full bg-gray-200 px-2 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-          Pro
-        </span>
-      )}
+      <span className="link-hover link flex-1 whitespace-nowrap text-lg no-underline">
+        {text}
+      </span>
+      {bannerText && <span className="badge-primary badge">Pro</span>}
     </Link>
   );
 }

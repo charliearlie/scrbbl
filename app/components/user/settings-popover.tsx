@@ -1,5 +1,5 @@
 import { Settings } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../common/popover";
 import { Form, Link } from "@remix-run/react";
 import { LogOut } from "lucide-react";
 import { useTypedLoaderData } from "remix-typedjson";
@@ -18,15 +18,15 @@ export default function SettingsPopover() {
           <span className="sr-only">Open popover</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white p-4 dark:bg-slate-900">
+      <PopoverContent className="w-96 bg-base-100 p-4">
         {user && (
           <div>
             <div className="flex flex-col items-center">
-              <img
-                className="h-16 w-16 rounded-full"
-                alt="Last.FM profile"
-                src={userImage}
-              />
+              <div className="avatar">
+                <div className="mask mask-hexagon w-24">
+                  <img alt="Last.FM profile" src={userImage} />
+                </div>
+              </div>
               <h4 className="text-2xl">
                 <Link
                   className="hover:text-blue-600 hover:underline"
@@ -37,36 +37,39 @@ export default function SettingsPopover() {
               </h4>
               <p>{user.playcount} Scrobbles</p>
             </div>
-            <div className="grid grid-cols-3">
-              <div className="flex flex-col items-center">
+            <div className="stats grid grid-cols-3 shadow">
+              <div className="stat place-items-center">
                 <a
-                  className="hover:text-blue-600 hover:underline"
+                  className="link-hover stat-title"
                   href={`${user.url}/library/tracks`}
                 >
                   Tracks
                 </a>
-                <p className="text-slate-600">{user.track_count}</p>
+                <div className="stat-value text-2xl">{user.track_count}</div>
               </div>
-              <div className="flex flex-col items-center">
+
+              <div className="stat place-items-center">
                 <a
-                  className="hover:text-blue-600 hover:underline"
+                  className="link-hover stat-title"
                   href={`${user.url}/library/artists`}
                 >
                   Artists
                 </a>
-                <p className="text-slate-600">{user.artist_count}</p>
+                <div className="stat-value text-2xl text-secondary">
+                  {user.artist_count}
+                </div>
               </div>
-              <div className="flex flex-col items-center">
+
+              <div className="stat place-items-center">
                 <a
-                  className="hover:text-blue-600 hover:underline"
+                  className="link-hover stat-title"
                   href={`${user.url}/library/albums`}
                 >
                   Albums
                 </a>
-                <p className="text-slate-600">{user.album_count}</p>
+                <div className="stat-value text-2xl">{user.album_count}</div>
               </div>
             </div>
-            <div className="divider" />
             <div className="flex items-center justify-between p-4">
               <a className="standard-link" href={user.url}>
                 View on Last.FM

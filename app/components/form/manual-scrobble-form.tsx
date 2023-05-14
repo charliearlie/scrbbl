@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSubmit } from "@remix-run/react";
-import InputWithLabel from "./input-with-label";
+import InputWithLabel from "../common/input-with-label";
 import { searchSong } from "~/services/apple-music";
 
 import type { ChangeEvent } from "react";
@@ -20,6 +20,7 @@ type FormState = typeof defaultManualScrobbleState & {
 
 export default function ManualScrobbleForm() {
   const submit = useSubmit();
+  const artistInputRef = useRef<HTMLInputElement>(null);
   const [formState, setFormState] = useState<FormState>(
     defaultManualScrobbleState
   );
@@ -46,6 +47,11 @@ export default function ManualScrobbleForm() {
     }
   };
 
+  const clearForm = () => {
+    setFormState(defaultManualScrobbleState);
+    artistInputRef.current?.focus();
+  };
+
   const handleSubmit = () => {
     const formData = new FormData();
     Object.entries(formState).forEach(([key, value]) => {
@@ -60,6 +66,7 @@ export default function ManualScrobbleForm() {
     <div>
       <form method="post">
         <InputWithLabel
+          ref={artistInputRef}
           label="Artist"
           type="text"
           name="artist"
@@ -100,15 +107,22 @@ export default function ManualScrobbleForm() {
       </form>
       <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-between">
         <button
-          className="button button-danger h-3/6 w-full disabled:cursor-not-allowed sm:w-48"
+          className="btn-primary btn w-full sm:w-48"
           disabled={areButtonsDisabled}
           onClick={handleSubmit}
         >
           Scrobble
         </button>
-        <div className="flex w-full flex-col items-end">
+        <div className="btn-group">
+          <button
+            className="btn-secondary btn w-full sm:w-48"
+            disabled={areButtonsDisabled}
+            onClick={clearForm}
+          >
+            Clear
+          </button>
           <AppleMusicButton
-            className="button button-secondary flex w-full items-center justify-center gap-4 sm:w-48"
+            className="btn-accent btn flex w-full items-center justify-center gap-4 sm:w-48"
             onClick={appleMusicSearch}
             aria-label="Search for song with Apple Music"
             disabled={areButtonsDisabled}

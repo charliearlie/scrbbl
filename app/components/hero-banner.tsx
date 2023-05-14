@@ -1,6 +1,6 @@
 import type { User } from "lastfmapi";
-import { Card, CardContent } from "./card";
-import LoginButton from "./login-link-button";
+import { Card, CardContent } from "./common/card";
+import LoginButton from "./common/login-link-button";
 
 type Props = {
   user: User | null;
@@ -8,7 +8,7 @@ type Props = {
 
 export default function HeroBanner({ user }: Props) {
   return (
-    <div className="bg-gradient-to-l from-white to-slate-100 py-8 px-4 dark:bg-gradient-to-r dark:from-black dark:to-gray-800 md:px-8">
+    <div className="py-8 px-4 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="pb-8">
           <h1 className="py-2 font-bold">Welcome to Scrbbl</h1>
