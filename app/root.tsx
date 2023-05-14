@@ -20,12 +20,12 @@ import { Boxes, Database, Home, Music, RadioTower } from "lucide-react";
 import { themeChange } from "theme-change";
 
 import tailwindStylesheetUrl from "~/tailwind.css";
-import { logout } from "./services/session.server";
 import UserProfileNavButton from "./components/user/user-profile-nav-button";
 import LoginButton from "./components/common/login-link-button";
 import NavigationLink from "./components/navigation/navigation-link";
-import { getUserData } from "./services/lastfm.server";
 import ThemeDropdown from "./components/theme-dropdown";
+import { getUserData } from "./services/lastfm.server";
+import { logout } from "./services/session.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
