@@ -25,7 +25,7 @@ export default function ThemeDropdown() {
   useEffect(() => {}, [currentTheme]);
 
   return (
-    <div className="dropdown dropdown-left">
+    <div className="dropdown-left dropdown">
       <label tabIndex={0} className="btn m-1">
         {currentTheme}
       </label>
