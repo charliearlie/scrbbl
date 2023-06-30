@@ -37,6 +37,8 @@ export const action = async ({ request }: ActionArgs) => {
   const tracks = formData.get("tracks");
   const datetime = formData.get("datetime");
 
+  console.log("DATETIME", datetime);
+
   const isDateTimeValid = datetime && typeof datetime === "string";
   const timestamp =
     Math.floor(
@@ -59,6 +61,7 @@ export const action = async ({ request }: ActionArgs) => {
   const tracksToScrobble: LastfmApiTrack[] = JSON.parse(tracks);
 
   lastfm.setSessionCredentials(lastfmSession?.username, lastfmSession?.key);
+  
   const scrobbled = await scrobbleAlbum(
     albumName,
     tracksToScrobble,
@@ -98,7 +101,7 @@ export default function AlbumDetails() {
       formData.append("albumArtist", loaderData.artistName);
       formData.append("albumName", loaderData.collectionName ?? "");
       formData.append("tracks", JSON.stringify(loaderData.tracks));
-      formData.append("timestamp", dateTime);
+      formData.append("datetime", dateTime);
 
       submit(formData, { method: "post" });
     }
@@ -121,6 +124,7 @@ export default function AlbumDetails() {
           <InputWithLabel
             label="Date and time"
             type="datetime-local"
+            name="datetime"
             defaultValue={new Date().toISOString().slice(0, 16)}
             onChange={handleDateChange}
           />
