@@ -1,6 +1,6 @@
 # Scrbbl
 
-https://scrbbl.herokuapp.com
+https://scrbbl.vercel.app
 
 Scrbbl is a manual Last.FM scrobbler which allows you to 'scrobble' tracks your scrobbler may have missed.
 
