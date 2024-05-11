@@ -9,6 +9,8 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const { url } = request;
   const newUrl = new URL(url);
   const token = newUrl.searchParams.get("token");
+  const redirectUrl = newUrl.searchParams.get("redirectTo");
+
   if (!token) {
     return typedjson({ error: "No token was provided" });
   }
@@ -34,7 +36,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     });
   });
 
-  return createUserSession(token, session, userInfo);
+  return createUserSession(token, session, userInfo, redirectUrl || "/");
 };
 
 export default function AuthRedirectRoute() {
