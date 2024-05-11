@@ -163,7 +163,7 @@ export default function App() {
                 />
               </div>
             ) : (
-              <LoginButton />
+              <LoginButton redirectTo="/" />
             )}
           </div>
         </aside>

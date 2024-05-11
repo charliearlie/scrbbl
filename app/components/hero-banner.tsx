@@ -50,7 +50,7 @@ export default function HeroBanner({ user }: Props) {
               <h2 className="text-base font-normal">
                 Scrbbl works when you are logged in with Last.FM
               </h2>
-              <LoginButton />
+              <LoginButton redirectTo="" />
             </div>
           )}
         </div>
