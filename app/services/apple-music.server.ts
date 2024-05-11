@@ -15,7 +15,7 @@ type AlbumDetails = {
   tracks: LastfmApiTrack[];
 } & Pick<
   AppleMusicAlbumDetailsResult,
-  "artistName" | "collectionName" | "releaseDate"
+  "artistName" | "collectionId" | "collectionName" | "releaseDate"
 >;
 
 function isCollection(item: AppleMusicAlbumDetailsResult) {
@@ -37,7 +37,8 @@ export async function getAlbumDetails(
   );
 
   if (albumDetails) {
-    const { artistName, collectionName, releaseDate } = albumDetails;
+    const { artistName, collectionId, collectionName, releaseDate } =
+      albumDetails;
     // We'll map over this
     const tracks = response.data.results
       .filter((result) => isTrack(result))
@@ -53,6 +54,7 @@ export async function getAlbumDetails(
 
     return {
       artistName,
+      collectionId,
       collectionName,
       releaseDate,
       tracks,
