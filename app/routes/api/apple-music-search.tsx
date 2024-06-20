@@ -1,4 +1,4 @@
-import type { DataFunctionArgs} from "@remix-run/node";
+import type { DataFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { searchSong } from "~/services/apple-music.server";

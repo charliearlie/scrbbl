@@ -16,7 +16,7 @@ const PopoverContent = React.forwardRef<
       ref={ref}
       align={align}
       sideOffset={sideOffset}
-      className={`bg-popover text-popover-foreground animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-80 rounded-lg border p-4 shadow shadow-gray-400 outline-none ${className}`}
+      className={`z-50 w-80 rounded-lg border bg-popover p-4 text-popover-foreground shadow shadow-gray-400 outline-none animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ${className}`}
       {...props}
     />
   </PopoverPrimitive.Portal>

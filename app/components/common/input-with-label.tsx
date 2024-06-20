@@ -1,4 +1,4 @@
-import type { HTMLProps} from "react";
+import type { HTMLProps } from "react";
 import { forwardRef } from "react";
 import { Input } from "./input";
 import { Label } from "./label";
