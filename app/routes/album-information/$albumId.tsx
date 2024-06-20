@@ -116,21 +116,21 @@ export default function AlbumDetails() {
     return (
       <main className="container mt-12 bg-background p-2 md:max-w-4xl">
         <Card>
-          <CardContent className="py-8 px-8">
+          <CardContent className="py-8 sm:px-8">
             <div className="flex gap-8" id="album-info">
               <img
-                className="h-72 w-72 rounded-md"
+                className=":w-72 h-48 w-48 rounded-md sm:h-72"
                 src={loaderData.artworkUrl}
                 alt=""
               />
               <div className="flex flex-col gap-2">
-                <h1 className="text-4xl font-black text-primary">
+                <h1 className="text-2xl font-black text-primary sm:text-4xl">
                   {loaderData.collectionName}
                 </h1>
-                <h3 className="text-2xl font-semibold text-card-foreground">
+                <h3 className="text-xl font-semibold text-card-foreground sm:text-2xl">
                   {loaderData.artistName}
                 </h3>
-                <h4 className="text-xl font-medium opacity-90">
+                <h4 className="font-medium opacity-90 sm:text-xl">
                   {format(new Date(loaderData.releaseDate || ""), "yyyy")}
                 </h4>
                 <Badge className="w-max bg-primary">{loaderData.genre}</Badge>
