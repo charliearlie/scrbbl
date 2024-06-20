@@ -16,7 +16,11 @@ type AlbumDetails = {
 } & Pick<
   AppleMusicAlbumDetailsResult,
   "artistName" | "collectionId" | "collectionName" | "releaseDate"
->;
+> & {
+    artworkUrl: string;
+    contentRating: string | undefined;
+    genre: string;
+  };
 
 function isCollection(item: AppleMusicAlbumDetailsResult) {
   return item.wrapperType === "collection";
@@ -36,6 +40,8 @@ export async function getAlbumDetails(
     isCollection(result)
   );
 
+  console.log("albumDetails", albumDetails);
+
   if (albumDetails) {
     const { artistName, collectionId, collectionName, releaseDate } =
       albumDetails;
@@ -54,8 +60,11 @@ export async function getAlbumDetails(
 
     return {
       artistName,
+      artworkUrl: albumDetails.artworkUrl100.replace("100x100", "500x500"),
       collectionId,
       collectionName,
+      contentRating: albumDetails.contentAdvisoryRating,
+      genre: albumDetails.primaryGenreName,
       releaseDate,
       tracks,
     };
@@ -91,4 +100,44 @@ export async function searchAlbum(query: string) {
     albumArtwork: result.artworkUrl100,
     releaseDate: new Date(result.releaseDate).getFullYear(),
   })) as AlbumInfo[];
+}
+
+export async function searchSong(query: string): Promise<
+  {
+    artist: string;
+    album: string;
+    albumArtist: string;
+    thumbnail: string;
+    track: string;
+  }[]
+> {
+  try {
+    const uri = `${baseUrl}/search?term=${query.replace(
+      " ",
+      "+"
+    )}&media=music&entity=song&limit=10`;
+    const encodedUri = encodeURI(uri);
+    const response = await axios.get(encodedUri);
+
+    const results = response.data.results;
+
+    return results.map(
+      (result: {
+        artistName: string;
+        artworkUrl30: string;
+        collectionName: string;
+        albumArtist: string;
+        trackName: string;
+      }) => ({
+        artist: result.artistName,
+        album: result.collectionName,
+        albumArtist: result.artistName,
+        track: result.trackName,
+        thumbnail: result.artworkUrl30,
+      })
+    );
+  } catch {
+    console.error("Something went wrong with the search");
+    return [];
+  }
 }

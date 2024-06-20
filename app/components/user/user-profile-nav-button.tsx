@@ -14,7 +14,7 @@ export default function UserProfileNavButton({
     <div className="flex items-center justify-between">
       <div className="flex gap-2">
         <div className="avatar flex items-center">
-          <div className="h-8 w-8 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+          <div className="h-8 w-8 overflow-hidden rounded-full ring ring-primary ring-offset-2 ring-offset-background">
             <img alt="Last.FM profile" src={profilePhoto} />
           </div>
         </div>

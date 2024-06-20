@@ -2,18 +2,7 @@ import { useEffect, useState } from "react";
 import { capitalise } from "~/utils";
 
 // todo: put somewhere for the tailwind config to also use
-const themes = [
-  "light",
-  "dark",
-  "aqua",
-  "black",
-  "cupcake",
-  "dracula",
-  "emerald",
-  "fantasy",
-  "forest",
-  "night",
-];
+const themes = ["light", "dark"];
 export default function ThemeDropdown() {
   const [currentTheme, setCurrentTheme] = useState("");
 

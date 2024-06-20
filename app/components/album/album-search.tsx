@@ -1,29 +1,20 @@
-import type { ChangeEvent } from "react";
-import { useState } from "react";
 import { Link } from "@remix-run/react";
-import InputWithLabel from "../common/input-with-label";
+import { Button } from "../common/button";
+import { AlbumSearchInput } from "../album-search-input";
 
 export default function AlbumSearch() {
-  const [query, setQuery] = useState<string>("");
   return (
     <div>
-      <InputWithLabel
-        label="Search query"
-        placeholder="Enter artist or album name"
-        type="text"
-        name="query"
-        value={query}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setQuery(e.target.value)
-        }
-      />
+      <AlbumSearchInput />
       <div className="flex justify-center">
-        <Link
-          to={`/album-scrobble/search-results/${query}`}
-          className="btn-primary btn mt-4 px-12"
-        >
-          Search
-        </Link>
+        <Button asChild>
+          <Link
+            to={`/album-scrobble/search-results/${query}`}
+            className="btn-primary btn mt-4 px-12"
+          >
+            Search
+          </Link>
+        </Button>
       </div>
     </div>
   );

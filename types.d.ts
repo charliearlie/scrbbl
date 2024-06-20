@@ -5,7 +5,7 @@ declare module "lastfmapi" {
     secret: string;
   }
 
-  interface LastfmApiError {
+  export interface LastfmApiError {
     message: string;
     code: number;
   }

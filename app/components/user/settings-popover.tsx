@@ -1,10 +1,9 @@
-import { Settings } from "lucide-react";
+import { Settings , LogOut } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../common/popover";
 import { Form, Link } from "@remix-run/react";
-import { LogOut } from "lucide-react";
 import { useTypedLoaderData } from "remix-typedjson";
 
-import { loader } from "~/root";
+import type { loader } from "~/root";
 
 export default function SettingsPopover() {
   const user = useTypedLoaderData<typeof loader>();

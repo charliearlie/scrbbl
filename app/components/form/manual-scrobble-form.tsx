@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { useSubmit } from "@remix-run/react";
 import InputWithLabel from "../common/input-with-label";
-import { searchSong } from "~/services/apple-music";
 
 import type { ChangeEvent } from "react";
 
-import AppleMusicButton from "../apple-music-button";
+import { Button } from "../common/button";
+import { AppleMusicDialogForm } from "./apple-music-dialog-form";
+import { SearchInput } from "../search-input";
 
 const defaultManualScrobbleState = {
   artist: "",
@@ -33,20 +34,6 @@ export default function ManualScrobbleForm() {
     });
   };
 
-  const appleMusicSearch = async () => {
-    const result = await searchSong(`${artist} ${track}`);
-    if (!result) {
-      setFormState(defaultManualScrobbleState);
-    } else if (result.artist && result.track) {
-      setFormState({
-        artist: result.artist,
-        album: result.album!,
-        albumArtist: result.albumArtist!,
-        track: result.track,
-      });
-    }
-  };
-
   const clearForm = () => {
     setFormState(defaultManualScrobbleState);
     artistInputRef.current?.focus();
@@ -63,8 +50,14 @@ export default function ManualScrobbleForm() {
 
   const areButtonsDisabled = !artist && !track;
   return (
-    <div>
-      <form method="post">
+    <div className="flex min-h-full flex-col">
+      <div className="flex justify-end">
+        <AppleMusicDialogForm>
+          <SearchInput callback={setFormState} />
+        </AppleMusicDialogForm>
+      </div>
+
+      <form className="flex flex-col gap-4" method="post">
         <InputWithLabel
           ref={artistInputRef}
           label="Artist"
@@ -101,33 +94,23 @@ export default function ManualScrobbleForm() {
           value={datetime}
           onChange={handleInputChange}
         />
-        <p className="font-sm italic">
-          Add button to use same artist as song artist
-        </p>
       </form>
-      <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-between">
-        <button
-          className="btn-primary btn w-full sm:w-48"
+      <div className="mt-12 flex flex-col items-center justify-center gap-4 justify-self-end sm:flex-row sm:justify-between">
+        <Button
+          className="w-full sm:w-48"
           disabled={areButtonsDisabled}
           onClick={handleSubmit}
         >
           Scrobble
-        </button>
-        <div className="btn-group">
-          <button
-            className="btn-secondary btn w-full sm:w-48"
-            disabled={areButtonsDisabled}
-            onClick={clearForm}
-          >
-            Clear
-          </button>
-          <AppleMusicButton
-            className="btn-accent btn flex w-full items-center justify-center gap-4 sm:w-48"
-            onClick={appleMusicSearch}
-            aria-label="Search for song with Apple Music"
-            disabled={areButtonsDisabled}
-          />
-        </div>
+        </Button>
+        <Button
+          className="w-full sm:w-48"
+          variant="outline"
+          disabled={areButtonsDisabled}
+          onClick={clearForm}
+        >
+          Clear
+        </Button>
       </div>
     </div>
   );

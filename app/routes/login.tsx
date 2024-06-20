@@ -1,5 +1,6 @@
-import { LoaderArgs, json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import type { LoaderArgs} from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import LoginLinkButton from "~/components/common/login-link-button";
 
 export const loader = async ({ request }: LoaderArgs) => {

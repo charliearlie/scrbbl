@@ -4,11 +4,7 @@ import {
   getUserToken,
   requireLogin,
 } from "~/services/session.server";
-import {
-  typedjson,
-  useTypedActionData,
-  useTypedLoaderData,
-} from "remix-typedjson";
+import { typedjson, useTypedActionData } from "remix-typedjson";
 import { lastfm } from "~/services/lastfm.server";
 import { Card, CardContent } from "~/components/common/card";
 import type { LastfmApiTrack } from "lastfmapi";
@@ -68,10 +64,10 @@ export const loader = async ({ request }: LoaderArgs) => {
 export default function ManualScrobble() {
   const actionData = useTypedActionData<typeof action>();
   return (
-    <main className="mt-12 p-2">
+    <main className="container mt-12 bg-background p-2 md:max-w-4xl">
       <Card>
         <CardContent className="py-8 px-8">
-          <h1>Scrobble Song</h1>
+          <h1>Scrobble song</h1>
           <Alert visible={!!actionData}>Scrobbled Successfully</Alert>
           <ManualScrobbleForm />
         </CardContent>
