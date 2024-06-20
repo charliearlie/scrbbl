@@ -18,9 +18,13 @@ export default function Login() {
   return (
     <main className="container mt-12 bg-background p-2 md:max-w-4xl">
       <Card>
-        <CardContent className="flex flex-col gap-4">
-          <h1>This feature requires you to be logged in with Last.FM</h1>
-          <LoginLinkButton redirectTo={redirectUrl} />
+        <CardContent className="p-8">
+          <h2 className="text-center text-2xl font-semibold text-card-foreground">
+            This feature requires you to be logged in with Last.FM
+          </h2>
+          <div className="mt-8 flex w-full items-center justify-center">
+            <LoginLinkButton redirectTo={redirectUrl} />
+          </div>
         </CardContent>
       </Card>
     </main>
