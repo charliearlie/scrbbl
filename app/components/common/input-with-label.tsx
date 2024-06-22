@@ -1,4 +1,7 @@
-import { HTMLProps, forwardRef } from "react";
+import type { HTMLProps } from "react";
+import { forwardRef } from "react";
+import { Input } from "./input";
+import { Label } from "./label";
 
 type Props = {
   label: string;
@@ -8,14 +11,10 @@ const InputWithLabel = forwardRef<HTMLInputElement, Props>(
   ({ label, ...inputProps }, ref) => {
     return (
       <div>
-        <label className="flex flex-col py-1 font-semibold">
+        <Label className="flex flex-col gap-2 py-1 font-semibold">
           {label}
-          <input
-            className="input-bordered input rounded-lg bg-base-300 p-2 text-lg font-normal"
-            {...inputProps}
-            ref={ref}
-          />
-        </label>
+          <Input {...inputProps} ref={ref} />
+        </Label>
       </div>
     );
   }

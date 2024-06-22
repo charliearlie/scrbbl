@@ -1,4 +1,9 @@
-import type { ComponentProps } from "react";
-export default function AppleMusicButton(props: ComponentProps<"button">) {
-  return <button {...props}>Autofill</button>;
+import type { ButtonProps } from "./common/button";
+import { Button } from "./common/button";
+export default function AppleMusicButton(props: ButtonProps) {
+  return (
+    <Button variant="outline" {...props}>
+      Autofill
+    </Button>
+  );
 }

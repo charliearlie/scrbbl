@@ -2,18 +2,7 @@ import { useEffect, useState } from "react";
 import { capitalise } from "~/utils";
 
 // todo: put somewhere for the tailwind config to also use
-const themes = [
-  "light",
-  "dark",
-  "aqua",
-  "black",
-  "cupcake",
-  "dracula",
-  "emerald",
-  "fantasy",
-  "forest",
-  "night",
-];
+const themes = ["light", "dark"];
 export default function ThemeDropdown() {
   const [currentTheme, setCurrentTheme] = useState("");
 
@@ -31,7 +20,7 @@ export default function ThemeDropdown() {
       </label>
       <ul
         tabIndex={0}
-        className="dropdown-content menu rounded-box w-52 overflow-scroll bg-base-300 p-2 shadow"
+        className="dropdown-content menu rounded-box bg-base-300 w-52 overflow-scroll p-2 shadow"
       >
         {themes.map((theme) => {
           return (
@@ -39,7 +28,7 @@ export default function ThemeDropdown() {
               <button
                 className={`p-2 ${
                   theme === currentTheme
-                    ? "bg-primary text-primary-content"
+                    ? "text-primary-content bg-primary"
                     : ""
                 }`}
                 data-set-theme={theme}

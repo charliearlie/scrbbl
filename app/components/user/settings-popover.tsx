@@ -1,10 +1,9 @@
-import { Settings } from "lucide-react";
+import { Settings, LogOut } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../common/popover";
 import { Form, Link } from "@remix-run/react";
-import { LogOut } from "lucide-react";
 import { useTypedLoaderData } from "remix-typedjson";
 
-import { loader } from "~/root";
+import type { loader } from "~/root";
 
 export default function SettingsPopover() {
   const user = useTypedLoaderData<typeof loader>();
@@ -18,7 +17,7 @@ export default function SettingsPopover() {
           <span className="sr-only">Open popover</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-96 bg-base-100 p-4">
+      <PopoverContent className="bg-base-100 w-96 p-4">
         {user && (
           <div>
             <div className="flex flex-col items-center">
