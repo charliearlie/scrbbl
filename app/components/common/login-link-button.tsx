@@ -1,30 +1,30 @@
-import { useEffect, useState } from "react";
 import { Button } from "./button";
+import { cn } from "~/utils";
 
+type Props = {
+  /** Where to land after Last.FM sends the browser back. */
+  redirectTo?: string;
+  className?: string;
+  size?: "default" | "sm" | "lg";
+  children?: React.ReactNode;
+};
+
+/**
+ * A plain link to a server route that builds the Last.FM authorisation URL.
+ * Nothing about the handshake happens in the browser any more, so this works
+ * before hydration and no longer ships the API key in the client bundle.
+ */
 export default function LoginLinkButton({
-  redirectTo,
-}: {
-  redirectTo: string;
-}) {
-  const [redirectUrl, setRedirectUrl] = useState("");
-
-  useEffect(() => {
-    const isBrowser = typeof window !== "undefined";
-    if (isBrowser) {
-      const origin = window.location.origin;
-      const redirectUrl = `${origin}/auth-redirect`;
-
-      setRedirectUrl(redirectUrl);
-    }
-  }, []);
+  children = "Log in with Last.FM",
+  className,
+  redirectTo = "/",
+  size = "default",
+}: Props) {
+  const href = `/auth/login?redirectTo=${encodeURIComponent(redirectTo)}`;
 
   return (
-    <Button asChild>
-      <a
-        href={`http://www.last.fm/api/auth/?api_key=5e51b3c171721101d22f4101dd227f66&cb=${redirectUrl}?${redirectTo}`}
-      >
-        Login with Last.FM
-      </a>
+    <Button asChild size={size} className={cn("group", className)}>
+      <a href={href}>{children}</a>
     </Button>
   );
 }

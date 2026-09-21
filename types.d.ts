@@ -163,6 +163,29 @@ declare module "lastfmapi" {
     isStreamable?: boolean;
   };
 
+  export interface ScrobbleIgnoredMessage {
+    code: string;
+    "#text": string;
+  }
+
+  export interface ScrobbledTrack {
+    artist: { corrected: string; "#text": string };
+    album: { corrected: string; "#text": string };
+    track: { corrected: string; "#text": string };
+    albumArtist: { corrected: string; "#text": string };
+    ignoredMessage: ScrobbleIgnoredMessage;
+    timestamp: string;
+  }
+
+  /**
+   * What `track.scrobble` hands back. `scrobble` is an object for a single
+   * track and an array for a batch, so normalise before reading it.
+   */
+  export interface ScrobbleResponse {
+    "@attr": { accepted: number; ignored: number };
+    scrobble: ScrobbledTrack | ScrobbledTrack[];
+  }
+
   export type AlbumDetailsApiResponse = {
     resultCount: number;
     results: Array<AppleMusicAlbumDetailsResult>;
@@ -182,7 +205,15 @@ declare module "lastfmapi" {
     };
 
     track: {
-      scrobble(track: LastfmApiTrack, callback: ScrobbleCallback): void;
+      /**
+       * Accepts a single track or an array. An array is flattened into
+       * Last.FM's batch format (`artist[0]`, `artist[1]`, ...), which the
+       * API caps at 50 tracks per request.
+       */
+      scrobble(
+        track: LastfmApiTrack | LastfmApiTrack[],
+        callback: ScrobbleCallback
+      ): void;
     };
 
     user: {
@@ -202,7 +233,7 @@ type AuthenticateCallback = (
 
 type ScrobbleCallback = (
   error: LastfmApiError | null,
-  scrobbledTracks: LastfmApiTrack[]
+  response: ScrobbleResponse
 ) => void;
 
 type GetInfoCallback = (error: LastfmApiError | null, user: User) => void;

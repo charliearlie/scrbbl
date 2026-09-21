@@ -2,6 +2,7 @@ import { createCookieSessionStorage, Headers } from "@remix-run/node";
 import { redirect } from "remix-typedjson";
 
 import type { LastfmApiSession, User } from "lastfmapi";
+import { SESSION_SECRET } from "./env.server";
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {
@@ -9,7 +10,7 @@ const sessionStorage = createCookieSessionStorage({
     httpOnly: true,
     path: "/",
     sameSite: "lax",
-    secrets: ["arandomsessionsecretlad"],
+    secrets: [SESSION_SECRET],
     secure: process.env.NODE_ENV === "production",
   },
 });
