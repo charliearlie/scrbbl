@@ -24,7 +24,14 @@ export const lastfm = new LastfmApi({
 const MAX_BATCH_SIZE = 50;
 
 export type ScrobbleResult =
-  | { ok: true; accepted: number; ignored: number; ignoredReasons: string[] }
+  | {
+      ok: true;
+      accepted: number;
+      ignored: number;
+      ignoredReasons: string[];
+      /** Exactly what went to Last.FM, timestamps included, for the log. */
+      sent: LastfmApiTrack[];
+    }
   | { ok: false; error: string };
 
 function normaliseScrobbles(response: ScrobbleResponse): ScrobbledTrack[] {
@@ -108,7 +115,32 @@ export async function scrobbleTracks(
     };
   }
 
-  return { ok: true, accepted, ignored, ignoredReasons: [...ignoredReasons] };
+  return {
+    ok: true,
+    accepted,
+    ignored,
+    ignoredReasons: [...ignoredReasons],
+    sent: tracks,
+  };
+}
+
+/**
+ * Lays an album out in time without sending it, so a caller can look at the
+ * timestamps first — the duplicate check needs them before anything goes out.
+ */
+export function buildAlbumScrobbles(
+  album: string,
+  tracks: LastfmApiTrack[],
+  albumArtist: string,
+  finishedAtSeconds: number
+): LastfmApiTrack[] {
+  return buildAlbumTimestamps(tracks, finishedAtSeconds).map((track) => ({
+    albumArtist,
+    album,
+    artist: track.artist,
+    track: track.track,
+    timestamp: track.timestamp,
+  }));
 }
 
 export async function scrobbleAlbum(
@@ -117,17 +149,9 @@ export async function scrobbleAlbum(
   albumArtist: string,
   finishedAtSeconds: number
 ): Promise<ScrobbleResult> {
-  const timestamped = buildAlbumTimestamps(tracks, finishedAtSeconds).map(
-    (track) => ({
-      albumArtist,
-      album,
-      artist: track.artist,
-      track: track.track,
-      timestamp: track.timestamp,
-    })
+  return scrobbleTracks(
+    buildAlbumScrobbles(album, tracks, albumArtist, finishedAtSeconds)
   );
-
-  return scrobbleTracks(timestamped);
 }
 
 export async function getUserData(request: Request): Promise<User | null> {

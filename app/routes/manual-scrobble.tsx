@@ -11,6 +11,7 @@ import {
   readTrimmed,
   resolveScrobbleTime,
 } from "~/services/scrobble-form.server";
+import { recordScrobble } from "~/services/scrobble-log.server";
 import ManualScrobbleForm from "~/components/form/manual-scrobble-form";
 import Alert from "~/components/common/alert";
 
@@ -83,6 +84,17 @@ export const action = async ({ request }: ActionArgs) => {
       { status: 502 }
     );
   }
+
+  await recordScrobble({
+    username: session.username,
+    source: "manual",
+    tracks: result.sent,
+    accepted: result.accepted,
+    ignored: result.ignored,
+    ignoredReasons: result.ignoredReasons,
+    album,
+    albumArtist,
+  });
 
   return typedjson({
     ok: true as const,
