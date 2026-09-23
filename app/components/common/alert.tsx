@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from "react";
-import { AlertCircle, CheckCircle2, Info } from "lucide-react";
+import { AlertCircle, CheckCircle2, Info, TriangleAlert } from "lucide-react";
 import { cn } from "~/utils";
 
-type AlertVariant = "success" | "error" | "info";
+type AlertVariant = "success" | "error" | "warning" | "info";
 
 type Props = PropsWithChildren<{
   variant?: AlertVariant;
@@ -24,6 +24,12 @@ const variants: Record<
     icon: AlertCircle,
     panel: "border-destructive/45 bg-destructive/10",
     accent: "text-destructive",
+    role: "alert",
+  },
+  warning: {
+    icon: TriangleAlert,
+    panel: "border-warning/40 bg-warning/10",
+    accent: "text-warning",
     role: "alert",
   },
   info: {

@@ -16,7 +16,13 @@ import WhenField, { justNow, lastNight } from "~/components/common/when-field";
 import { Button } from "~/components/common/button";
 import { Badge } from "~/components/common/badge";
 import { getAlbumDetails } from "~/services/apple-music.server";
-import { lastfm, scrobbleAlbum } from "~/services/lastfm.server";
+import {
+  buildAlbumScrobbles,
+  lastfm,
+  scrobbleTracks,
+} from "~/services/lastfm.server";
+import { findDuplicatePlays } from "~/services/recent-tracks.server";
+import { recordScrobble } from "~/services/scrobble-log.server";
 import {
   albumDurationSeconds,
   buildAlbumTimestamps,
@@ -114,12 +120,30 @@ export const action = async ({ request }: ActionArgs) => {
 
   lastfm.setSessionCredentials(session.username, session.key);
 
-  const result = await scrobbleAlbum(
+  const scrobbles = buildAlbumScrobbles(
     albumName,
     tracks as LastfmApiTrack[],
     albumArtist,
     time.timestamp
   );
+
+  // Advisory only, and skipped once the user has seen the warning and
+  // chosen to send anyway.
+  if (readTrimmed(formData, "confirmed") !== "true") {
+    const duplicates = await findDuplicatePlays({
+      username: session.username,
+      tracks: scrobbles,
+    });
+
+    if (duplicates.length > 0) {
+      return typedjson<ScrobbleFailure>(
+        { ok: false, duplicates },
+        { status: 409 }
+      );
+    }
+  }
+
+  const result = await scrobbleTracks(scrobbles);
 
   if (!result.ok) {
     return typedjson<ScrobbleFailure>(
@@ -127,6 +151,17 @@ export const action = async ({ request }: ActionArgs) => {
       { status: 502 }
     );
   }
+
+  await recordScrobble({
+    username: session.username,
+    source: "album",
+    tracks: result.sent,
+    accepted: result.accepted,
+    ignored: result.ignored,
+    ignoredReasons: result.ignoredReasons,
+    album: albumName,
+    albumArtist,
+  });
 
   return typedjson({
     ok: true as const,
@@ -165,6 +200,7 @@ export default function AlbumDetails() {
   const isSubmitting = navigation.state === "submitting";
   const succeeded = actionData?.ok === true;
   const failed = actionData?.ok === false;
+  const duplicates = (failed && actionData.duplicates) || [];
 
   const rows = useMemo(
     () =>
@@ -334,6 +370,39 @@ export default function AlbumDetails() {
           {failed && actionData.error ? (
             <Alert variant="error" title="Last.FM did not accept that">
               {actionData.error}
+            </Alert>
+          ) : null}
+
+          {duplicates.length > 0 ? (
+            <Alert
+              variant="warning"
+              title={
+                duplicates.length === 1
+                  ? "This one is already on your profile"
+                  : `${duplicates.length} of these are already on your profile`
+              }
+            >
+              <ul className="mt-1 flex flex-col gap-1">
+                {duplicates.map((duplicate) => (
+                  <li
+                    key={`${duplicate.artist}-${duplicate.track}-${duplicate.playedAt}`}
+                    className="flex flex-wrap gap-x-2 text-sm"
+                  >
+                    <span className="text-foreground">{duplicate.track}</span>
+                    <span className="font-mono text-xs tabular-nums">
+                      scrobbled {clockTime(new Date(duplicate.playedAt * 1000))}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="submit"
+                name="confirmed"
+                value="true"
+                className="mt-3 rounded-sm font-semibold text-foreground underline underline-offset-4"
+              >
+                Send them anyway
+              </button>
             </Alert>
           ) : null}
 

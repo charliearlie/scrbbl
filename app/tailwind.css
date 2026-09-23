@@ -81,6 +81,10 @@
   --success: 152 46% 50%;
   --success-foreground: 152 60% 5%;
 
+  /* Amber, for "look at this before you send it". 8.6:1 on the background. */
+  --warning: 38 70% 55%;
+  --warning-foreground: 38 70% 6%;
+
   --border: 240 9% 18%;
   --input: 240 9% 22%;
   --ring: 358 78% 60%;

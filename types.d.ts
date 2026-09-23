@@ -163,6 +163,44 @@ declare module "lastfmapi" {
     isStreamable?: boolean;
   };
 
+  /**
+   * One row from `user.getRecentTracks`. The track currently playing has no
+   * `date` and carries `@attr.nowplaying` instead, so it cannot be scrobbled.
+   */
+  export interface RecentTrack {
+    artist: { mbid: string; "#text": string };
+    album: { mbid: string; "#text": string };
+    name: string;
+    mbid: string;
+    url: string;
+    streamable: string;
+    image: Image[];
+    date?: { uts: string; "#text": string };
+    "@attr"?: { nowplaying?: string };
+  }
+
+  export interface RecentTracksResponse {
+    /** An object rather than an array when the page holds a single play. */
+    track: RecentTrack | RecentTrack[];
+    "@attr": {
+      user: string;
+      page: string;
+      perPage: string;
+      totalPages: string;
+      total: string;
+    };
+  }
+
+  export interface RecentTracksParams {
+    user: string;
+    limit?: number;
+    page?: number;
+    /** Unix seconds, inclusive. */
+    from?: number;
+    /** Unix seconds, inclusive. */
+    to?: number;
+  }
+
   export interface ScrobbleIgnoredMessage {
     code: string;
     "#text": string;
@@ -218,6 +256,10 @@ declare module "lastfmapi" {
 
     user: {
       getInfo(username: string, callback: GetInfoCallback): void;
+      getRecentTracks(
+        params: RecentTracksParams,
+        callback: GetRecentTracksCallback
+      ): void;
     };
 
     // Add any other methods or properties here
@@ -237,6 +279,11 @@ type ScrobbleCallback = (
 ) => void;
 
 type GetInfoCallback = (error: LastfmApiError | null, user: User) => void;
+
+type GetRecentTracksCallback = (
+  error: LastfmApiError | null,
+  response: RecentTracksResponse
+) => void;
 
 type AlbumSearchCallback = (
   error: LastfmApiError | null,

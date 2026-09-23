@@ -1,5 +1,12 @@
 import type { LucideIcon } from "lucide-react";
-import { Database, Disc3, Home, Music2, RadioTower } from "lucide-react";
+import {
+  Database,
+  Disc3,
+  History,
+  Home,
+  Music2,
+  RadioTower,
+} from "lucide-react";
 
 export type NavItem = {
   label: string;
@@ -12,15 +19,15 @@ export type NavItem = {
  * One list, rendered by both the desktop rail and the mobile sheet. These
  * used to be two hand-maintained copies of the same markup in root.tsx.
  *
- * Radio and bulk import have never been built. They used to link to "#",
- * which reads as a working link and goes nowhere; now they read as what
- * they are.
+ * Bulk import has never been built. It used to link to "#", which reads as a
+ * working link and goes nowhere; now it reads as what it is.
  */
 export const navItems: NavItem[] = [
   { label: "Home", to: "/", Icon: Home },
   { label: "Scrobble song", to: "/manual-scrobble", Icon: Music2 },
   { label: "Scrobble album", to: "/album-scrobble", Icon: Disc3 },
-  { label: "Scrobble radio", Icon: RadioTower },
+  { label: "Scrobble radio", to: "/radio", Icon: RadioTower },
+  { label: "What you sent", to: "/log", Icon: History },
   { label: "Bulk import", Icon: Database },
 ];
 

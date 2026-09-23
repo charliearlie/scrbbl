@@ -5,10 +5,19 @@ import { validateScrobbleTime } from "./scrobble-timing";
  * objects made the action's return type a union that TypeScript could not
  * narrow at the call site.
  */
+export type DuplicateWarning = {
+  artist: string;
+  track: string;
+  /** When Last.FM already has it, in unix seconds. */
+  playedAt: number;
+};
+
 export type ScrobbleFailure = {
   ok: false;
   error?: string;
   timeError?: string;
+  /** Present when the listen looks like one already on the profile. */
+  duplicates?: DuplicateWarning[];
 };
 
 export function readTrimmed(formData: FormData, name: string): string {
