@@ -286,3 +286,44 @@ test.describe("sleeve scans", () => {
     await expect(page.getByText("Turn it over")).toHaveCount(0);
   });
 });
+
+test.describe("the record's tracklist", () => {
+  test("shows the tracks and offers to scrobble the record", async ({
+    page,
+    context,
+  }) => {
+    const user = nextListener();
+    await signIn(context, user);
+
+    // Added through search, so it carries the iTunes id a tracklist needs.
+    await putOnShelf(page, "blue weekend wolf alice");
+    await page.waitForURL(/\/shelf\/[0-9a-f-]{36}/);
+
+    await expect(
+      page.getByRole("heading", { name: "Tracklist" })
+    ).toBeVisible();
+    await expect(page.getByText("Delicious Things")).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /Put it on and scrobble it/ })
+    ).toHaveAttribute("href", /\/album-information\/\d+/);
+  });
+
+  test("shows no tracklist for a record with no catalogue id", async ({
+    page,
+    context,
+  }) => {
+    // Anything shelved from the owned-and-played page arrives without one.
+    const user = nextListener();
+    const id = await seedRecord(user, {
+      artist: "Bark Psychosis",
+      title: "Hex",
+    });
+    await signIn(context, user);
+
+    await page.goto(`/shelf/${id}`);
+    await expect(page.getByRole("heading", { name: "Hex" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tracklist" })).toHaveCount(
+      0
+    );
+  });
+});

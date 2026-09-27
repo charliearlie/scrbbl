@@ -2,9 +2,11 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { Form, Link, useNavigation } from "@remix-run/react";
 import { Fragment } from "react";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
-import { ChevronLeft, Trash2 } from "lucide-react";
+import { ChevronLeft, Disc3, Trash2 } from "lucide-react";
 
 import { getLastfmSession, requireLogin } from "~/services/session.server";
+import { getAlbumDetails } from "~/services/apple-music.server";
+import { albumDurationSeconds } from "~/services/scrobble-timing";
 import {
   getShelfAlbum,
   removeFromShelf,
@@ -14,6 +16,7 @@ import { MAX_RATING, sleeveImage } from "~/services/shelf";
 import { readTrimmed } from "~/services/scrobble-form.server";
 import Alert from "~/components/common/alert";
 import { Button } from "~/components/common/button";
+import { formatDuration } from "~/utils";
 import Sleeve from "~/components/shelf/sleeve";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => ({
@@ -30,8 +33,13 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     throw new Response("That record is not on your shelf", { status: 404 });
   }
 
+  // Only iTunes-sourced records carry a tracklist; one shelved from the
+  // owned-and-played page has no id to look up, and simply shows none.
+  const details = album.itunesId ? await getAlbumDetails(album.itunesId) : null;
+
   return typedjson({
     album,
+    tracks: details?.tracks ?? [],
     justAdded: new URL(request.url).searchParams.get("added") === "1",
   });
 };
@@ -139,7 +147,7 @@ function RatingPicker({ defaultValue }: { defaultValue: number | null }) {
 }
 
 export default function ShelfRecord() {
-  const { album, justAdded } = useTypedLoaderData<typeof loader>();
+  const { album, justAdded, tracks } = useTypedLoaderData<typeof loader>();
   const navigation = useNavigation();
   const saving = navigation.state === "submitting";
 
@@ -188,6 +196,51 @@ export default function ShelfRecord() {
           </div>
         </div>
       </header>
+
+      {tracks.length > 0 ? (
+        <section className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h2 className="text-lg font-bold tracking-[-0.02em]">Tracklist</h2>
+            <span className="font-mono text-xs tabular-nums text-muted-foreground">
+              {tracks.length} tracks &middot;{" "}
+              {formatDuration(albumDurationSeconds(tracks))}
+            </span>
+          </div>
+
+          <ol className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
+            {tracks.map((track, index) => (
+              <li
+                key={`${track.track}-${index}`}
+                className="flex items-baseline gap-3 px-4 py-2.5 text-sm sm:gap-4"
+              >
+                <span className="w-5 shrink-0 text-right font-mono text-xs tabular-nums text-muted-foreground">
+                  {index + 1}
+                </span>
+                <span className="min-w-0 flex-1 truncate">{track.track}</span>
+                <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+                  {formatDuration((track.duration ?? 0) / 1000)}
+                </span>
+              </li>
+            ))}
+          </ol>
+
+          <div className="flex items-center gap-3">
+            <Button asChild size="sm" variant="secondary">
+              <Link to={`/album-information/${album.itunesId}`}>
+                <Disc3
+                  aria-hidden="true"
+                  className="mr-1.5 h-4 w-4"
+                  strokeWidth={1.8}
+                />
+                Put it on and scrobble it
+              </Link>
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Opens the album scrobbler with this record already loaded.
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       <Form method="post" className="flex flex-col gap-6">
         <div className="bezel flex flex-col gap-5 rounded-xl border border-border bg-card p-5 sm:p-6">
