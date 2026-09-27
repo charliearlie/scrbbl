@@ -6,7 +6,7 @@ import { ChevronLeft, Disc3, Trash2 } from "lucide-react";
 
 import { getLastfmSession, requireLogin } from "~/services/session.server";
 import { getAlbumDetails } from "~/services/apple-music.server";
-import { enrichSleeve, recheckMissingBacks } from "~/services/cover-art.server";
+import { enrichSleeve } from "~/services/cover-art.server";
 import { albumDurationSeconds } from "~/services/scrobble-timing";
 import {
   getShelfAlbum,
@@ -30,20 +30,10 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const session = await getLastfmSession(request);
   const username = session?.username ?? "";
 
-  await recheckMissingBacks();
-
-  let album = await getShelfAlbum(username, params.id ?? "");
+  const album = await getShelfAlbum(username, params.id ?? "");
 
   if (!album) {
     throw new Response("That record is not on your shelf", { status: 404 });
-  }
-
-  // A null mbid means the lookup never got an answer — MusicBrainz was busy,
-  // or this record predates the release-browse search. Enrichment only ran at
-  // add time before, so a record that missed its chance never got another.
-  if (!album.mbid) {
-    await enrichSleeve(album.id);
-    album = (await getShelfAlbum(username, album.id)) ?? album;
   }
 
   // Only iTunes-sourced records carry a tracklist; one shelved from the
@@ -69,6 +59,13 @@ export const action = async ({ params, request }: ActionArgs) => {
   }
 
   const id = params.id ?? "";
+
+  // Looking for a sleeve is something you ask for. Doing it on every page
+  // view put a rate-limited third party in the critical path of the app.
+  if (readTrimmed(formData, "intent") === "look-again") {
+    await enrichSleeve(id);
+    return redirect(`/shelf/${id}`);
+  }
 
   if (readTrimmed(formData, "intent") === "remove") {
     await removeFromShelf(session.username, id);
@@ -289,6 +286,21 @@ export default function ShelfRecord() {
           </div>
         </div>
       </Form>
+
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        {album.coverBack ? null : (
+          <Form method="post">
+            <button
+              type="submit"
+              name="intent"
+              value="look-again"
+              className="rounded-sm text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Look for a sleeve scan
+            </button>
+          </Form>
+        )}
+      </div>
 
       <Form
         method="post"

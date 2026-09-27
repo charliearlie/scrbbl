@@ -383,3 +383,88 @@ test.describe("the record's tracklist", () => {
     );
   });
 });
+
+test.describe("regressions worth keeping out", () => {
+  test("a record page never waits on a third party", async ({
+    page,
+    context,
+  }) => {
+    // Enrichment once ran inside this loader, so every view made a blocking
+    // MusicBrainz call — and a lookup that failed wrote nothing, so it did it
+    // again on the next view, forever.
+    const user = nextListener();
+    const id = await seedRecord(user, {
+      artist: "Bark Psychosis",
+      title: "Hex",
+      mbid: null,
+    });
+    await signIn(context, user);
+
+    const external: string[] = [];
+    page.on("request", (r) => {
+      const host = new URL(r.url()).host;
+      if (!host.includes("localhost")) external.push(host);
+    });
+
+    await page.goto(`/shelf/${id}`, { waitUntil: "domcontentloaded" });
+
+    expect(
+      external.filter(
+        (h) => h.includes("musicbrainz") || h.includes("coverartarchive")
+      ),
+      "the page fetched sleeve art while rendering"
+    ).toEqual([]);
+  });
+
+  test("the crate tilt does not escape the crate", async ({
+    page,
+    context,
+  }) => {
+    // `animation-fill-mode: both` applies the first keyframe wherever the
+    // named timeline is absent, which left every sleeve off the shelf page
+    // permanently rotated 40 degrees and scaled down.
+    const user = nextListener();
+    const id = await seedRecord(user, {
+      artist: "Talk Talk",
+      title: "Spirit of Eden",
+    });
+    await signIn(context, user);
+    await page.goto(`/shelf/${id}`);
+
+    const transform = await page
+      .locator(".sleeve-stage")
+      .evaluate((el) => getComputedStyle(el).transform);
+
+    expect(transform, "the sleeve is tilted outside the crate").toBe("none");
+  });
+
+  test("the disc and spine never take a click", async ({ page, context }) => {
+    // The disc overhangs its sleeve by 11%, into the gap between records,
+    // where it can sit over a neighbour's link.
+    const user = nextListener();
+    await seedRecord(user, { artist: "Talk Talk", title: "Spirit of Eden" });
+    await seedRecord(user, { artist: "Radiohead", title: "In Rainbows" });
+    await signIn(context, user);
+    await page.goto("/shelf");
+
+    for (const sel of [".sleeve-disc", ".sleeve-spine", ".sleeve-sheen"]) {
+      const events = await page
+        .locator(sel)
+        .first()
+        .evaluate((el) => getComputedStyle(el).pointerEvents);
+      expect(events, `${sel} can intercept clicks`).toBe("none");
+    }
+  });
+
+  test("one click opens a record from the crate", async ({ page, context }) => {
+    const user = nextListener();
+    await seedRecord(user, { artist: "Talk Talk", title: "Spirit of Eden" });
+    await seedRecord(user, { artist: "Radiohead", title: "In Rainbows" });
+    await seedRecord(user, { artist: "The Cure", title: "Disintegration" });
+    await signIn(context, user);
+    await page.goto("/shelf");
+
+    await page.locator(".crate-item a").nth(1).click();
+    await expect(page).toHaveURL(/\/shelf\/[0-9a-f-]{36}/);
+  });
+});

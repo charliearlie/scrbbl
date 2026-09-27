@@ -1,4 +1,4 @@
-import { getDb, runOnce } from "./db.server";
+import { getDb } from "./db.server";
 
 /**
  * Real sleeve scans from the Cover Art Archive, by way of MusicBrainz.
@@ -157,20 +157,6 @@ export async function getSleeve(releaseGroupId: string): Promise<Sleeve> {
  * and nothing about the shelf breaks. `mbid` is written even when no art is
  * found, so a fruitless lookup is not repeated on every page load.
  */
-/**
- * Records enriched before the release-browse lookup existed were told there
- * was no back cover when there usually was one. Clearing their mbid marks
- * them as never-looked-up, so the next view tries again with the better
- * question. Runs once, ever.
- */
-export function recheckMissingBacks() {
-  return runOnce("recheck-missing-backs-2026-09", async (client) => {
-    await client.execute(
-      `UPDATE shelf_albums SET mbid = NULL WHERE cover_back IS NULL`
-    );
-  });
-}
-
 export async function enrichSleeve(albumId: string): Promise<void> {
   try {
     const db = await getDb();
@@ -188,7 +174,15 @@ export async function enrichSleeve(albumId: string): Promise<void> {
       String(row.artist),
       String(row.title)
     );
-    if (!releaseGroup) return;
+    // Record the attempt even when it found nothing. Returning early here is
+    // what turned one failed lookup into one repeated on every single view.
+    if (!releaseGroup) {
+      await db.execute({
+        sql: `UPDATE shelf_albums SET mbid = ? WHERE id = ?`,
+        args: ["none", albumId],
+      });
+      return;
+    }
 
     const sleeve = await getSleeve(releaseGroup);
 

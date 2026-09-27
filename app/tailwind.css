@@ -255,7 +255,7 @@
     view-timeline-axis: inline;
   }
 
-  .crate-sleeve {
+  .crate-item .crate-sleeve {
     animation: crate-turn linear both;
     animation-timeline: --sleeve-track;
   }
@@ -313,6 +313,7 @@
 }
 
 .sleeve-placeholder {
+  pointer-events: none;
   position: absolute;
   inset: 0;
   display: flex;
@@ -324,6 +325,7 @@
 
 /* Light catching the laminate. */
 .sleeve-sheen {
+  pointer-events: none;
   position: absolute;
   inset: 0;
   border-radius: 3px;
@@ -346,6 +348,7 @@
 
 /* The spine, as a colour band rather than faked printing. */
 .sleeve-spine {
+  pointer-events: none;
   position: absolute;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -366,6 +369,7 @@
 
 /* The disc, tucked just past the edge. */
 .sleeve-disc {
+  pointer-events: none;
   position: absolute;
   top: 7%;
   right: -11%;
@@ -546,7 +550,7 @@
   display: inline;
 }
 
-.sleeve-flip:focus-visible + .sleeve-flip-label {
+.sleeve-flip:focus-visible ~ .sleeve-flip-label {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 3px;
   border-radius: 3px;
