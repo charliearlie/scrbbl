@@ -17,3 +17,5 @@ scrbbl.db-*
 /playwright-report
 e2e-scrbbl.db
 e2e-scrbbl.db-*
+
+.claude/HANDOFF.md

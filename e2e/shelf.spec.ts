@@ -178,3 +178,53 @@ test("the shelf needs a login", async ({ page }) => {
   await page.goto("/shelf");
   await expect(page).toHaveURL(/\/login/);
 });
+
+test.describe("owned and played", () => {
+  test("needs a login", async ({ page }) => {
+    await page.goto("/shelf/missing");
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test("renders for a shelf with records on it", async ({ page, context }) => {
+    const user = nextListener();
+    await seedRecord(user, { artist: "Talk Talk", title: "Spirit of Eden" });
+    await signIn(context, user);
+
+    await page.goto("/shelf/missing");
+    await expect(
+      page.getByRole("heading", { name: "Owned and played" })
+    ).toBeVisible();
+    await expect(page.getByLabel("Counting")).toBeVisible();
+  });
+
+  test("refuses to compare when it cannot read the listening", async ({
+    page,
+    context,
+  }) => {
+    // A test listener has no Last.FM account, so the API errors. The page
+    // must say so rather than report an empty comparison as a real result.
+    const user = nextListener();
+    await seedRecord(user, { artist: "Bark Psychosis", title: "Hex" });
+    await signIn(context, user);
+
+    await page.goto("/shelf/missing");
+    await expect(page.getByText("Could not read your listening")).toBeVisible();
+    await expect(page.getByText("Nothing missing")).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { name: "On the shelf, barely played" })
+    ).toHaveCount(0);
+  });
+
+  test("is reachable from the shelf once it has records", async ({
+    page,
+    context,
+  }) => {
+    const user = nextListener();
+    await seedRecord(user, { artist: "The Cure", title: "Disintegration" });
+    await signIn(context, user);
+
+    await page.goto("/shelf");
+    await page.getByRole("link", { name: "Owned and played" }).click();
+    await expect(page).toHaveURL(/\/shelf\/missing/);
+  });
+});

@@ -74,16 +74,26 @@ export default function Shelf() {
             </p>
           </div>
 
-          <Button asChild size="sm">
-            <Link to="/shelf/add">
-              <Plus
-                aria-hidden="true"
-                className="mr-1.5 h-4 w-4"
-                strokeWidth={2.2}
-              />
-              Add a record
-            </Link>
-          </Button>
+          <div className="flex items-center gap-3">
+            {albums.length > 0 ? (
+              <Link
+                to="/shelf/missing"
+                className="rounded-sm text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Owned and played
+              </Link>
+            ) : null}
+            <Button asChild size="sm">
+              <Link to="/shelf/add">
+                <Plus
+                  aria-hidden="true"
+                  className="mr-1.5 h-4 w-4"
+                  strokeWidth={2.2}
+                />
+                Add a record
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {albums.length > 1 ? (

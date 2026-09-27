@@ -191,6 +191,34 @@ declare module "lastfmapi" {
     };
   }
 
+  export interface TopAlbum {
+    artist: { name: string; mbid: string; url: string };
+    name: string;
+    mbid: string;
+    url: string;
+    playcount: string;
+    image: Image[];
+  }
+
+  export interface TopAlbumsResponse {
+    album: TopAlbum | TopAlbum[];
+    "@attr": {
+      user: string;
+      page: string;
+      perPage: string;
+      totalPages: string;
+      total: string;
+    };
+  }
+
+  export interface TopAlbumsParams {
+    user: string;
+    /** Last.FM's own vocabulary: overall, 7day, 1month, 3month, 6month, 12month. */
+    period?: string;
+    limit?: number;
+    page?: number;
+  }
+
   export interface RecentTracksParams {
     user: string;
     limit?: number;
@@ -260,6 +288,10 @@ declare module "lastfmapi" {
         params: RecentTracksParams,
         callback: GetRecentTracksCallback
       ): void;
+      getTopAlbums(
+        params: TopAlbumsParams,
+        callback: GetTopAlbumsCallback
+      ): void;
     };
 
     // Add any other methods or properties here
@@ -283,6 +315,11 @@ type GetInfoCallback = (error: LastfmApiError | null, user: User) => void;
 type GetRecentTracksCallback = (
   error: LastfmApiError | null,
   response: RecentTracksResponse
+) => void;
+
+type GetTopAlbumsCallback = (
+  error: LastfmApiError | null,
+  response: TopAlbumsResponse
 ) => void;
 
 type AlbumSearchCallback = (
