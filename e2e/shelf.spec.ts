@@ -317,6 +317,10 @@ test.describe("sleeve scans", () => {
     await page.getByText("Turn it over").click();
     await expect(page.locator("#turn-it-over")).toBeChecked();
 
+    // The label follows the record round, and is not itself mirrored.
+    await expect(page.getByText("Turn it back")).toBeVisible();
+    await expect(page.getByText("Turn it over")).toBeHidden();
+
     await context.close();
   });
 

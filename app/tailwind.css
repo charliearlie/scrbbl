@@ -275,17 +275,25 @@
 
 /* A record sleeve. Cardboard is ~3mm, so the depth here is deliberately a
    sliver — an exaggerated spine reads as a cereal box. */
-.sleeve {
+.sleeve-stage {
   position: relative;
   width: 100%;
   aspect-ratio: 1;
+  perspective: 1200px;
+}
+
+.sleeve {
+  position: absolute;
+  inset: 0;
   transform-style: preserve-3d;
-  transition: transform 500ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 550ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .sleeve-face {
   position: absolute;
   inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 3px;
   overflow: hidden;
   background: hsl(var(--raised));
@@ -339,6 +347,8 @@
 /* The spine, as a colour band rather than faked printing. */
 .sleeve-spine {
   position: absolute;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   top: 0;
   bottom: 0;
   left: 0;
@@ -363,6 +373,10 @@
   aspect-ratio: 1;
   border-radius: 50%;
   transform: translateZ(-2px);
+  /* Tucked behind the front face, which puts it in front of the back one
+     once the sleeve turns. A record's disc belongs on one side only. */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: repeating-radial-gradient(
       circle at 50% 50%,
       hsl(240 7% 12%) 0 2px,
@@ -481,22 +495,46 @@
   pointer-events: none;
 }
 
+/* Reads as a control rather than a caption: it was plain grey text under the
+   sleeve and people asked for the feature it already was. */
 .sleeve-flip-label {
   position: absolute;
-  bottom: -2.25rem;
+  bottom: -2.9rem;
   left: 50%;
   translate: -50% 0;
   z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background: hsl(var(--card));
   font-size: 0.75rem;
   font-weight: 500;
   color: hsl(var(--muted-foreground));
   cursor: pointer;
   white-space: nowrap;
-  transition: color 160ms ease-out;
+  transition: color 160ms ease-out, border-color 160ms ease-out,
+    background 160ms ease-out;
 }
 
 .sleeve-flip-label:hover {
   color: hsl(var(--foreground));
+  border-color: hsl(var(--muted-foreground) / 0.5);
+  background: hsl(var(--raised));
+}
+
+.sleeve-flip-back {
+  display: none;
+}
+
+.sleeve-flip:checked ~ .sleeve-flip-label .sleeve-flip-front {
+  display: none;
+}
+
+.sleeve-flip:checked ~ .sleeve-flip-label .sleeve-flip-back {
+  display: inline;
 }
 
 .sleeve-flip:focus-visible + .sleeve-flip-label {
@@ -507,17 +545,8 @@
 
 .sleeve-back {
   transform: rotateY(180deg);
-  backface-visibility: hidden;
 }
 
-.sleeve:has(.sleeve-flip) .sleeve-face:not(.sleeve-back) {
-  backface-visibility: hidden;
-}
-
-.sleeve:has(.sleeve-flip:checked) {
-  transform: rotateY(180deg);
-}
-
-.sleeve:has(.sleeve-flip:checked) .sleeve-flip-label {
+.sleeve-flip:checked ~ .sleeve {
   transform: rotateY(180deg);
 }

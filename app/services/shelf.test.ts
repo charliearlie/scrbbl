@@ -71,6 +71,7 @@ describe("sortShelf", () => {
     artworkUrl: null,
     coverFront: null,
     coverBack: null,
+    mbid: null,
     itunesId: null,
     owned: true,
     addedAt: over.addedAt ?? 0,

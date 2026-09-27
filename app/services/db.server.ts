@@ -48,6 +48,10 @@ const SCHEMA = [
   // the expected steady state and is swallowed below.
   `ALTER TABLE shelf_albums ADD COLUMN cover_front TEXT`,
   `ALTER TABLE shelf_albums ADD COLUMN cover_back TEXT`,
+  `CREATE TABLE IF NOT EXISTS scrbbl_meta (
+     key   TEXT PRIMARY KEY,
+     value TEXT NOT NULL
+   )`,
   `CREATE TABLE IF NOT EXISTS shelf_reviews (
      album_id        TEXT    PRIMARY KEY,
      -- 1..10, so a five-star scale can carry halves.
@@ -128,6 +132,39 @@ export function getDb(): Promise<Client | null> {
     });
   }
   return connecting;
+}
+
+/**
+ * Runs a one-off data fix exactly once, ever, and remembers that it did.
+ *
+ * The schema block above is idempotent DDL that runs on every boot, which is
+ * fine for CREATE TABLE and useless for "correct some rows". This is the
+ * smallest thing that is not a migration framework: a key in scrbbl_meta.
+ */
+export async function runOnce(
+  key: string,
+  work: (client: Client) => Promise<void>
+): Promise<void> {
+  try {
+    const client = await getDb();
+    if (!client) return;
+
+    const seen = await client.execute({
+      sql: `SELECT 1 FROM scrbbl_meta WHERE key = ? LIMIT 1`,
+      args: [key],
+    });
+    if (seen.rows.length > 0) return;
+
+    await work(client);
+
+    await client.execute({
+      sql: `INSERT INTO scrbbl_meta (key, value) VALUES (?, ?)
+            ON CONFLICT(key) DO NOTHING`,
+      args: [key, new Date().toISOString()],
+    });
+  } catch (error) {
+    console.error(`[scrbbl] one-off "${key}" did not complete`, error);
+  }
 }
 
 /** Test seam: drops the memoised client so the next call reconnects. */

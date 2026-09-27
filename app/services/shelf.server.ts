@@ -33,6 +33,7 @@ function toAlbum(row: Row): ShelfAlbum {
     artworkUrl: row.artwork_url === null ? null : String(row.artwork_url ?? ""),
     coverFront: row.cover_front == null ? null : String(row.cover_front),
     coverBack: row.cover_back == null ? null : String(row.cover_back),
+    mbid: row.mbid == null ? null : String(row.mbid),
     itunesId: row.itunes_id === null ? null : String(row.itunes_id ?? ""),
     owned: Number(row.owned) === 1,
     addedAt: Number(row.added_at),
@@ -52,7 +53,7 @@ function toAlbum(row: Row): ShelfAlbum {
 
 const SELECT = `
   SELECT a.id, a.artist, a.title, a.year, a.artwork_url, a.itunes_id,
-         a.owned, a.added_at, a.cover_front, a.cover_back,
+         a.owned, a.added_at, a.cover_front, a.cover_back, a.mbid,
          r.rating, r.body, r.first_played_at,
          r.updated_at AS review_updated_at
     FROM shelf_albums a

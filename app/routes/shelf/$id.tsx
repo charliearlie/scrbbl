@@ -6,6 +6,7 @@ import { ChevronLeft, Disc3, Trash2 } from "lucide-react";
 
 import { getLastfmSession, requireLogin } from "~/services/session.server";
 import { getAlbumDetails } from "~/services/apple-music.server";
+import { enrichSleeve, recheckMissingBacks } from "~/services/cover-art.server";
 import { albumDurationSeconds } from "~/services/scrobble-timing";
 import {
   getShelfAlbum,
@@ -27,10 +28,22 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   await requireLogin(request);
 
   const session = await getLastfmSession(request);
-  const album = await getShelfAlbum(session?.username ?? "", params.id ?? "");
+  const username = session?.username ?? "";
+
+  await recheckMissingBacks();
+
+  let album = await getShelfAlbum(username, params.id ?? "");
 
   if (!album) {
     throw new Response("That record is not on your shelf", { status: 404 });
+  }
+
+  // A null mbid means the lookup never got an answer — MusicBrainz was busy,
+  // or this record predates the release-browse search. Enrichment only ran at
+  // add time before, so a record that missed its chance never got another.
+  if (!album.mbid) {
+    await enrichSleeve(album.id);
+    album = (await getShelfAlbum(username, album.id)) ?? album;
   }
 
   // Only iTunes-sourced records carry a tracklist; one shelved from the

@@ -1,4 +1,4 @@
-import { getDb } from "./db.server";
+import { getDb, runOnce } from "./db.server";
 
 /**
  * Real sleeve scans from the Cover Art Archive, by way of MusicBrainz.
@@ -69,29 +69,84 @@ type CoverArtImage = {
 
 type CoverArtResponse = { images?: CoverArtImage[] };
 
+type ReleaseBrowse = {
+  releases?: Array<{
+    id: string;
+    date?: string;
+    "cover-art-archive"?: { front?: boolean; back?: boolean };
+  }>;
+};
+
 export type Sleeve = { front: string | null; back: string | null };
 
 function pick(image: CoverArtImage) {
   // 1200 when the archive has it, else the largest it does.
   const thumbs = image?.thumbnails ?? {};
-  return (
-    thumbs["1200"] ?? thumbs["large"] ?? thumbs["500"] ?? image?.image ?? null
-  );
+  const url =
+    thumbs["1200"] ?? thumbs["large"] ?? thumbs["500"] ?? image?.image ?? null;
+
+  // The archive answers with http:// URLs. An https page refuses those as
+  // mixed content, so the sleeve would simply never appear.
+  return url ? url.replace(/^http:/, "https:") : null;
 }
 
-export async function getSleeve(releaseGroupId: string): Promise<Sleeve> {
+async function imagesFor(releaseId: string): Promise<Sleeve> {
   const data = await fetchJson<CoverArtResponse>(
-    `https://coverartarchive.org/release-group/${releaseGroupId}`
+    `https://coverartarchive.org/release/${releaseId}`
   );
 
   const images = data?.images ?? [];
   const front = images.find((image) => image.front);
   const back = images.find((image) => image.back);
 
-  return {
-    front: front ? pick(front) : null,
-    back: back ? pick(back) : null,
-  };
+  return { front: front ? pick(front) : null, back: back ? pick(back) : null };
+}
+
+/**
+ * Finds the sleeve for a release group, back included where one exists.
+ *
+ * The obvious call — asking the archive for the release *group* — returns only
+ * whichever release the group happens to point at, and that pressing usually
+ * has a front and nothing else. Browsing the group's releases instead reports
+ * `front` and `back` per pressing in a single request, and across a sample of
+ * five albums every one of them had a back on some pressing even though only
+ * one did on its chosen release.
+ *
+ * A pressing carrying both is preferred so the two faces belong together.
+ */
+export async function getSleeve(releaseGroupId: string): Promise<Sleeve> {
+  const browse = await fetchJson<ReleaseBrowse>(
+    `https://musicbrainz.org/ws/2/release?release-group=${releaseGroupId}` +
+      "&fmt=json&limit=100"
+  );
+
+  const releases = browse?.releases ?? [];
+  const art = (id: string) =>
+    releases.find((release) => release.id === id)?.["cover-art-archive"] ?? {};
+
+  const withBoth = releases.find((r) => art(r.id).front && art(r.id).back);
+  if (withBoth) return imagesFor(withBoth.id);
+
+  // No single pressing has both, so take each face from the best it can come
+  // from. Different pressings of the same record almost always share artwork.
+  const frontFrom = releases.find((r) => art(r.id).front);
+  const backFrom = releases.find((r) => art(r.id).back);
+
+  if (!frontFrom && !backFrom) {
+    // Nothing in the browse said so — fall back to the group's own answer.
+    const group = await fetchJson<CoverArtResponse>(
+      `https://coverartarchive.org/release-group/${releaseGroupId}`
+    );
+    const image = group?.images?.find((i) => i.front);
+    return { front: image ? pick(image) : null, back: null };
+  }
+
+  const [front, back] = await Promise.all([
+    frontFrom ? imagesFor(frontFrom.id) : Promise.resolve(null),
+    backFrom ? imagesFor(backFrom.id) : Promise.resolve(null),
+  ]);
+
+  return { front: front?.front ?? null, back: back?.back ?? null };
 }
 
 /**
@@ -101,6 +156,20 @@ export async function getSleeve(releaseGroupId: string): Promise<Sleeve> {
  * and nothing about the shelf breaks. `mbid` is written even when no art is
  * found, so a fruitless lookup is not repeated on every page load.
  */
+/**
+ * Records enriched before the release-browse lookup existed were told there
+ * was no back cover when there usually was one. Clearing their mbid marks
+ * them as never-looked-up, so the next view tries again with the better
+ * question. Runs once, ever.
+ */
+export function recheckMissingBacks() {
+  return runOnce("recheck-missing-backs-2026-09", async (client) => {
+    await client.execute(
+      `UPDATE shelf_albums SET mbid = NULL WHERE cover_back IS NULL`
+    );
+  });
+}
+
 export async function enrichSleeve(albumId: string): Promise<void> {
   try {
     const db = await getDb();

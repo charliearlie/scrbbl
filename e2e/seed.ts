@@ -21,6 +21,8 @@ export async function seedRecord(
     body?: string;
     coverFront?: string;
     coverBack?: string;
+    /** Pass null to let the record page look the sleeve up for real. */
+    mbid?: string | null;
   }
 ) {
   const id = crypto.randomUUID();
@@ -29,14 +31,17 @@ export async function seedRecord(
   await db.execute({
     sql: `INSERT INTO shelf_albums
             (id, username, artist, title, year, artwork_url, itunes_id,
-             cover_front, cover_back, owned, added_at)
-          VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, ?, 1, ?)`,
+             mbid, cover_front, cover_back, owned, added_at)
+          VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, ?, ?, 1, ?)`,
     args: [
       id,
       username,
       record.artist,
       record.title,
       record.year ?? null,
+      // A non-null mbid means "already looked up", which keeps the record
+      // page from calling MusicBrainz and overwriting these seeded values.
+      record.mbid ?? `seeded-${id}`,
       record.coverFront ?? null,
       record.coverBack ?? null,
       now,

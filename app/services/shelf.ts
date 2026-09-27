@@ -16,6 +16,8 @@ export type ShelfAlbum = {
   /** The Cover Art Archive scan, when there is one. Preferred over iTunes. */
   coverFront: string | null;
   coverBack: string | null;
+  /** Null means the sleeve lookup never got an answer, so it should retry. */
+  mbid: string | null;
   itunesId: string | null;
   /** True for a record you own, false for one you have only heard. */
   owned: boolean;
