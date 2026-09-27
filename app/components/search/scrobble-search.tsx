@@ -86,10 +86,7 @@ export default function ScrobbleSearch({
     ];
   }, [fetcher.data]);
 
-  const isOpen = query.trim().length >= MIN_QUERY_LENGTH;
-  // Either the request is in flight, or the debounce has not caught up yet.
-  const isSearching =
-    isOpen && (fetcher.state !== "idle" || debouncedQuery !== query);
+  const hasQuery = query.trim().length >= MIN_QUERY_LENGTH;
 
   const {
     getInputProps,
@@ -97,9 +94,16 @@ export default function ScrobbleSearch({
     getLabelProps,
     getMenuProps,
     highlightedIndex,
+    // Downshift owns whether the menu is open.
+    //
+    // This used to be a controlled prop derived from the query length, which
+    // meant the menu could never close: picking an item puts that item's
+    // title in the input, the query is still long enough, so it stayed open
+    // and covered whatever the selection revealed underneath. Clicking the
+    // button that appeared actually hit the search result sitting over it.
+    isOpen: menuOpen,
   } = useCombobox<SearchItem>({
     items,
-    isOpen,
     // Downshift owns the input value. Passing `inputValue` back in as a
     // controlled prop made every keystroke resolve against a stale value,
     // so only the last character ever stuck.
@@ -125,6 +129,12 @@ export default function ScrobbleSearch({
       navigate(`/manual-scrobble?${params.toString()}`);
     },
   });
+
+  // The query gate stops a one-character query flashing an empty panel.
+  const isOpen = menuOpen && hasQuery;
+  // Either the request is in flight, or the debounce has not caught up yet.
+  const isSearching =
+    isOpen && (fetcher.state !== "idle" || debouncedQuery !== query);
 
   const firstSongIndex = items.findIndex((item) => item.kind === "song");
 

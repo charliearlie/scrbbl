@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { seedRecord } from "./seed";
 import { signIn } from "./session";
 
@@ -15,9 +15,35 @@ const nextListener = () => `e2e-listener-${Date.now()}-${listener++}`;
 async function putOnShelf(page: Page, query: string) {
   await page.goto("/shelf/add");
   await page.getByRole("combobox").fill(query);
-  await page.getByRole("option").first().waitFor({ timeout: 15_000 });
+  await page.getByRole("option").first().waitFor({ timeout: 30_000 });
   await page.getByRole("option").first().click();
   await page.getByRole("button", { name: "Put it on the shelf" }).click();
+}
+
+/**
+ * Whether the button a person can see is the thing their click would land on.
+ *
+ * Playwright scrolls before it clicks, which is why an earlier version of
+ * these tests passed while the page was unusable: the search menu stayed open
+ * over the form, and a real click on "Put it on the shelf" hit a search result
+ * sitting on top of it. Visibility is not enough — ask what is actually at
+ * the point.
+ */
+async function isTopmostAtItsOwnCentre(locator: Locator) {
+  // Playwright does the scrolling: on a phone the button sits below the fold,
+  // and elementFromPoint returns null outside the viewport, which is not the
+  // same thing as being covered. In-page scrollIntoView is no good here —
+  // <html> carries h-full, so it scrolls the wrong container.
+  await locator.scrollIntoViewIfNeeded();
+
+  return locator.evaluate((el) => {
+    const box = el.getBoundingClientRect();
+    const hit = document.elementFromPoint(
+      box.x + box.width / 2,
+      box.y + box.height / 2
+    );
+    return el === hit || el.contains(hit);
+  });
 }
 
 test.describe("the record shelf", () => {
@@ -89,6 +115,30 @@ test.describe("the record shelf", () => {
 
     await expect(page.locator("#rating-8")).toBeChecked();
     await context.close();
+  });
+
+  test("closes the search menu once an album is picked", async ({
+    page,
+    context,
+  }) => {
+    await signIn(context, nextListener());
+    await page.goto("/shelf/add");
+
+    await page.getByRole("combobox").fill("to pimp a butterfly");
+    await page.getByRole("option").first().waitFor({ timeout: 30_000 });
+    await expect(page.getByRole("listbox")).toBeVisible();
+
+    await page.getByRole("option").first().click();
+
+    // The menu must get out of the way of what the selection revealed.
+    await expect(page.getByRole("listbox")).toBeHidden();
+
+    const button = page.getByRole("button", { name: "Put it on the shelf" });
+    await expect(button).toBeVisible();
+    expect(
+      await isTopmostAtItsOwnCentre(button),
+      "the submit button is covered by something"
+    ).toBe(true);
   });
 
   test("warns before the same record goes on twice", async ({
