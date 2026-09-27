@@ -48,18 +48,25 @@ export default function Sleeve({
       <span className="sleeve-spine" aria-hidden="true" />
 
       <div className="sleeve-face">
+        {/* Behind the artwork, so a sleeve with no scan — or one whose URL
+            has rotted — shows this rather than a broken-image glyph. */}
+        <span className="sleeve-placeholder" aria-hidden="true">
+          <Disc3 className="h-10 w-10" strokeWidth={1.4} />
+        </span>
         {artworkUrl ? (
           <img
             alt={`${title} by ${artist}`}
             loading="lazy"
             src={artworkUrl}
             draggable={false}
+            // CSS hides the alt text but not the browser's own broken-image
+            // glyph. Without JavaScript you get a small mark in the corner;
+            // with it, the placeholder underneath is all you see.
+            onError={(event) => {
+              event.currentTarget.style.visibility = "hidden";
+            }}
           />
-        ) : (
-          <span className="flex h-full w-full items-center justify-center bg-raised text-muted-foreground">
-            <Disc3 aria-hidden="true" className="h-10 w-10" strokeWidth={1.4} />
-          </span>
-        )}
+        ) : null}
         <span className="sleeve-sheen" aria-hidden="true" />
       </div>
 

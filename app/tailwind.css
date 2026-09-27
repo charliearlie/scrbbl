@@ -293,10 +293,25 @@
 }
 
 .sleeve-face img {
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  /* A failed image would otherwise paint its alt text across the sleeve.
+     CSS cannot detect the failure, but it can stop it being ugly: the text
+     never shows and the placeholder underneath does. */
+  color: transparent;
+}
+
+.sleeve-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--raised));
+  color: hsl(var(--muted-foreground));
 }
 
 /* Light catching the laminate. */
