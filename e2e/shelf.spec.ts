@@ -314,7 +314,9 @@ test.describe("sleeve scans", () => {
     await page.goto(`/shelf/${id}`);
 
     await expect(page.getByText("Turn it over")).toBeVisible();
-    await page.getByText("Turn it over").click();
+
+    // Clicking the record itself turns it, not just the small control.
+    await page.getByLabel(/^Turn .* over$/).click();
     await expect(page.locator("#turn-it-over")).toBeChecked();
 
     // The label follows the record round, and is not itself mirrored.

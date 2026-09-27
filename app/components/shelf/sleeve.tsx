@@ -36,6 +36,16 @@ export default function Sleeve({
         <input className="sleeve-flip" id={flipId} type="checkbox" />
       ) : null}
 
+      {/* The whole record is the target. Hunting for a small control below
+          the sleeve is the wrong shape for "turn this over". */}
+      {flippable ? (
+        <label
+          className="sleeve-flip-hit"
+          htmlFor={flipId}
+          aria-label={`Turn ${title} over`}
+        />
+      ) : null}
+
       <div
         className="sleeve"
         style={
@@ -59,6 +69,7 @@ export default function Sleeve({
             <img
               alt={`${title} by ${artist}`}
               loading="lazy"
+              decoding="async"
               src={artworkUrl}
               draggable={false}
               // CSS hides the alt text but not the browser's own broken-image
@@ -80,6 +91,7 @@ export default function Sleeve({
             <img
               alt={`Back of ${title}`}
               loading="lazy"
+              decoding="async"
               src={backUrl ?? ""}
               draggable={false}
               onError={(event) => {
@@ -95,7 +107,7 @@ export default function Sleeve({
         <label className="sleeve-flip-label" htmlFor={flipId}>
           <FlipHorizontal2
             aria-hidden="true"
-            className="h-3.5 w-3.5"
+            className="h-4 w-4"
             strokeWidth={1.9}
           />
           <span className="sleeve-flip-front">Turn it over</span>

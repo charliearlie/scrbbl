@@ -182,7 +182,7 @@ export default function ShelfRecord() {
       ) : null}
 
       <header className="flex flex-col items-center gap-8 sm:flex-row sm:items-start">
-        <div className="w-48 shrink-0 [perspective:1000px]">
+        <div className="w-52 shrink-0 pb-14 sm:pb-0">
           <Sleeve
             artist={album.artist}
             artworkUrl={sleeveImage(album)}

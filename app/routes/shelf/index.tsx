@@ -6,8 +6,8 @@ import { Library, Plus } from "lucide-react";
 import { getLastfmSession, requireLogin } from "~/services/session.server";
 import { getShelf } from "~/services/shelf.server";
 import {
+  crateImage,
   ratingToStars,
-  sleeveImage,
   sortShelf,
   spineColour,
 } from "~/services/shelf";
@@ -157,7 +157,7 @@ export default function Shelf() {
                 >
                   <Sleeve
                     artist={album.artist}
-                    artworkUrl={sleeveImage(album)}
+                    artworkUrl={crateImage(album)}
                     spine={spineColour(album.artist, album.title)}
                     title={album.title}
                   />

@@ -113,11 +113,30 @@ export function spineColour(artist: string, title: string): string {
   return `hsl(${hue} 32% 34%)`;
 }
 
-/** The best image we have: a real scan if one was found, else iTunes. */
+/**
+ * The best image we have, for a record someone has deliberately opened.
+ *
+ * The archive scan is the better picture and much the slower one, so it is
+ * only worth waiting for on a page showing a single record.
+ */
 export function sleeveImage(
   album: Pick<ShelfAlbum, "coverFront" | "artworkUrl">
 ) {
   return album.coverFront ?? album.artworkUrl;
+}
+
+/**
+ * The fast image, for browsing a crate of them.
+ *
+ * Measured on one sleeve: Apple's CDN answered in 69ms with no redirects,
+ * the Cover Art Archive in 1.65s after two hops to archive.org, and 2.7s for
+ * its 1200px copy. A crate loads a dozen at once, and at the size a sleeve
+ * renders there is nothing in the scan to see anyway.
+ */
+export function crateImage(
+  album: Pick<ShelfAlbum, "coverFront" | "artworkUrl">
+) {
+  return album.artworkUrl ?? album.coverFront;
 }
 
 export type ShelfSort = "added" | "artist" | "rating" | "year";

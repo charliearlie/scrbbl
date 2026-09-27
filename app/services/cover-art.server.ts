@@ -80,10 +80,11 @@ type ReleaseBrowse = {
 export type Sleeve = { front: string | null; back: string | null };
 
 function pick(image: CoverArtImage) {
-  // 1200 when the archive has it, else the largest it does.
+  // 500, not 1200: a sleeve renders at about 200px, and the archive is slow
+  // enough that the larger copy costs another second for nothing visible.
   const thumbs = image?.thumbnails ?? {};
   const url =
-    thumbs["1200"] ?? thumbs["large"] ?? thumbs["500"] ?? image?.image ?? null;
+    thumbs["500"] ?? thumbs["large"] ?? thumbs["1200"] ?? image?.image ?? null;
 
   // The archive answers with http:// URLs. An https page refuses those as
   // mixed content, so the sleeve would simply never appear.
