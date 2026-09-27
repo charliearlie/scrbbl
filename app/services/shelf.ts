@@ -84,6 +84,33 @@ export function upscaleArtwork(url: string | null | undefined, size = 600) {
   return url.replace(/\/\d+x\d+bb\.(jpg|png)$/, `/${size}x${size}bb.$1`);
 }
 
+/**
+ * A stable spine colour for a record.
+ *
+ * Deliberately not sampled from the artwork. Extracting a palette server-side
+ * means shipping an image decoder — node-vibrant pulls in Jimp — for a band
+ * about ten pixels wide that is mostly seen edge-on. What the spine actually
+ * needs is to be distinct and stable per record, which a hash gives for free,
+ * and which also works for a record that has no artwork at all.
+ *
+ * Saturation and lightness are fixed low so the shelf reads as a row of
+ * cardboard spines rather than a paint chart, and so nothing competes with
+ * the one accent colour the app uses.
+ */
+export function spineColour(artist: string, title: string): string {
+  const source = `${artist}\u0000${title}`;
+
+  // FNV-1a: short, well-spread, and stable across machines.
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < source.length; i++) {
+    hash ^= source.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue} 32% 34%)`;
+}
+
 /** The best image we have: a real scan if one was found, else iTunes. */
 export function sleeveImage(
   album: Pick<ShelfAlbum, "coverFront" | "artworkUrl">

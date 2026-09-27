@@ -12,7 +12,7 @@ import {
   removeFromShelf,
   saveReview,
 } from "~/services/shelf.server";
-import { MAX_RATING, sleeveImage } from "~/services/shelf";
+import { MAX_RATING, sleeveImage, spineColour } from "~/services/shelf";
 import { readTrimmed } from "~/services/scrobble-form.server";
 import Alert from "~/components/common/alert";
 import { Button } from "~/components/common/button";
@@ -173,6 +173,7 @@ export default function ShelfRecord() {
           <Sleeve
             artist={album.artist}
             artworkUrl={sleeveImage(album)}
+            spine={spineColour(album.artist, album.title)}
             backUrl={album.coverBack}
             flipId="turn-it-over"
             title={album.title}

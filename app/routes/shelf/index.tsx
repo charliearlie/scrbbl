@@ -5,7 +5,12 @@ import { Library, Plus } from "lucide-react";
 
 import { getLastfmSession, requireLogin } from "~/services/session.server";
 import { getShelf } from "~/services/shelf.server";
-import { ratingToStars, sleeveImage, sortShelf } from "~/services/shelf";
+import {
+  ratingToStars,
+  sleeveImage,
+  sortShelf,
+  spineColour,
+} from "~/services/shelf";
 import type { ShelfSort } from "~/services/shelf";
 import { Button } from "~/components/common/button";
 import EmptyState from "~/components/common/empty-state";
@@ -153,6 +158,7 @@ export default function Shelf() {
                   <Sleeve
                     artist={album.artist}
                     artworkUrl={sleeveImage(album)}
+                    spine={spineColour(album.artist, album.title)}
                     title={album.title}
                   />
                   <div className="mt-6 flex flex-col items-center gap-1.5 text-center">

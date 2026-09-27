@@ -10,6 +10,9 @@ Scrbbl is a manual Last.FM scrobbler which allows you to 'scrobble' tracks your 
 - Scrobble entire albums, choosing which tracks count and correcting titles first
 - Timestamps you pick, spaced by real track length so the play order matches the record
 - A log of every batch sent, with what Last.FM accepted and what it refused
+- Scrobble BBC radio, read from the stations' own Last.FM accounts
+- A shelf of records you own, rated and reviewed, with real sleeve scans
+- The gap between what you own and what you play, in both directions
 - Scrobble from BBC radio stations _(Coming soon)_
 - Scrobble in bulk from a database or spreadsheet _(Coming soon)_
 
@@ -66,8 +69,36 @@ The Last.FM API secret is in this repo's git history, so it is worth rotating
 it at https://www.last.fm/api/accounts independently of moving it out of the
 source.
 
+### The shelf
+
+Records you add yourself, not ones derived from your scrobbles. Each carries a
+rating out of five, a note, and where possible a Cover Art Archive scan of the
+real sleeve — front, and the back when the archive has one.
+
+`/shelf/missing` sets the shelf against `user.getTopAlbums`: albums you play
+often and never shelved, and records shelved and barely played. Discogs knows a
+collection and Last.FM knows a listening history; this is the only place that
+knows both.
+
+Sleeve art is looked up once per record, at add time, through MusicBrainz
+release _groups_ — cover art attaches per pressing and most pressings have
+none. Spine colours are hashed from artist and title rather than sampled from
+the artwork, which would mean shipping an image decoder for a ten-pixel band.
+
 ### Checks
 
 ```sh
-yarn validate   # tests, lint, typecheck, formatting
+yarn validate   # unit tests, lint, typecheck, formatting
+yarn e2e        # Playwright, against a production build
 ```
+
+`yarn e2e` builds the app and runs it on port 3111 against a throwaway SQLite
+file, in Chromium and mobile WebKit. `e2e/session.ts` mints a real signed
+session cookie so the logged-in routes are reachable without Last.FM's OAuth.
+
+`e2e/smoke.spec.ts` loads every route with the browser console watched. It
+exists because two bugs shipped where a component imported a value from a
+`.server` module: Remix strips those from the client bundle, so the value is
+`undefined` in the browser and the page dies on hydrate. The server still
+renders it and returns 200, TypeScript resolves the module the way the server
+does, and unit tests never open a browser — nothing else catches it.

@@ -11,6 +11,7 @@ import {
   releaseYear,
   shelfKey,
   sortShelf,
+  spineColour,
   upscaleArtwork,
 } from "./shelf";
 import type { ShelfAlbum } from "./shelf";
@@ -262,5 +263,33 @@ describe("the shelf store", () => {
 
     await shelf.removeFromShelf("an-intruder", added.id);
     expect(await shelf.getShelf("charlie")).toHaveLength(1);
+  });
+});
+
+describe("spineColour", () => {
+  it("is stable for the same record", () => {
+    expect(spineColour("Talk Talk", "Spirit of Eden")).toBe(
+      spineColour("Talk Talk", "Spirit of Eden")
+    );
+  });
+
+  it("differs between records", () => {
+    expect(spineColour("Talk Talk", "Spirit of Eden")).not.toBe(
+      spineColour("Talk Talk", "Laughing Stock")
+    );
+  });
+
+  it("always produces a usable hue", () => {
+    for (const [artist, title] of [
+      ["", ""],
+      ["A", "B"],
+      ["Sigur Rós", "( )"],
+      ["Godspeed You! Black Emperor", "F♯A♯∞"],
+    ]) {
+      const colour = spineColour(artist, title);
+      const hue = Number(colour.match(/hsl\((\d+)/)?.[1]);
+      expect(hue).toBeGreaterThanOrEqual(0);
+      expect(hue).toBeLessThan(360);
+    }
   });
 });
