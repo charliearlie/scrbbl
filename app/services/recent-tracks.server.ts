@@ -10,15 +10,8 @@ import {
 import type { Play } from "./recent-tracks";
 import type { DuplicateWarning } from "./scrobble-form.server";
 
-export {
-  BBC_STATIONS,
-  DEFAULT_OVERLAP_TOLERANCE_SECONDS,
-  collapseRepeats,
-  findOverlaps,
-  flattenRecentTracks,
-  isBbcStation,
-  normaliseTitle,
-} from "./recent-tracks";
+// No value re-exports: see the note in shelf.server.ts. Client code imports
+// the pure helpers from "~/services/recent-tracks".
 export type { BbcStationId, Overlap, Play } from "./recent-tracks";
 
 /** Last.FM's own ceiling for this method. */

@@ -26,6 +26,31 @@ const SCHEMA = [
    )`,
   `CREATE INDEX IF NOT EXISTS scrobble_batches_by_user
      ON scrobble_batches (username, sent_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS shelf_albums (
+     id          TEXT    PRIMARY KEY,
+     username    TEXT    NOT NULL,
+     artist      TEXT    NOT NULL,
+     title       TEXT    NOT NULL,
+     year        INTEGER,
+     artwork_url TEXT,
+     itunes_id   TEXT,
+     mbid        TEXT,
+     discogs_id  TEXT,
+     -- 1 = a record you own, 0 = one you have only heard. Keeping both in
+     -- one table makes "own vs heard" a filter rather than a migration.
+     owned       INTEGER NOT NULL DEFAULT 1,
+     added_at    INTEGER NOT NULL
+   )`,
+  `CREATE INDEX IF NOT EXISTS shelf_albums_by_user
+     ON shelf_albums (username, added_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS shelf_reviews (
+     album_id        TEXT    PRIMARY KEY,
+     -- 1..10, so a five-star scale can carry halves.
+     rating          INTEGER,
+     body            TEXT,
+     first_played_at INTEGER,
+     updated_at      INTEGER NOT NULL
+   )`,
   `CREATE TABLE IF NOT EXISTS scrobble_batch_tracks (
      batch_id  TEXT    NOT NULL,
      position  INTEGER NOT NULL,

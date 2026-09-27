@@ -12,13 +12,17 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "typecheck": "tsc -b",
-    "validate": "run-p test lint typecheck check"
+    "validate": "run-p test lint typecheck check",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "prettier": {},
   "eslintIgnore": [
     "/node_modules",
     "/build",
-    "/public/build"
+    "/public/build",
+    "/test-results",
+    "/playwright-report"
   ],
   "dependencies": {
     "@libsql/client": "^0.18.0",
@@ -48,6 +52,7 @@
     "vaul": "^0.9.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@remix-run/dev": "^1.16.1",
     "@remix-run/eslint-config": "^1.16.1",
     "@tailwindcss/typography": "^0.5.8",

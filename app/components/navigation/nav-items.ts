@@ -4,6 +4,7 @@ import {
   Disc3,
   History,
   Home,
+  Library,
   Music2,
   RadioTower,
 } from "lucide-react";
@@ -27,6 +28,7 @@ export const navItems: NavItem[] = [
   { label: "Scrobble song", to: "/manual-scrobble", Icon: Music2 },
   { label: "Scrobble album", to: "/album-scrobble", Icon: Disc3 },
   { label: "Scrobble radio", to: "/radio", Icon: RadioTower },
+  { label: "Your shelf", to: "/shelf", Icon: Library },
   { label: "What you sent", to: "/log", Icon: History },
   { label: "Bulk import", Icon: Database },
 ];

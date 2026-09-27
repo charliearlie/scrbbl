@@ -26,7 +26,7 @@ import Avatar from "./components/user/avatar";
 import LoginLinkButton from "./components/common/login-link-button";
 import { Button } from "./components/common/button";
 import { getUserData } from "./services/lastfm.server";
-import { logout } from "./services/session.server";
+import { getUserInfo, logout } from "./services/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStylesheetUrl },
@@ -67,7 +67,10 @@ export const meta: MetaFunction = () => ({
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const user = await getUserData(request);
+  // Login already stored the profile in the session, so the layout does not
+  // need a Last.FM round-trip on every single page load. The API call stays
+  // as a fallback for sessions created before this was cached.
+  const user = (await getUserInfo(request)) ?? (await getUserData(request));
   return typedjson(user);
 };
 

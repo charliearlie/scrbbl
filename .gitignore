@@ -11,3 +11,9 @@ yarn-error.log
 # local libSQL database
 scrbbl.db
 scrbbl.db-*
+
+# playwright
+/test-results
+/playwright-report
+e2e-scrbbl.db
+e2e-scrbbl.db-*

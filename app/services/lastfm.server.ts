@@ -9,11 +9,8 @@ import { getLastfmSession } from "./session.server";
 import { LASTFM_API_KEY, LASTFM_API_SECRET } from "./env.server";
 import { buildAlbumTimestamps } from "./scrobble-timing";
 
-export {
-  albumDurationSeconds,
-  buildAlbumTimestamps,
-  validateScrobbleTime,
-} from "./scrobble-timing";
+// No value re-exports: see the note in shelf.server.ts. Client code imports
+// these from "~/services/scrobble-timing".
 
 export const lastfm = new LastfmApi({
   api_key: LASTFM_API_KEY,

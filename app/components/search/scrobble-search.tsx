@@ -24,6 +24,8 @@ type Props = {
   autoFocus?: boolean;
   /** Given, a chosen song is handed back instead of navigating. */
   onSelectSong?: (song: SongInfo) => void;
+  /** Given, a chosen album is handed back instead of navigating. */
+  onSelectAlbum?: (album: AlbumInfo) => void;
   size?: "hero" | "default";
   className?: string;
 };
@@ -44,6 +46,7 @@ export default function ScrobbleSearch({
   autoFocus,
   className,
   label,
+  onSelectAlbum,
   onSelectSong,
   placeholder = "Search a song or an album",
   size = "default",
@@ -106,7 +109,8 @@ export default function ScrobbleSearch({
       if (!selectedItem) return;
 
       if (selectedItem.kind === "album") {
-        navigate(`/album-information/${selectedItem.album.albumId}`);
+        if (onSelectAlbum) onSelectAlbum(selectedItem.album);
+        else navigate(`/album-information/${selectedItem.album.albumId}`);
         return;
       }
 
