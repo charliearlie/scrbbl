@@ -228,3 +228,61 @@ test.describe("owned and played", () => {
     await expect(page).toHaveURL(/\/shelf\/missing/);
   });
 });
+
+test.describe("sleeve scans", () => {
+  const FRONT = "https://coverartarchive.org/release/x/front-500.jpg";
+  const BACK = "https://coverartarchive.org/release/x/back-500.jpg";
+
+  test("prefers the archive scan over the iTunes thumbnail", async ({
+    page,
+    context,
+  }) => {
+    const user = nextListener();
+    const id = await seedRecord(user, {
+      artist: "Bark Psychosis",
+      title: "Hex",
+      coverFront: FRONT,
+    });
+    await signIn(context, user);
+
+    await page.goto(`/shelf/${id}`);
+    await expect(page.locator(`img[src="${FRONT}"]`)).toBeVisible();
+  });
+
+  test("turns over, without JavaScript", async ({ browser }) => {
+    const user = nextListener();
+    const id = await seedRecord(user, {
+      artist: "Bark Psychosis",
+      title: "Hex",
+      coverFront: FRONT,
+      coverBack: BACK,
+    });
+
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    await signIn(context, user);
+    const page = await context.newPage();
+    await page.goto(`/shelf/${id}`);
+
+    await expect(page.getByText("Turn it over")).toBeVisible();
+    await page.getByText("Turn it over").click();
+    await expect(page.locator("#turn-it-over")).toBeChecked();
+
+    await context.close();
+  });
+
+  test("offers no turn when there is no back scan", async ({
+    page,
+    context,
+  }) => {
+    const user = nextListener();
+    const id = await seedRecord(user, {
+      artist: "Talk Talk",
+      title: "Spirit of Eden",
+      coverFront: FRONT,
+    });
+    await signIn(context, user);
+
+    await page.goto(`/shelf/${id}`);
+    await expect(page.getByText("Turn it over")).toHaveCount(0);
+  });
+});

@@ -68,6 +68,8 @@ describe("sortShelf", () => {
     title: over.title ?? "T",
     year: over.year ?? null,
     artworkUrl: null,
+    coverFront: null,
+    coverBack: null,
     itunesId: null,
     owned: true,
     addedAt: over.addedAt ?? 0,

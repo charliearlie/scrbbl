@@ -8,6 +8,7 @@ import { getLastfmSession, requireLogin } from "~/services/session.server";
 import type { AlbumInfo } from "~/services/apple-music.server";
 import { addToShelf, findOnShelf } from "~/services/shelf.server";
 import { releaseYear, upscaleArtwork } from "~/services/shelf";
+import { enrichSleeve } from "~/services/cover-art.server";
 import { readTrimmed } from "~/services/scrobble-form.server";
 import Alert from "~/components/common/alert";
 import { Button } from "~/components/common/button";
@@ -79,6 +80,10 @@ export const action = async ({ request }: ActionArgs) => {
       { status: 500 }
     );
   }
+
+  // Best effort and awaited: it is two quick lookups and the record page is
+  // about to render the sleeve.
+  await enrichSleeve(added.id);
 
   return redirect(`/shelf/${added.id}?added=1`);
 };

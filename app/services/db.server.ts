@@ -43,6 +43,11 @@ const SCHEMA = [
    )`,
   `CREATE INDEX IF NOT EXISTS shelf_albums_by_user
      ON shelf_albums (username, added_at DESC)`,
+  // Added after shelf_albums shipped, so CREATE TABLE IF NOT EXISTS will not
+  // introduce them on an existing database. A duplicate-column error here is
+  // the expected steady state and is swallowed below.
+  `ALTER TABLE shelf_albums ADD COLUMN cover_front TEXT`,
+  `ALTER TABLE shelf_albums ADD COLUMN cover_back TEXT`,
   `CREATE TABLE IF NOT EXISTS shelf_reviews (
      album_id        TEXT    PRIMARY KEY,
      -- 1..10, so a five-star scale can carry halves.
@@ -94,7 +99,14 @@ async function connect(): Promise<Client | null> {
     // Cheap and idempotent, so running it on first use beats shipping a
     // migration step somebody has to remember.
     for (const statement of SCHEMA) {
-      await client.execute(statement);
+      try {
+        await client.execute(statement);
+      } catch (error) {
+        // ALTER ... ADD COLUMN has no IF NOT EXISTS in SQLite, so re-running
+        // it is expected. Anything else is worth knowing about.
+        const message = String((error as { message?: unknown })?.message ?? "");
+        if (!/duplicate column name/i.test(message)) throw error;
+      }
     }
 
     return client;

@@ -12,6 +12,7 @@ import {
   findUnplayed,
   isPeriod,
 } from "~/services/shelf-gap";
+import { enrichSleeve } from "~/services/cover-art.server";
 import { readTrimmed } from "~/services/scrobble-form.server";
 import Alert from "~/components/common/alert";
 import { Button } from "~/components/common/button";
@@ -67,6 +68,8 @@ export const action = async ({ request }: ActionArgs) => {
     title: readTrimmed(formData, "title"),
     artworkUrl: readTrimmed(formData, "artworkUrl") || null,
   });
+
+  if (added.ok) await enrichSleeve(added.id);
 
   return added.ok ? redirect(`/shelf/${added.id}`) : redirect("/shelf/missing");
 };

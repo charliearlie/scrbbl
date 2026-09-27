@@ -19,6 +19,8 @@ export async function seedRecord(
     year?: number;
     rating?: number;
     body?: string;
+    coverFront?: string;
+    coverBack?: string;
   }
 ) {
   const id = crypto.randomUUID();
@@ -26,9 +28,19 @@ export async function seedRecord(
 
   await db.execute({
     sql: `INSERT INTO shelf_albums
-            (id, username, artist, title, year, artwork_url, itunes_id, owned, added_at)
-          VALUES (?, ?, ?, ?, ?, NULL, NULL, 1, ?)`,
-    args: [id, username, record.artist, record.title, record.year ?? null, now],
+            (id, username, artist, title, year, artwork_url, itunes_id,
+             cover_front, cover_back, owned, added_at)
+          VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, ?, 1, ?)`,
+    args: [
+      id,
+      username,
+      record.artist,
+      record.title,
+      record.year ?? null,
+      record.coverFront ?? null,
+      record.coverBack ?? null,
+      now,
+    ],
   });
 
   if (record.rating !== undefined || record.body !== undefined) {

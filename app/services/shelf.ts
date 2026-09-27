@@ -13,6 +13,9 @@ export type ShelfAlbum = {
   title: string;
   year: number | null;
   artworkUrl: string | null;
+  /** The Cover Art Archive scan, when there is one. Preferred over iTunes. */
+  coverFront: string | null;
+  coverBack: string | null;
   itunesId: string | null;
   /** True for a record you own, false for one you have only heard. */
   owned: boolean;
@@ -79,6 +82,13 @@ export function releaseYear(releaseDate: string | null | undefined) {
 export function upscaleArtwork(url: string | null | undefined, size = 600) {
   if (!url) return null;
   return url.replace(/\/\d+x\d+bb\.(jpg|png)$/, `/${size}x${size}bb.$1`);
+}
+
+/** The best image we have: a real scan if one was found, else iTunes. */
+export function sleeveImage(
+  album: Pick<ShelfAlbum, "coverFront" | "artworkUrl">
+) {
+  return album.coverFront ?? album.artworkUrl;
 }
 
 export type ShelfSort = "added" | "artist" | "rating" | "year";

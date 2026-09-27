@@ -16,6 +16,8 @@ const shelved = (artist: string, title: string): ShelfAlbum => ({
   title,
   year: null,
   artworkUrl: null,
+  coverFront: null,
+  coverBack: null,
   itunesId: null,
   owned: true,
   addedAt: 0,

@@ -455,3 +455,54 @@
     background: hsl(var(--primary) / 0.55);
   }
 }
+
+/* Turning a record over. A checkbox rather than state, so it works before
+   hydration and with JavaScript off, like the rating input. */
+.sleeve-flip {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sleeve-flip-label {
+  position: absolute;
+  bottom: -2.25rem;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 160ms ease-out;
+}
+
+.sleeve-flip-label:hover {
+  color: hsl(var(--foreground));
+}
+
+.sleeve-flip:focus-visible + .sleeve-flip-label {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.sleeve-back {
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+
+.sleeve:has(.sleeve-flip) .sleeve-face:not(.sleeve-back) {
+  backface-visibility: hidden;
+}
+
+.sleeve:has(.sleeve-flip:checked) {
+  transform: rotateY(180deg);
+}
+
+.sleeve:has(.sleeve-flip:checked) .sleeve-flip-label {
+  transform: rotateY(180deg);
+}
